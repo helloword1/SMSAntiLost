@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/goockr/smsantilost/graphics/LikeAppleComfirDialog.kt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/btn_corner.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/shape_white_corners.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/apple_confir_dialog.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/apple_two_line_dialog.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/customer_dialog_update.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/loading_dialog.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/toast_bg.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/toast_bg.png" charset="GBK" />
+  </component>
+</project>

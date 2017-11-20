@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/homeFrameLayout"
+        android:layout_weight="1">
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/font_color1" />
+
+    <com.goockr.smsantilost.graphics.HomeBottomTar
+        android:id="@+id/homeBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.goockr.smsantilost.graphics.BottomTabBar
+        android:id="@+id/tb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        app:backgroundColor="@color/white"
+        app:textColor="@color/font_color1"
+        app:textSelectColor="@color/colorAccent" />
+</LinearLayout>

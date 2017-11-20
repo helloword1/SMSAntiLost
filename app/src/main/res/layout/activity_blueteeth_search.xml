@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/x18"
+        android:layout_marginTop="@dimen/x50"
+        android:drawablePadding="@dimen/x12"
+        android:drawableTop="@mipmap/blueteeth_searchring1"
+        android:gravity="center_horizontal"
+        android:text="搜索中..."
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/x14"
+        android:layout_marginRight="@dimen/x14"
+        android:background="@color/dddddd" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/x5"
+            android:overScrollMode="never" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:ios="false">
+
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/x12"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="@dimen/x38"
+            android:layout_height="@dimen/x38"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/tvCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/ivAvatar"
+            android:paddingLeft="15dp"
+            tools:text="安徽" />
+
+        <TextView
+            android:id="@+id/tvPhoneNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCity"
+            android:layout_marginTop="@dimen/x3"
+            android:layout_toRightOf="@id/ivAvatar"
+            android:paddingLeft="15dp"
+            tools:text="安徽" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnDel"
+        android:layout_width="@dimen/x72"
+        android:layout_height="match_parent"
+        android:background="#ecd50a"
+        android:clickable="true"
+        android:text="删除"
+        android:textColor="@android:color/white" />
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

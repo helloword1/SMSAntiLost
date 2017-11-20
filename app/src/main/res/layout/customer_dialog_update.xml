@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/shape_white_corners"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="@dimen/x5"
+        android:paddingBottom="@dimen/x24"
+        android:paddingLeft="@dimen/x7"
+        android:paddingRight="@dimen/x7"
+        android:paddingTop="@dimen/x24"
+        android:text="温馨提示"
+        android:textSize="18sp" />
+
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#dddddd" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/x10"
+        android:paddingRight="@dimen/x10">
+
+        <TextView
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:text="取消"
+            android:textColor="@color/colorAccent"
+            android:textSize="17sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="#dddddd" />
+
+        <TextView
+            android:id="@+id/tvConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:text="确认"
+            android:textColor="@color/colorAccent"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+</LinearLayout>

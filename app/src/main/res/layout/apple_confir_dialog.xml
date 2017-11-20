@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/shape_white_corners"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:paddingLeft="@dimen/x12"
+    android:paddingRight="@dimen/x12"
+    android:paddingTop="@dimen/x9"
+    android:paddingBottom="@dimen/x9"
+     >
+
+    <TextView
+        android:id="@+id/tvTitle1Line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:layout_marginTop="22dp"
+        android:text="确定删除该动态"
+        android:textSize="17sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#dddddd" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
+
+        <TextView
+            android:id="@+id/tvConfirm1Line"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="9dp"
+            android:paddingTop="12dp"
+            android:text="确定"
+            android:textColor="@color/colorAccent"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+</LinearLayout>

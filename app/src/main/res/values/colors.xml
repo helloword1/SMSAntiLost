@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4285f4</color>
+    <color name="colorPrimaryDark">#4285f4</color>
+    <color name="colorAccent">#4285f4</color>
+    <color name="transparent">#00000000</color>
+    <color name="appRed">#f95355</color>
+    <color name="appYellow">#f6a623</color>
+    <color name="white">#ffffff</color>
+    <color name="font_color1">#666666</color>
+    <color name="statueBarColor">#561c1c1c</color>
+    <color name="gray">#dddddd</color>
+    <color name="textColor">#1e1e1e</color>
+    <color name="msmTextColorGray">#6d6c6c</color>
+    <color name="linetColor">#2d2a2a</color>
+    <color name="textTitleColor">#333333</color>
+    <color name="partTranslucent">#39000000</color>
+    <color name="dddddd">#39918e8e</color>
+</resources>
