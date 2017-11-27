@@ -64,7 +64,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/dddddd" />
+            android:background="@color/some_black" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/x5"
                 android:layout_marginTop="@dimen/x5"
-                android:background="@color/dddddd"
+                android:background="@color/some_black"
                 android:visibility="gone" />
 
             <EditText
@@ -141,7 +141,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="注册用户"
-            android:onClick="click"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
 
@@ -152,7 +151,6 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="账号登陆"
-            android:onClick="click"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
     </LinearLayout>

@@ -2,16 +2,15 @@ package com.goockr.smsantilost.views.activities
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
@@ -19,6 +18,7 @@ import com.goockr.smsantilost.graphics.LoadingDialog
 import com.jude.swipbackhelper.SwipeBackHelper
 import cxx.utils.NotNull
 import cxx.utils.SharedPreferencesUtils
+import kotlinx.android.synthetic.main.base_title_view.view.*
 import java.io.Serializable
 import kotlin.concurrent.thread
 
@@ -33,7 +33,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var titleBack: Button? = null
     protected var title: TextView? = null
     protected var progressDialog: LoadingDialog? = null// 加载对话框
-    protected var titleRight: ImageView? = null
+    protected var titleRight: TextView? = null
     var preferences: SharedPreferencesUtils? = null// 配置文件
     protected var baseLine: View? = null
     protected var fileImagePath: String? = null
@@ -51,7 +51,7 @@ abstract class BaseActivity : AppCompatActivity() {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 //            window.statusBarColor = ContextCompat.getColor(this,R.color.statueBarColor)
-            window.statusBarColor = Color.TRANSPARENT
+            window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
         }
 
         setContentView(R.layout.base_content_view)
@@ -91,9 +91,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun initTitleView() {
         val titleView = inflation!!.inflate(R.layout.base_title_view, null)
-        this.titleRight = titleView.findViewById<View>(R.id.titleRight) as ImageView
-        this.title = titleView.findViewById<View>(R.id.title) as TextView
-        this.titleBack = titleView.findViewById<View>(R.id.titleBack) as Button
+        this.titleRight = titleView.titleRight
+        this.title = titleView.title
+        this.titleBack = titleView.titleBack
         ll?.addView(titleView)
         titleBack!!.setOnClickListener { finish() }
     }
@@ -197,7 +197,7 @@ abstract class BaseActivity : AppCompatActivity() {
      * 隐藏对话框
      */
     fun dismissDialog() {
-        if (NotNull.isNotNull(progressDialog) && progressDialog!!.isShowing) {
+        if (NotNull.isNotNull(progressDialog) && progressDialog?.isShowing!!) {
             progressDialog!!.dismiss()
             progressDialog = null
         }

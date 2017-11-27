@@ -5,7 +5,10 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.view.KeyEvent
 import android.view.View
+import android.widget.Toast
+import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.views.fragments.*
 import com.jude.swipbackhelper.SwipeBackHelper
@@ -24,7 +27,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
     private var contactFragment: ContactFragment? = null
     private var msmFragment: MSMFragment? = null
     private var current: Fragment? = null
-    private var isMsmAndContact=false
+    private var isMsmAndContact = true
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -32,7 +35,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         SwipeBackHelper.getCurrentPage(this)
                 .setSwipeBackEnable(false)
         SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(true)
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             Dexter.withActivity(this)
                     .withPermissions(
                             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -65,7 +68,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             if (msmFragment == null) {
                 msmFragment = MSMFragment()
             }
-            isMsmAndContact=false
+            isMsmAndContact = false
             switchContent(msmFragment!!)
             tvMessage.setTextColor(ContextCompat.getColor(this, R.color.textColor))
             tvContact.setTextColor(ContextCompat.getColor(this, R.color.msmTextColorGray))
@@ -77,7 +80,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             if (contactFragment == null) {
                 contactFragment = ContactFragment()
             }
-            isMsmAndContact=true
+            isMsmAndContact = true
             switchContent(contactFragment!!)
             tvMessage.setTextColor(ContextCompat.getColor(this, R.color.msmTextColorGray))
             tvContact.setTextColor(ContextCompat.getColor(this, R.color.textColor))
@@ -91,6 +94,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             msmFragment = MSMFragment()
             beginTransaction.add(R.id.homeFrameLayout, msmFragment).commit()
             current = msmFragment
+            isMsmAndContact=false
         }
 
         homeBottom.setTabbarCallbackListener {
@@ -99,17 +103,17 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             titleBack = inflate.findViewById(R.id.titleBack)
             when (it) {
                 0 -> {
-                    if (!isMsmAndContact){
+                    if (!isMsmAndContact) {
                         if (msmFragment == null) {
                             msmFragment = MSMFragment()
                         }
-                        isMsmAndContact=true
+                        isMsmAndContact = true
                         switchContent(msmFragment!!)
-                    }else{
+                    } else {
                         if (contactFragment == null) {
                             contactFragment = ContactFragment()
                         }
-                        isMsmAndContact=false
+                        isMsmAndContact = false
                         switchContent(contactFragment!!)
                     }
 
@@ -169,5 +173,22 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             }
             current = to
         }
+    }
+
+    private var exitTime: Double = 0.toDouble()
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+
+        if (event.keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN) {
+            if (System.currentTimeMillis() - exitTime > 2000) {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show()
+                exitTime = System.currentTimeMillis().toDouble()
+            } else {
+                // TODO 退出客户端
+                // 退出
+                (application as GoockrApplication).exit()
+            }
+            return true
+        }
+        return super.dispatchKeyEvent(event)
     }
 }

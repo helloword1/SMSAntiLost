@@ -15,5 +15,6 @@
     <color name="linetColor">#2d2a2a</color>
     <color name="textTitleColor">#333333</color>
     <color name="partTranslucent">#39000000</color>
-    <color name="dddddd">#39918e8e</color>
+    <color name="some_black">#39918e8e</color>
+    <color name="ddd">#ebe7e7</color>
 </resources>

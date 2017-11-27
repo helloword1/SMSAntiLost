@@ -6,4 +6,5 @@ package com.goockr.smsantilost.entries
 class ContactsBean{
     var name:String = ""
     var phone:String = ""
+    var id:String = ""
 }

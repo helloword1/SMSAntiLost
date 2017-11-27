@@ -27,13 +27,14 @@
         android:textSize="15sp"
         android:layout_weight="1" />
 
-    <ImageView
+    <TextView
         android:id="@+id/titleRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
         android:layout_marginRight="@dimen/x12"
         android:layout_alignParentRight="true"
+        android:textSize="14sp"
+        android:textColor="@color/colorAccent"
         android:visibility="gone"
         android:layout_centerInParent="true"/>
 </RelativeLayout>

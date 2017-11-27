@@ -14,4 +14,9 @@ object Constant {
 
     var BASE_URL="http://192.168.1.56:8088/antilost/api/"
     var TOKEN="token"
+    var LOGIN_PHONE="login_phone"
+    var LOGIN_MSM_CODE="login_msm_code"
+    var CONTACT_NAME="contact_name"
+    var CONTACT_PHONE="contact_phone"
+    var CONTACT_ID="contact_id"
 }

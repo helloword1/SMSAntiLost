@@ -1,12 +1,15 @@
 package com.goockr.smsantilost.entries
 
+import com.mcxtzhang.indexlib.IndexBar.bean.BaseIndexPinyinBean
+
 /**
  * Created by LJN on 2017/11/13.
  */
-class CityBean : com.mcxtzhang.indexlib.IndexBar.bean.BaseIndexPinyinBean {
+class CityBean : BaseIndexPinyinBean {
 
     private var city: String? = null//城市名字
     private var isTop: Boolean = false//是否是最上面的 不需要被转化成拼音的
+    var id: String? = null//是否是最上面的 不需要被转化成拼音的
     var phone: String = ""
 
     constructor() {}

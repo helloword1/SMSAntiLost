@@ -22,15 +22,14 @@ import com.mcxtzhang.indexlib.suspension.ISuspensionInterface
 //
 
 class SuspensionDecoration(context: Context, private var mDatas: List<ISuspensionInterface>?) : RecyclerView.ItemDecoration() {
-    private val mPaint: Paint
-    private val mBounds: Rect
+    private val mPaint: Paint = Paint()
+    private val textPaint: Paint = Paint()
+    private val mBounds: Rect = Rect()
     private val mInflater: LayoutInflater
     private var mTitleHeight: Int = 0
     private var mHeaderViewCount = 0
 
     init {
-        this.mPaint = Paint()
-        this.mBounds = Rect()
         this.mTitleHeight = TypedValue.applyDimension(1, 28.0f, context.resources.displayMetrics).toInt()
         mTitleFontSize = TypedValue.applyDimension(2, 14.0f, context.resources.displayMetrics).toInt()
         this.mPaint.textSize = mTitleFontSize.toFloat()
@@ -86,6 +85,7 @@ class SuspensionDecoration(context: Context, private var mDatas: List<ISuspensio
             if (this.mDatas != null && !this.mDatas!!.isEmpty() && position <= this.mDatas!!.size - 1 && position >= 0 && this.mDatas!![position].isShowSuspension && position > -1) {
                 if (position == 0) {
                     this.drawTitleArea(c, left, right, child, params, position)
+
                 } else if (null != this.mDatas!![position].suspensionTag && this.mDatas!![position].suspensionTag != this.mDatas!![position - 1].suspensionTag) {
                     this.drawTitleArea(c, left, right, child, params, position)
                 }
@@ -99,7 +99,8 @@ class SuspensionDecoration(context: Context, private var mDatas: List<ISuspensio
         c.drawRect(left.toFloat(), (child.top - params.topMargin - this.mTitleHeight).toFloat(), right.toFloat(), (child.top - params.topMargin).toFloat(), this.mPaint)
         this.mPaint.color = COLOR_TITLE_FONT
         this.mPaint.getTextBounds(this.mDatas!![position].suspensionTag, 0, this.mDatas!![position].suspensionTag.length, this.mBounds)
-        c.drawText(this.mDatas!![position].suspensionTag, child.paddingLeft.toFloat()+20, (child.top - params.topMargin - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.mPaint)
+        c.drawText(this.mDatas!![position].suspensionTag, child.paddingLeft.toFloat() + 20, (child.top - params.topMargin - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.mPaint)
+
     }
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
@@ -122,13 +123,21 @@ class SuspensionDecoration(context: Context, private var mDatas: List<ISuspensio
             c.drawRect(parent.paddingLeft.toFloat(), parent.paddingTop.toFloat(), (parent.right - parent.paddingRight).toFloat(), (parent.paddingTop + this.mTitleHeight).toFloat(), this.mPaint)
             this.mPaint.color = COLOR_TITLE_FONT
             this.mPaint.getTextBounds(tag, 0, tag!!.length, this.mBounds)
-            c.drawText(tag, child.paddingLeft.toFloat(), (parent.paddingTop + this.mTitleHeight - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.mPaint)
+            c.drawText(tag, child.paddingLeft.toFloat() + 20, (parent.paddingTop + this.mTitleHeight - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.mPaint)
+            var s = "当前通讯录有${this.mDatas!!.size}人"
+            //右边字体
+            this.textPaint.color = COLOR_RIGHT_TEXT_COLOR
+            this.textPaint.textSize = 32f
+            this.textPaint.isAntiAlias = true
+            c.drawText(s, parent.right.toFloat() - 50 - getStringWidth(s), (parent.paddingTop + this.mTitleHeight - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.textPaint)
             if (flag) {
                 c.restore()
             }
-
         }
     }
+
+    //获取字体长度
+    private fun getStringWidth(str: String): Float = textPaint.measureText(str)
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
         super.getItemOffsets(outRect, view, parent, state)
@@ -150,8 +159,9 @@ class SuspensionDecoration(context: Context, private var mDatas: List<ISuspensio
     }
 
     companion object {
-        private var COLOR_TITLE_BG = Color.parseColor("#FFDFDFDF")
-        private var COLOR_TITLE_FONT = Color.parseColor("#FF999999")
+        private var COLOR_TITLE_BG = Color.parseColor("#e8e3e3")
+        private var COLOR_TITLE_FONT = Color.parseColor("#1e1e1e")
+        private var COLOR_RIGHT_TEXT_COLOR = Color.parseColor("#6d6c6c")
         private var mTitleFontSize: Int = 0
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/x12"
+    android:paddingRight="@dimen/x12"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/ivAddPhone"
+        android:layout_width="@dimen/x24"
+        android:layout_height="@dimen/x24"
+        android:src="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/tvAddPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x5"
+        android:paddingBottom="@dimen/x18"
+        android:paddingTop="@dimen/x18"
+        android:text="添加电话"
+        android:textColor="@color/textColor"
+        android:textSize="15sp" />
+</LinearLayout>

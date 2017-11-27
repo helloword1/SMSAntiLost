@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.goockr.smsantilost.graphics.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,8 +10,8 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/x12"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="@dimen/x12">
 
         <ImageView
             android:id="@+id/ivAvatar"
@@ -42,8 +42,8 @@
         android:id="@+id/btnDel"
         android:layout_width="@dimen/x72"
         android:layout_height="match_parent"
-        android:background="#ecd50a"
+        android:background="#ec120a"
         android:clickable="true"
         android:text="删除"
         android:textColor="@android:color/white" />
-</com.mcxtzhang.swipemenulib.SwipeMenuLayout>
+</com.goockr.smsantilost.graphics.SwipeMenuLayout>

@@ -10,3 +10,9 @@ class CreateUserBean {
     var name: String? = null
     var token: String? = null
 }
+class LoginCodeBean: BaseEntity() {
+    var loginname:String?=""
+    var username:String?=""
+    var mobile:String?=""
+    var token:String?=""
+}

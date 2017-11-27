@@ -36,12 +36,13 @@
                 android:src="@mipmap/ic_launcher_round" />
 
             <com.goockr.smsantilost.graphics.CleanableEditText
-                android:id="@+id/tvLoginUser"
+                android:id="@+id/tvPwd"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x5"
                 android:layout_weight="1"
                 android:background="@null"
+                android:inputType="textPassword"
                 android:drawableRight="@mipmap/login_delete"
                 android:hint="请设置密码"
                 android:paddingBottom="@dimen/x12"
@@ -63,7 +64,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/dddddd" />
+            android:background="@color/some_black" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,11 +86,11 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/x5"
                 android:layout_marginTop="@dimen/x5"
-                android:background="@color/dddddd"
+                android:background="@color/some_black"
                 android:visibility="gone" />
 
-            <EditText
-                android:id="@+id/tvLoginPassword"
+            <com.goockr.smsantilost.graphics.CleanableEditText
+                android:id="@+id/tvPwdNext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x5"
@@ -97,6 +98,8 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="再次确认密码"
+                android:inputType="textPassword"
+                android:drawableRight="@mipmap/login_delete"
                 android:paddingBottom="@dimen/x12"
                 android:paddingLeft="@dimen/x8"
                 android:paddingTop="@dimen/x12"
@@ -106,7 +109,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_confir"
+        android:id="@+id/btnRegister"
         style="@style/loginConfir"
         android:text="注册账号" />
 
@@ -115,7 +118,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x16"
         android:layout_marginRight="@dimen/x16"
-        android:layout_marginTop="@dimen/x12"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -125,6 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="账号登陆"
+            android:paddingTop="@dimen/x12"
+            android:paddingBottom="@dimen/x5"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
     </LinearLayout>

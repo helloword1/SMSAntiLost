@@ -3,6 +3,7 @@ package com.goockr.smsantilost.views.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
+import android.text.TextUtils
 import android.view.View
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.utils.Constant
@@ -44,8 +45,8 @@ class StartActivity(override val contentView:Int=R.layout.activity_start) : Base
     }
 
     private fun jumpNextPage() {
-        var isLogin = preferences?.getValue(Constant.HAD_LOGIN, Boolean::class.java, false) as Boolean??:false
-        if (isLogin) {
+        var isLogin = preferences?.getStringValue(Constant.HAD_LOGIN)
+        if (TextUtils.equals(isLogin,"true")) {
             showActivity(HomeActivity::class.java)
             finish()
             return

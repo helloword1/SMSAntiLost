@@ -1,15 +1,15 @@
 package com.goockr.smsantilost.views.activities.login
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.RequestParam
 import com.goockr.smsantilost.entries.ValidateCodeBean
 import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.https.DefaultObserver
-import com.goockr.smsantilost.utils.LogUtils
-import com.goockr.smsantilost.utils.NetWorkUtil
-import com.goockr.smsantilost.utils.SysInterceptor
+import com.goockr.smsantilost.utils.*
+import com.goockr.smsantilost.utils.Constant.LOGIN_MSM_CODE
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.jude.swipbackhelper.SwipeBackHelper
 import cxx.utils.NotNull
@@ -19,8 +19,6 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 class RegisterActivity(override val contentView: Int = R.layout.activity_register) : BaseActivity(), View.OnClickListener {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //设置右滑不finsh界面
@@ -40,6 +38,7 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
         when (p0?.id) {
         //获取验证码
             R.id.getCode -> {
+
                 if (isValidPhone()) {
                     showProgressDialog()
                     val param = RequestParam()
@@ -50,14 +49,23 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
                                     mainThread())?.
                             subscribe(object : DefaultObserver<ValidateCodeBean>(this) {
                                 override fun onNext(t: ValidateCodeBean) {
-                                    LogUtils.i("这是验证码：", t.code.toString())
+                                    super.onNext(t)
+                                    if (t.result == 0) {
+                                        val timer = CountDownButtonHelper(getCode,
+                                                "获取验证码", "重新获取", 60, 1)
+                                        timer.start()
+                                        preferences?.putValue(LOGIN_MSM_CODE, t.code.toString())
+                                        tvLoginPassword.setText(t.code.toString())
+                                    }
+                                    MyToast.showToastCustomerStyleText(this@RegisterActivity, "${t.msg}")
                                 }
 
                                 override fun onCompleted() {
 
                                 }
 
-                                override fun onError(e: Throwable?) {
+                                override fun onError(e: Throwable) {
+                                    super.onError(e)
                                     LogUtils.i("", e.toString())
                                 }
 
@@ -68,7 +76,10 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
             R.id.tvCodeLogin -> showActivity(LoginActivity::class.java)
             R.id.btn_confir -> {
                 if (isValid()) {
-                    showActivity(RegisterNextActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putString(Constant.LOGIN_PHONE, tvLoginUser.text.toString())
+                    bundle.putString(Constant.LOGIN_MSM_CODE, tvLoginPassword.text.toString())
+                    showActivity(RegisterNextActivity::class.java, bundle)
                 }
             }
         }
@@ -76,12 +87,12 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
 
     private fun isValid(): Boolean {
         if (isValidPhone()) {
-            if (!StringUtils.isPhone(tvLoginPassword.text.toString())) {
+            if (!NotNull.isNotNull(tvLoginPassword.text.toString())) {
                 MyToast.showToastCustomerStyleText(this, "请输入的短信验证码")
                 return false
             }
-            if ("12345" != tvLoginPassword.text.toString()) {
-                MyToast.showToastCustomerStyleText(this, "请输入正确的短信验证码")
+            if (!TextUtils.equals(preferences?.getStringValue(LOGIN_MSM_CODE), tvLoginPassword.text.toString())) {
+                MyToast.showToastCustomerStyleText(this, "验证码错误")
                 return false
             }
         } else {

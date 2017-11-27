@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/textView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="短信"
-        android:textColor="#ff0606"
-        android:textSize="22sp" />
-</LinearLayout>
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/x16"
+        android:layout_marginRight="@dimen/x12"
+        android:src="@mipmap/ic_launcher_round" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/floatSetting"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/x8"
+        android:layout_marginRight="@dimen/x12"
+        android:src="@mipmap/ic_launcher_round" />
+</RelativeLayout>

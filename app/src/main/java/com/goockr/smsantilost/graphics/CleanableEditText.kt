@@ -116,7 +116,7 @@ class CleanableEditText : android.support.v7.widget.AppCompatEditText {
     }
 
     //隐藏或者显示右边clean的图标
-    protected fun setClearDrawableVisible(isVisible: Boolean) {
+    fun setClearDrawableVisible(isVisible: Boolean) {
         val rightDrawable: Drawable?
         if (isVisible) {
             rightDrawable = mRightDrawable

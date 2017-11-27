@@ -23,7 +23,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="@dimen/x14"
         android:layout_marginRight="@dimen/x14"
-        android:background="@color/dddddd" />
+        android:background="@color/some_black" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
