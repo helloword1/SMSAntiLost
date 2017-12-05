@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundGray"
+    tools:context="com.goockr.smsantilost.views.activities.antilost.SetNameActivity">
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/x10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_InputName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x40"
+            android:background="#fff"
+            android:paddingLeft="@dimen/x10"
+            android:paddingRight="@dimen/x10"
+            android:paddingTop="@dimen/x5"
+            android:paddingBottom="@dimen/x5"
+            android:hint="请输入修改的名称"
+            android:textSize="14sp"/>
+
+        <ImageView
+            android:id="@+id/iv_CleanText"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x10"
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/btn_del"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -24,7 +24,7 @@ open class ContactDetailsAdapter(mContext: Context, var mDatas: ArrayList<String
     private var isedit = false
     protected var mInflater: LayoutInflater = LayoutInflater.from(mContext)
     private val editList = ArrayList<EditText>()
-    fun getEditList()=editList
+    fun getEditList() = editList
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
             when (viewType) {
                 TITLE -> TitleViewHolder(mInflater.inflate(R.layout.adapter_create_title_item, parent, false))
@@ -57,6 +57,7 @@ open class ContactDetailsAdapter(mContext: Context, var mDatas: ArrayList<String
                 if (isedit) {
                     sendMsmViewHolder.llAddPhone.visibility = View.VISIBLE
                     sendMsmViewHolder.tvSendMsm.visibility = View.GONE
+                    if (mDatas.size >= 8) sendMsmViewHolder.llAddPhone.visibility = View.GONE else sendMsmViewHolder.llAddPhone.visibility = View.VISIBLE
                     sendMsmViewHolder.llAddPhone.setOnClickListener {
                         //添加电话号码
                         mDatas.add("")
@@ -75,16 +76,19 @@ open class ContactDetailsAdapter(mContext: Context, var mDatas: ArrayList<String
             else -> {
                 val phoneViewHolder = holder as PhoneViewHolder
                 phoneViewHolder.etPhoneName.setText(mDatas[position])
-                if (!editList.contains(phoneViewHolder.etPhoneName))
+                if (!editList.contains(phoneViewHolder.etPhoneName)) {
                     editList.add(phoneViewHolder.etPhoneName)
+                    listener.addListener(editList)
+                }
                 (phoneViewHolder.itemView as SwipeMenuLayout).isSwipeEnable = isedit
                 phoneViewHolder.etPhoneName.isEnabled = isedit
                 phoneViewHolder.etPhoneName.setClearDrawableVisible(isedit)
                 phoneViewHolder.btnDel.setOnClickListener {
-                    mDatas.removeAt(position)
-                    if (editList.contains(phoneViewHolder.etPhoneName))
-                        editList.removeAt(position)
-                    notifyDataSetChanged()
+                    if (editList.contains(phoneViewHolder.etPhoneName)) {
+                        listener.removeListener(position - 2)
+                        editList.removeAt(position - 2)
+                    }
+
                 }
             }
         }
@@ -113,4 +117,16 @@ open class ContactDetailsAdapter(mContext: Context, var mDatas: ArrayList<String
     fun setEdit(b: Boolean) {
         isedit = b
     }
+
+    interface OnGetAdapterListener {
+        fun addListener(editText: ArrayList<EditText>)
+        fun removeListener(position: Int)
+    }
+
+    private lateinit var listener: OnGetAdapterListener
+
+    fun setoOnGetAdapterListener(listener: OnGetAdapterListener) {
+        this.listener = listener
+    }
+
 }

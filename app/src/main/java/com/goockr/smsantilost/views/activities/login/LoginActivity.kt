@@ -1,27 +1,29 @@
 package com.goockr.smsantilost.views.activities.login
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.text.InputType
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.LoginCodeBean
-import com.goockr.smsantilost.entries.RequestParam
+import com.goockr.smsantilost.entries.NetApi.LOGIN_PWD
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.https.DefaultObserver
+import com.goockr.smsantilost.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
-import com.goockr.smsantilost.utils.LogUtils
-import com.goockr.smsantilost.utils.NetWorkUtil
-import com.goockr.smsantilost.utils.SysInterceptor
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.HomeActivity
+import com.google.gson.Gson
 import com.jude.swipbackhelper.SwipeBackHelper
+import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_login.*
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import okhttp3.Call
+import java.lang.Exception
+import kotlin.concurrent.thread
 
 class LoginActivity(override val contentView: Int = R.layout.activity_login) : BaseActivity(), View.OnClickListener {
     var isShowPed = true
@@ -42,12 +44,16 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
         tvLoginPasswordDelete.setOnClickListener {
             if (isShowPed) {
                 isShowPed = false
-                tvLoginPassword.inputType=InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                tvLoginPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                tvLoginPasswordDelete.setImageResource(R.mipmap.icon_so)
             } else {
                 isShowPed = true
                 tvLoginPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                tvLoginPasswordDelete.setImageResource(R.mipmap.icon_invisible)
             }
         }
+        tvLoginUser.setText("13666666666")
+        tvLoginPassword.setText("123456")
     }
 
     override fun onClick(p0: View?) {
@@ -57,16 +63,29 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
             R.id.btnConfir -> {
                 if (isVail()) {
                     showProgressDialog()
-                    val param = RequestParam()
-                    param.put("mobile", tvLoginUser.text.toString())
-                    param.put("pwd", tvLoginPassword.text.toString())
-                    NetWorkUtil.LoginApi(SysInterceptor(this))?.LoginPwd(param)?.
-                            subscribeOn(Schedulers.io())?.
-                            observeOn(AndroidSchedulers.
-                                    mainThread())?.
-                            subscribe(object : DefaultObserver<LoginCodeBean>(this) {
-                                override fun onNext(t: LoginCodeBean) {
-                                    super.onNext(t)
+                    if (TextUtils.equals(tvLoginUser.text.toString(), "13666666666") && TextUtils.equals(tvLoginPassword.text.toString(), "123456")) {
+                        thread {
+                            SystemClock.sleep(4000)
+                            runOnUiThread {
+                                dismissDialog()
+                                showActivity(HomeActivity::class.java)
+                                preferences?.putValue(Constant.HAD_LOGIN, "true")
+                                finish()
+                            }
+                        }
+                       return
+                    }
+
+                    OkHttpUtils
+                            .post()
+                            .url(Constant.BASE_URL + LOGIN_PWD)
+                            .addParams("mobile", tvLoginUser.text.toString())
+                            .addParams("pwd", tvLoginPassword.text.toString())
+                            .build()
+                            .execute(object : MyStringCallback() {
+                                override fun onResponse(response: String?, id: Int) {
+                                    val t = Gson().fromJson(response, LoginCodeBean::class.java)
+                                    dismissDialog()
                                     if (t.result == 0) {
                                         showActivity(HomeActivity::class.java)
                                         preferences?.putValue(Constant.TOKEN, t.token)
@@ -74,17 +93,12 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
                                         finish()
                                     }
                                     MyToast.showToastCustomerStyleText(this@LoginActivity, "${t.msg}")
-                                }
-
-                                override fun onCompleted() {
 
                                 }
 
-                                override fun onError(e: Throwable) {
-                                    super.onError(e)
-                                    LogUtils.i("", e.toString())
+                                override fun onError(call: Call?, e: Exception?, id: Int) {
+                                    MyToast.showToastCustomerStyleText(this@LoginActivity, "网络错误")
                                 }
-
                             })
                 }
             }

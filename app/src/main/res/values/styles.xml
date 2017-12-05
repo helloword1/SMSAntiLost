@@ -65,12 +65,83 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerInParent">true</item>
-        <item name="android:layout_marginLeft">@dimen/x20</item>
-        <item name="android:layout_marginRight">@dimen/x20</item>
+        <item name="android:layout_marginLeft">@dimen/x22</item>
+        <item name="android:layout_marginRight">@dimen/x22</item>
         <item name="android:layout_marginTop">@dimen/x28</item>
         <item name="android:background">@drawable/btn_corner</item>
         <item name="android:padding">@dimen/x9</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="baseTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="baseTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="setting_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/x10</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="setting_icon_sytle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="setting_ll_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/x40</item>
+        <item name="android:paddingTop">@dimen/x5</item>
+        <item name="android:paddingBottom">@dimen/x5</item>
+        <item name="android:paddingLeft">@dimen/x10</item>
+        <item name="android:paddingRight">@dimen/x10</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="setting_text_small_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/x10</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginRight">@dimen/x5</item>
+    </style>
+
+    <style name="index_out_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="BottomDialog" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="BottomDialog.Animation" parent="Animation.AppCompat.Dialog">
+        <item name="android:windowEnterAnimation">@anim/tranlate_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/tranlate_dialog_out</item>
+    </style>
+<style name="floating_bar_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">@dimen/x12</item>
+    </style>
+
+    <style name="setting_contact_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">@dimen/x14</item>
+        <item name="android:paddingTop">@dimen/x16</item>
+        <item name="android:paddingBottom">@dimen/x16</item>
+        <item name="android:paddingRight">@dimen/x14</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:drawableRight">@mipmap/icon_right</item>
+        <item name="android:background">@drawable/tv_stroke_bottom</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 </resources>

@@ -21,13 +21,15 @@ import com.mcxtzhang.indexlib.suspension.ISuspensionInterface
 // (powered by Fernflower decompiler)
 //
 
-class SuspensionDecoration(context: Context, private var mDatas: List<ISuspensionInterface>?) : RecyclerView.ItemDecoration() {
+class SuspensionDecoration(private var context: Context, private var mDatas: List<ISuspensionInterface>?) : RecyclerView.ItemDecoration() {
     private val mPaint: Paint = Paint()
     private val textPaint: Paint = Paint()
     private val mBounds: Rect = Rect()
     private val mInflater: LayoutInflater
     private var mTitleHeight: Int = 0
     private var mHeaderViewCount = 0
+    private var choiceCount = 0
+    private var isNotChoice=true
 
     init {
         this.mTitleHeight = TypedValue.applyDimension(1, 28.0f, context.resources.displayMetrics).toInt()
@@ -61,7 +63,11 @@ class SuspensionDecoration(context: Context, private var mDatas: List<ISuspensio
         this.mDatas = mDatas
         return this
     }
-
+    fun setIsChoice(isChoice: Boolean, i: Int): SuspensionDecoration {
+        this.isNotChoice = isChoice
+        this.choiceCount=i
+        return this
+    }
     fun getHeaderViewCount(): Int {
         return this.mHeaderViewCount
     }
@@ -99,7 +105,7 @@ class SuspensionDecoration(context: Context, private var mDatas: List<ISuspensio
         c.drawRect(left.toFloat(), (child.top - params.topMargin - this.mTitleHeight).toFloat(), right.toFloat(), (child.top - params.topMargin).toFloat(), this.mPaint)
         this.mPaint.color = COLOR_TITLE_FONT
         this.mPaint.getTextBounds(this.mDatas!![position].suspensionTag, 0, this.mDatas!![position].suspensionTag.length, this.mBounds)
-        c.drawText(this.mDatas!![position].suspensionTag, child.paddingLeft.toFloat() + 20, (child.top - params.topMargin - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.mPaint)
+        c.drawText(this.mDatas!![position].suspensionTag, child.paddingLeft.toFloat() , (child.top - params.topMargin - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.mPaint)
 
     }
 
@@ -123,8 +129,13 @@ class SuspensionDecoration(context: Context, private var mDatas: List<ISuspensio
             c.drawRect(parent.paddingLeft.toFloat(), parent.paddingTop.toFloat(), (parent.right - parent.paddingRight).toFloat(), (parent.paddingTop + this.mTitleHeight).toFloat(), this.mPaint)
             this.mPaint.color = COLOR_TITLE_FONT
             this.mPaint.getTextBounds(tag, 0, tag!!.length, this.mBounds)
-            c.drawText(tag, child.paddingLeft.toFloat() + 20, (parent.paddingTop + this.mTitleHeight - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.mPaint)
-            var s = "当前通讯录有${this.mDatas!!.size}人"
+            c.drawText(tag, child.paddingLeft.toFloat() , (parent.paddingTop + this.mTitleHeight - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.mPaint)
+            var s=""
+            if (isNotChoice){
+                s = "当前通讯录有${this.mDatas!!.size}人"
+            }else{
+                s = "已选中${choiceCount}人"
+            }
             //右边字体
             this.textPaint.color = COLOR_RIGHT_TEXT_COLOR
             this.textPaint.textSize = 32f
@@ -154,12 +165,11 @@ class SuspensionDecoration(context: Context, private var mDatas: List<ISuspensio
                     }
                 }
             }
-
         }
     }
 
     companion object {
-        private var COLOR_TITLE_BG = Color.parseColor("#e8e3e3")
+        private var COLOR_TITLE_BG = Color.parseColor("#FFF7F6F6")
         private var COLOR_TITLE_FONT = Color.parseColor("#1e1e1e")
         private var COLOR_RIGHT_TEXT_COLOR = Color.parseColor("#6d6c6c")
         private var mTitleFontSize: Int = 0

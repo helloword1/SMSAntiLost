@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:ios="false"
+    app:swipeEnable="true"
+    android:id="@+id/sml_sleep_time"
+    android:background="#fff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x55"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/x10"
+        android:paddingRight="@dimen/x10">
+
+        <TextView
+            android:id="@+id/tv_time_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="午休"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:50 - 14:00"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_repeat"
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="周末"
+            android:textSize="12sp"/>
+
+        <ImageView
+            android:layout_marginLeft="@dimen/x5"
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_Del"
+        android:layout_width="@dimen/x72"
+        android:layout_height="match_parent"
+        android:background="#FA3A3A"
+        android:clickable="true"
+        android:text="删除"
+        android:textColor="@android:color/white" />
+
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundGray"
+    tools:context="com.goockr.smsantilost.views.activities.more.AntiDisturbActivity">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/x10"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="显示SIM卡的联系人"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <com.suke.widget.SwitchButton
+            android:id="@+id/btn_ShowContacts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:sb_checked_color="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x45"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/x10"
+        android:text="开启后，勿扰区域内，将关闭所有防丢提醒"
+        android:textSize="12sp"/>
+
+    <ListView
+        android:id="@+id/lv_AreaList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="0.5px"
+        android:background="#fff"/>
+
+</LinearLayout>

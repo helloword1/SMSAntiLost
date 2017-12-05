@@ -30,10 +30,10 @@ class BlueTeethSearchActivity(override val contentView: Int = R.layout.activity_
         //设置右滑不finsh界面
         SwipeBackHelper.getCurrentPage(this)
                 .setSwipeBackEnable(true)
-        SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(true)
+        SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(false)
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         // 蓝牙已开启
-        if (mBluetoothAdapter?.isEnabled()!!) {
+        if (mBluetoothAdapter?.isEnabled!!) {
             val turnOnBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(turnOnBtIntent, Constant.REQUEST_ENABLE_BT)
             var intentFilter = IntentFilter()
@@ -42,7 +42,6 @@ class BlueTeethSearchActivity(override val contentView: Int = R.layout.activity_
             intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
             intentFilter.addAction(BluetoothDevice.ACTION_FOUND)
             registerReceiver(btReceiver, intentFilter)
-
             showBondDevice()
             // 默认开启服务线程监听
 //            if (serverThread != null) {
@@ -60,7 +59,7 @@ class BlueTeethSearchActivity(override val contentView: Int = R.layout.activity_
         bluetoothAdapter = BlueTeethListAdapter(this, mDatas)
         recycleView.adapter = bluetoothAdapter
         bluetoothAdapter?.setoOnGetAdapterListener {
-            var get = mDatas.get(it)
+            var get = mDatas[it]
         }
     }
 
@@ -83,7 +82,7 @@ class BlueTeethSearchActivity(override val contentView: Int = R.layout.activity_
         refresh.setProgressViewEndTarget(false, 200)
     }
 
-    public override fun onDestroy() {
+    override fun onDestroy() {
         super.onDestroy()
         if (NotNull.isNotNull(btReceiver)) {
             unregisterReceiver(btReceiver)

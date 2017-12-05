@@ -1,6 +1,6 @@
 package com.goockr.smsantilost.views.fragments
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.support.v7.widget.LinearLayoutManager
@@ -10,15 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.entries.CityBean
 import com.goockr.smsantilost.entries.ContactsBean
-import com.goockr.smsantilost.graphics.DividerItemDecoration
+import com.goockr.smsantilost.entries.PhoneBean
 import com.goockr.smsantilost.graphics.SuspensionDecoration
-import com.goockr.smsantilost.graphics.SwipeMenuLayout
+import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.Constant.CONTACT_RESULT_ID
 import com.goockr.smsantilost.utils.LogUtils
+import com.goockr.smsantilost.views.activities.msm.CreateContactActivity
+import com.goockr.smsantilost.views.activities.msm.SettingContactActivity
 import com.goockr.smsantilost.views.adapters.CityAdapter
 import kotlinx.android.synthetic.main.fragment_contact.*
-import kotlinx.android.synthetic.main.item_city_swipe.view.*
 import kotlin.concurrent.thread
 
 /**
@@ -26,9 +27,9 @@ import kotlin.concurrent.thread
  */
 
 class ContactFragment : BaseFragment() {
-    private var mAdapter: SwipeDelMenuAdapter? = null
+    private var mAdapter: CityAdapter? = null
     private var mManager: LinearLayoutManager? = null
-    private var mDatas: MutableList<CityBean> = ArrayList()
+    private var mDatas: MutableList<PhoneBean> = ArrayList()
     private var mDecoration: SuspensionDecoration? = null
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -43,12 +44,12 @@ class ContactFragment : BaseFragment() {
     private fun initView() {
         mManager = LinearLayoutManager(activity)
         rv.layoutManager = mManager
-        mAdapter = SwipeDelMenuAdapter(activity, mDatas as ArrayList<CityBean>)
+        mAdapter = CityAdapter(this,activity, mDatas as ArrayList<PhoneBean>)
         rv.adapter = mAdapter
         mDecoration = SuspensionDecoration(activity, mDatas)
         rv.addItemDecoration(mDecoration)
         //分割线
-        rv.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL_LIST))
+//        rv.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL_LIST))
 
         thread {
             kotlin.run {
@@ -71,7 +72,14 @@ class ContactFragment : BaseFragment() {
                 }
             }
         })
-        //模拟线上加载数据
+        //新建联系人
+        floatSetting.setOnClickListener {
+            showActivityForResult(SettingContactActivity::class.java,CONTACT_RESULT_ID)
+        }
+        //设置
+        floatSend.setOnClickListener {
+            showActivityForResult(CreateContactActivity::class.java,CONTACT_RESULT_ID)
+        }
     }
 
     private fun initDatas(data: List<ContactsBean>) {
@@ -79,10 +87,10 @@ class ContactFragment : BaseFragment() {
         activity.window.decorView.postDelayed({
             mDatas.clear()
             for (i in data.indices) {
-                val cityBean = CityBean()
-                cityBean.setCity(data[i].name)//设置城市名称
-                cityBean.phone = (data[i].phone)//设置城市名称
-                cityBean.id = (data[i].id)//设置城市名称
+                val cityBean = PhoneBean()
+                cityBean.setMPhone(data[i].name)//设置名称
+                cityBean.phone = (data[i].phone)//设置电话
+                cityBean.id = (data[i].id)//设置id
                 mDatas.add(cityBean)
             }
             mAdapter?.notifyDataSetChanged()
@@ -95,36 +103,6 @@ class ContactFragment : BaseFragment() {
         }, 500)
     }
 
-    private inner class SwipeDelMenuAdapter(mContext: Context, mDatas: ArrayList<CityBean>) : CityAdapter(mContext, mDatas) {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            return CityAdapter.ViewHolder(mInflater.inflate(R.layout.item_city_swipe, parent, false))
-        }
-
-        override fun onBindViewHolder(holder: CityAdapter.ViewHolder, position: Int) {
-            super.onBindViewHolder(holder, position)
-            (holder.itemView as SwipeMenuLayout).isOpen {
-                if (it) {
-                    floatSetting.visibility = View.GONE
-                    floatSend.visibility = View.GONE
-
-                } else {
-                    floatSetting.visibility = View.VISIBLE
-                    floatSend.visibility = View.VISIBLE
-                }
-            }
-            holder.itemView.btnDel.setOnClickListener {
-                holder.itemView.quickClose()
-                mDatas?.removeAt(holder.adapterPosition)
-                indexBar.setmPressedShowTextView(tvSideBarHint)//设置HintTextView
-                        .setNeedRealIndex(true)//设置需要真实的索引
-                        .setmLayoutManager(mManager)//设置RecyclerView的LayoutManager
-                        .setmSourceDatas(mDatas)//设置数据
-                        .invalidate()
-                notifyDataSetChanged()
-            }
-        }
-    }
 
     private var PHONES_PROJECTION = arrayOf(Phone.DISPLAY_NAME, Phone.NUMBER, Phone.CONTACT_ID)
     /**
@@ -160,6 +138,18 @@ class ContactFragment : BaseFragment() {
             cursor.close()
         }
         return infos
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode== Constant.CONTACT_RESULT_ID){
+            thread {
+                kotlin.run {
+                    val systemContactInfos = getSystemContactInfos()
+                    activity.runOnUiThread { initDatas(systemContactInfos) }
+                }
+            }
+        }
     }
 }
 

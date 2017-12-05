@@ -19,13 +19,21 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 用于写入缓存数据到扩展存储卡 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEM"/>
     <!-- 用于申请调用A-GPS模块 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!-- 用于申请获取蓝牙信息进行室内定位 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+
+    <!-- ZXing -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
         android:name=".GoockrApplication"
@@ -63,11 +71,133 @@
             android:name=".views.activities.login.CodeLoginActivity"
             android:launchMode="singleTask" />
         <activity android:name=".views.activities.HomeActivity" />
-        <activity android:name=".views.activities.msm.CreateContactActivity"/>
-        <activity android:name=".views.activities.msm.ContactDetailsActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".views.activities.msm.CreateContactActivity" />
+        <activity
+            android:name=".views.activities.msm.MSMControlActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".views.activities.msm.ChoiceContactActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".views.activities.msm.MSMManagerActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".views.activities.msm.NewMSMActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".views.activities.msm.ContactDetailsActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".views.activities.msm.SettingContactActivity"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity android:name=".views.activities.BlueTeethActivity" />
         <activity android:name=".views.activities.BlueTeethSearchActivity" />
+        <activity
+            android:name=".views.activities.antilost.KeyActivity"
+            android:label="@string/title_activity_key"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.SetIndexOutActivity"
+            android:label="@string/title_activity_set_index_out"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.SelectPhoneSoundActivity"
+            android:label="@string/title_activity_select_phone_sound"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.TwoWayAntiActivity"
+            android:label="@string/title_activity_two_way_anti"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.SetSimActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.SetNameActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.SetPermissionActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.AddActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.AddDeviceActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.AddFriendActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.antilost.SaoYiSaoActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".zxing.android.CaptureActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.UserSettingActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.SetUserNameActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.BindPhoneNumActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.SetPwdActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.MyFriendsActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.NewFriendsActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.EditFriendsActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.AntiDisturbActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.AreaMapActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.SleepTimeActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.AddSleepTimeActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.SetSleepTimeNameActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity android:name=".views.activities.more.RepeatActivity"></activity>
     </application>
 
 </manifest>

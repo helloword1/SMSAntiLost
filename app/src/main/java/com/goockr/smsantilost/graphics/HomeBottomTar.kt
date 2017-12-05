@@ -32,24 +32,24 @@ class HomeBottomTar @JvmOverloads constructor(context: Context, attrs: Attribute
         restartBotton()
         when (p0.id) {
             R.id.llMsm ->{
-                ivMsm.setImageResource(R.mipmap.ic_launcher_round)
+                ivMsm.setImageResource(R.mipmap.tab_btn_msg_selected)
                 tvMsm.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
                 selectIndex=0
             }
 
             R.id.llAntiLost->{
-                ivAntiLost.setImageResource(R.mipmap.ic_launcher_round)
+                ivAntiLost.setImageResource(R.mipmap.tab_btn_anti_lost_selected)
                 tvAntiLost.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
                 selectIndex=1
             }
             R.id.llLocation->{
-                ivLocation.setImageResource(R.mipmap.ic_launcher_round)
+                ivLocation.setImageResource(R.mipmap.tab_btn_location_selected)
                 tvLocation.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
                 selectIndex=2
             }
 
             R.id.llMore->{
-                ivMore.setImageResource(R.mipmap.ic_launcher_round)
+                ivMore.setImageResource(R.mipmap.tab_btn_more_selected)
                 tvMore.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
                 selectIndex=3
             }
@@ -58,10 +58,10 @@ class HomeBottomTar @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     private fun restartBotton() {
-        ivMsm.setImageResource(R.mipmap.ic_launcher_round)
-        ivAntiLost.setImageResource(R.mipmap.ic_launcher_round)
-        ivMore.setImageResource(R.mipmap.ic_launcher_round)
-        ivLocation.setImageResource(R.mipmap.ic_launcher_round)
+        ivMsm.setImageResource(R.mipmap.tab_btn_msg_normal)
+        ivAntiLost.setImageResource(R.mipmap.tab_btn_anti_lost_normal)
+        ivMore.setImageResource(R.mipmap.tab_btn_more_normal)
+        ivLocation.setImageResource(R.mipmap.tab_btn_location_normal)
         tvMsm.setTextColor(ContextCompat.getColor(context, R.color.textColor))
         tvAntiLost.setTextColor(ContextCompat.getColor(context, R.color.textColor))
         tvMore.setTextColor(ContextCompat.getColor(context, R.color.textColor))

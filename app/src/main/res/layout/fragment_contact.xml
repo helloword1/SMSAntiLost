@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#e8e3e3"
+        android:background="@color/some_white_et"
         android:orientation="vertical">
 
         <com.goockr.smsantilost.graphics.CleanableEditText
@@ -19,11 +19,10 @@
             android:layout_marginBottom="@dimen/x5"
             android:layout_marginLeft="@dimen/x24"
             android:layout_marginRight="@dimen/x24"
-            android:layout_marginTop="@dimen/x5"
             android:background="@drawable/msm_bg"
             android:drawableRight="@mipmap/login_delete"
             android:gravity="center"
-            android:hint="请输入搜索信息"
+            android:hint="搜索"
             android:paddingBottom="@dimen/x3"
             android:paddingRight="@dimen/x5"
             android:paddingTop="@dimen/x3"
@@ -51,6 +50,7 @@
                 android:layout_width="24dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
+                android:visibility="gone"
                 app:indexBarPressBackground="@color/partTranslucent"
                 app:indexBarTextSize="16sp" />
 
@@ -70,23 +70,18 @@
         </FrameLayout>
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
         android:id="@+id/floatSetting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/floating_bar_style"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/x16"
-        android:layout_marginRight="@dimen/x20"
-        android:src="@mipmap/ic_launcher_round" />
+        android:background="@color/transparent"
+        android:src="@drawable/contact_new_selector" />
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
         android:id="@+id/floatSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/floating_bar_style"
         android:layout_above="@id/floatSetting"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/x8"
-        android:layout_marginRight="@dimen/x20"
-        android:src="@mipmap/ic_launcher_round" />
+        android:background="@color/transparent"
+        android:src="@drawable/contact_set_selector" />
 </RelativeLayout>

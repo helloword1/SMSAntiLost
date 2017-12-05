@@ -16,15 +16,15 @@
 
         <ImageView
             android:id="@+id/ivMsm"
-            android:layout_width="@dimen/x28"
-            android:layout_height="@dimen/x28"
-            android:src="@mipmap/ic_launcher_round" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/tab_btn_msg_selected" />
 
         <TextView
             android:id="@+id/tvMsm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x1"
+            android:layout_marginTop="@dimen/x3"
             android:text="短信"
             android:textColor="@color/colorAccent"
             android:textSize="12sp" />
@@ -41,15 +41,15 @@
 
         <ImageView
             android:id="@+id/ivAntiLost"
-            android:layout_width="@dimen/x28"
-            android:layout_height="@dimen/x28"
-            android:src="@mipmap/ic_launcher_round" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/tab_btn_anti_lost_normal" />
 
         <TextView
             android:id="@+id/tvAntiLost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x1"
+            android:layout_marginTop="@dimen/x3"
             android:text="防丢"
             android:textColor="@color/textColor"
             android:textSize="12sp" />
@@ -66,15 +66,15 @@
 
         <ImageView
             android:id="@+id/ivLocation"
-            android:layout_width="@dimen/x28"
-            android:layout_height="@dimen/x28"
-            android:src="@mipmap/ic_launcher_round" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/tab_btn_location_normal" />
 
         <TextView
             android:id="@+id/tvLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x1"
+            android:layout_marginTop="@dimen/x3"
             android:text="定位"
             android:textColor="@color/textColor"
             android:textSize="12sp" />
@@ -91,16 +91,15 @@
 
         <ImageView
             android:id="@+id/ivMore"
-            android:layout_width="@dimen/x28"
-            android:layout_height="@dimen/x28"
-
-            android:src="@mipmap/ic_launcher_round" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/tab_btn_more_normal" />
 
         <TextView
             android:id="@+id/tvMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x1"
+            android:layout_marginTop="@dimen/x3"
             android:text="更多"
             android:textColor="@color/textColor"
             android:textSize="12sp" />

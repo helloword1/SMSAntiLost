@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
@@ -32,8 +34,11 @@ abstract class BaseActivity : AppCompatActivity() {
     private var inflation: LayoutInflater? = null
     protected var titleBack: Button? = null
     protected var title: TextView? = null
+    protected var titleOk: TextView? = null
     protected var progressDialog: LoadingDialog? = null// 加载对话框
-    protected var titleRight: TextView? = null
+    protected var titleRight: ImageView? = null
+    protected var titleAdd: ImageView? = null
+    protected var titleRight1: TextView? = null
     var preferences: SharedPreferencesUtils? = null// 配置文件
     protected var baseLine: View? = null
     protected var fileImagePath: String? = null
@@ -92,8 +97,11 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun initTitleView() {
         val titleView = inflation!!.inflate(R.layout.base_title_view, null)
         this.titleRight = titleView.titleRight
+        this.titleRight1 = titleView.titleRight1
         this.title = titleView.title
+        titleAdd = titleView.titleAdd
         this.titleBack = titleView.titleBack
+        titleOk = titleView.titleOk
         ll?.addView(titleView)
         titleBack!!.setOnClickListener { finish() }
     }
@@ -184,7 +192,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         thread {
             kotlin.run {
-                Thread.sleep(8000)
+                SystemClock.sleep(8000)
                 runOnUiThread {
                     progressDialog?.hide()
                 }
@@ -197,7 +205,7 @@ abstract class BaseActivity : AppCompatActivity() {
      * 隐藏对话框
      */
     fun dismissDialog() {
-        if (NotNull.isNotNull(progressDialog) && progressDialog?.isShowing!!) {
+        if (NotNull.isNotNull(progressDialog) && progressDialog!!.isShowing) {
             progressDialog!!.dismiss()
             progressDialog = null
         }
@@ -205,7 +213,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        goockrApplication!!.removeActivity(this)
+        goockrApplication?.removeActivity(this)
         dismissDialog()
     }
 

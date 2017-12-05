@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/some_white_et"
     android:orientation="vertical">
 
     <View
@@ -14,9 +15,8 @@
     <FrameLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x44"
-        android:paddingTop="@dimen/x2"
-        android:background="@color/white" />
+        android:layout_height="@dimen/x50"
+        android:background="@drawable/nav_bg" />
 
     <View
         android:id="@+id/baseLine0"
@@ -29,11 +29,11 @@
         android:id="@+id/baseLine"
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
+        android:visibility="gone"
         android:background="#a6aaaaaa" />
 
     <FrameLayout
         android:id="@+id/fl_base_content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </LinearLayout>

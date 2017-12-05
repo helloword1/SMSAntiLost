@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/x5"
+    android:background="#fff">
+
+    <!--钥匙-->
+    <LinearLayout
+        android:id="@+id/ll_Key"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x70"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/x5">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_key"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="钥匙"
+            android:layout_marginLeft="@dimen/x10"
+            android:textSize="17sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x3"
+            android:src="@mipmap/icon_right"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/x5"
+        android:layout_marginRight="@dimen/x5"
+        android:background="#666666"/>
+
+    <!--钱包-->
+    <LinearLayout
+        android:id="@+id/ll_Wallet"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x70"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/x5">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_wallet"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="钱包"
+            android:layout_marginLeft="@dimen/x10"
+            android:textSize="17sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x3"
+            android:src="@mipmap/icon_right"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/x5"
+        android:layout_marginRight="@dimen/x5"
+        android:background="#666666"/>
+
+    <!--笔记本-->
+    <LinearLayout
+        android:id="@+id/ll_Pc"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x70"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/x5">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_portable_computer"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="笔记本"
+            android:layout_marginLeft="@dimen/x10"
+            android:textSize="17sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x3"
+            android:src="@mipmap/icon_right"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/x5"
+        android:layout_marginRight="@dimen/x5"
+        android:background="#666666"/>
+
+    <!--手机副卡-->
+    <LinearLayout
+        android:id="@+id/ll_ViceCard"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x70"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/x5">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_vice_card_phone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机副卡"
+            android:layout_marginLeft="@dimen/x10"
+            android:textSize="17sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x3"
+            android:src="@mipmap/icon_right"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/x5"
+        android:layout_marginRight="@dimen/x5"
+        android:background="#666666"/>
+    <!--其他-->
+    <LinearLayout
+        android:id="@+id/ll_Other"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x70"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/x5">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_other"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="其他"
+            android:layout_marginLeft="@dimen/x10"
+            android:textSize="17sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x3"
+            android:src="@mipmap/icon_right"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/x5"
+        android:layout_marginRight="@dimen/x5"
+        android:background="#666666"/>
+
+</LinearLayout>

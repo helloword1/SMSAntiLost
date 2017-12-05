@@ -1,6 +1,8 @@
 package com.goockr.smsantilost.views.fragments
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.SystemClock
@@ -14,20 +16,27 @@ import android.widget.AbsListView
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.MsmBean
 import com.goockr.smsantilost.graphics.SwipeMenuLayout
+import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.Constant.MSM_MANAGER_RESULT_ID
+import com.goockr.smsantilost.views.activities.BaseActivity
+import com.goockr.smsantilost.views.activities.msm.MSMManagerActivity
+import com.goockr.smsantilost.views.activities.msm.NewMSMActivity
 import com.goockr.smsantilost.views.adapters.MsmSwipeAdapter
 import kotlinx.android.synthetic.main.fragment_msm.*
-import kotlinx.android.synthetic.main.item_city_swipe.view.*
+import kotlinx.android.synthetic.main.item_msm_swipe.view.*
 import kotlin.concurrent.thread
 
 
 /**
- * Created by ning.wen on 2016/11/1.
+ * Created by ning
  */
 
 class MSMFragment : BaseFragment() {
     var mDatas: ArrayList<MsmBean> = ArrayList()
     var manager: LinearLayoutManager? = null
     var isSearch: Boolean = false
+    var ischeck: Boolean = false
+
     private var msmSwipeDelMenuAdapter: MsmSwipeDelMenuAdapter? = null
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -46,11 +55,11 @@ class MSMFragment : BaseFragment() {
         recycleView.adapter = msmSwipeDelMenuAdapter
         initRefresh()
         for (mData in 1..10) {
-            var element = MsmBean()
+            val element = MsmBean()
             element.Content = "你好，这是短信内容"
             element.mTitl = "10086"
             element.mTime = "24:00"
-            element.isShow = mData == 0 || mData == 1 || mData == 2
+            element.isShow = mData == 1 || mData == 2
             mDatas.add(element)
         }
         msmSwipeDelMenuAdapter?.notifyDataSetChanged()
@@ -59,8 +68,10 @@ class MSMFragment : BaseFragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 when (newState) {
                     AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
-                        floatSetting.visibility = View.VISIBLE
-                        floatSend.visibility = View.VISIBLE
+                        if (!ischeck) {
+                            floatSetting.visibility = View.VISIBLE
+                            floatSend.visibility = View.VISIBLE
+                        }
                     }
                     else -> {
                         floatSetting.visibility = View.GONE
@@ -69,10 +80,20 @@ class MSMFragment : BaseFragment() {
                 }
             }
         })
+        floatSend.setOnClickListener {
+            val baseActivity = activity as BaseActivity
+            baseActivity.showActivity(NewMSMActivity::class.java)
+        }
+        floatSetting.setOnClickListener {
+            val extras=Bundle()
+            extras.putSerializable("DATA",mDatas)
+            extras.putBoolean("IS_SEARCH",isSearch)
+            showActivityForResult(MSMManagerActivity::class.java,extras,MSM_MANAGER_RESULT_ID)
+        }
 
     }
 
-    private inner class MsmSwipeDelMenuAdapter(mContext: Context, mDatas: ArrayList<MsmBean>) : MsmSwipeAdapter(mContext, mDatas) {
+    private inner class MsmSwipeDelMenuAdapter(mContext: Context, mDatas: ArrayList<MsmBean>) : MsmSwipeAdapter(mContext, this, mDatas) {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             super.onBindViewHolder(holder, position)
             if (position == 0 && isSearch) return
@@ -82,8 +103,10 @@ class MSMFragment : BaseFragment() {
                     floatSend.visibility = View.GONE
 
                 } else {
-                    floatSetting.visibility = View.VISIBLE
-                    floatSend.visibility = View.VISIBLE
+                    if (!ischeck) {
+                        floatSetting.visibility = View.VISIBLE
+                        floatSend.visibility = View.VISIBLE
+                    }
                 }
             }
             holder.itemView.btnDel.setOnClickListener {
@@ -91,6 +114,7 @@ class MSMFragment : BaseFragment() {
                 mDatas?.removeAt(holder.adapterPosition)
                 notifyDataSetChanged()
             }
+
         }
     }
 
@@ -105,6 +129,11 @@ class MSMFragment : BaseFragment() {
                 SystemClock.sleep(1000)
                 activity.runOnUiThread {
                     refresh.isRefreshing = false
+                    val element = MsmBean()
+                    element.Content = "你好，这是短信内容"
+                    element.mTitl = "10086"
+                    element.mTime = "24:00"
+                    mDatas.add(0, element)
                     msmSwipeDelMenuAdapter?.isSearch(true)
                     msmSwipeDelMenuAdapter?.notifyDataSetChanged()
                     isSearch = true
@@ -119,4 +148,18 @@ class MSMFragment : BaseFragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constant.MSM_MANAGER_RESULT_ID&&resultCode==Activity.RESULT_OK) {
+            val extras = data?.extras
+            val serializable = extras?.getSerializable("MSM_MANAGER")
+            val arrayList = serializable as ArrayList<MsmBean>
+            mDatas.clear()
+            if (isSearch){
+                mDatas.add(MsmBean())
+            }
+            mDatas.addAll(arrayList)
+            msmSwipeDelMenuAdapter?.notifyDataSetChanged()
+        }
+    }
 }

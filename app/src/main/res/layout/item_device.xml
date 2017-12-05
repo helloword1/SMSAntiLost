@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/x10"
+    android:paddingRight="@dimen/x10">
+
+    <LinearLayout
+        android:id="@+id/ll_DeviceMsg"
+        style="@style/setting_ll_style">
+
+        <ImageView
+            android:id="@+id/iv_DeviceIcon"
+            android:src="@mipmap/icon_device_small"
+            style="@style/setting_icon_sytle"/>
+
+        <TextView
+            android:id="@+id/tv_DeviceName"
+            android:text="设备名字"
+            style="@style/setting_text_style"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/iv_DeviceSignal"
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_bluetooth_signal_2"/>
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/line_gray_margin"/>
+
+
+</LinearLayout>

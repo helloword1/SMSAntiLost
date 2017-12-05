@@ -1,89 +1,137 @@
 package com.goockr.smsantilost.views.activities.msm
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import android.provider.ContactsContract
 import android.view.View
-import android.widget.EditText
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.Constant.CONTACT_ID
 import com.goockr.smsantilost.utils.Constant.CONTACT_NAME
 import com.goockr.smsantilost.utils.Constant.CONTACT_PHONE
 import com.goockr.smsantilost.utils.ContactUtils
-import com.goockr.smsantilost.utils.LogUtils
 import com.goockr.smsantilost.views.activities.BaseActivity
-import com.goockr.smsantilost.views.adapters.ContactDetailsAdapter
 import com.jude.swipbackhelper.SwipeBackHelper
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout
 import kotlinx.android.synthetic.main.activity_create_contact.*
+import kotlinx.android.synthetic.main.adapter_create_name_item.view.*
+import kotlinx.android.synthetic.main.adapter_create_phone_item.view.*
+import kotlinx.android.synthetic.main.adapter_create_send_msm_item.*
 
 /**
  * Created by LJN on 2017/11/14.
  */
 
 class ContactDetailsActivity(override val contentView: Int = R.layout.activity_create_contact) : BaseActivity() {
-    private val editList = ArrayList<EditText>()
+    private val lists = ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //设置右滑不finsh界面
         SwipeBackHelper.getCurrentPage(this)
                 .setSwipeBackEnable(true)
-        SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(true)
+        SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(false)
     }
 
     private var isEdit: Boolean = true
 
     override fun initView() {
         title?.text = "联系人详情"
-        titleRight?.visibility = View.VISIBLE
-        titleRight?.text = "编辑"
+        titleRight1?.visibility = View.VISIBLE
+        titleRight1?.text = "编辑"
         val extras = intent.extras
         val contactName = extras.getString(CONTACT_NAME)
         val contactPhone = extras.getString(CONTACT_PHONE)
         val id = extras.getString(CONTACT_ID)
-        val lists = ArrayList<String>()
         if (contactPhone.contains(",")) {
             val split = contactPhone.split(",")
             lists += split
         } else {
             lists.add(contactPhone)
         }
-        recycleView.layoutManager = LinearLayoutManager(this)
-        val mDatas = ArrayList<String>()
-        mDatas.add("")
-        mDatas.add(contactName)
-        mDatas += lists
-        mDatas.add("")
-        val detailsAdapter = ContactDetailsAdapter(this, mDatas)
-        recycleView.adapter = detailsAdapter
-        titleRight?.setOnClickListener {
+        addAction(false)
+        llAddPhone.setOnClickListener {
+            lists.add("")
+            addAction(true)
+            if (lists.size >= 5) {
+                llAddPhone.visibility = View.GONE
+            }
+        }
+        contactMName.etContactName.isEnabled = false
+        contactMName.etContactName.setText(contactName)
+
+        titleRight1?.setOnClickListener {
             if (isEdit) {
                 //编辑
-                titleRight?.text = "完成"
-                detailsAdapter.setEdit(true)
-                detailsAdapter.notifyDataSetChanged()
+                titleRight1?.text = "完成"
+                llAddPhone.visibility = View.VISIBLE
+                tvSendMsm.visibility = View.GONE
+                for (i in lists.indices) {
+                    val swipe = llPhone.getChildAt(i) as SwipeMenuLayout
+                    swipe.isSwipeEnable = true
+                    swipe.etPhoneName.isEnabled = true
+                }
+                contactMName.etContactName.isEnabled = true
                 isEdit = false
             } else {
                 //完成
-                titleRight?.text = "编辑"
-                detailsAdapter.setEdit(false)
-                isEdit = true
-                editList.clear()
-                editList.addAll(detailsAdapter.getEditList())
-                val contactUtils = ContactUtils(this)
-                mDatas.clear()
-                mDatas.add("")
-                mDatas.add(contactName)
-                var Phone = ""
-                for (editText in editList) {
-                    Phone += editText.text.toString() + ","
-                    mDatas.add(editText.text.toString())
+                titleRight1?.text = "编辑"
+                llAddPhone.visibility = View.GONE
+                tvSendMsm.visibility = View.VISIBLE
+                val Phone = ArrayList<String>()
+                val types = ArrayList<Int>()
+                for (i in lists.indices) {
+                    val swipe = llPhone.getChildAt(i) as SwipeMenuLayout
+                    swipe.isSwipeEnable = false
+                    swipe.etPhoneName.isEnabled = false
+                    Phone.add(llPhone.getChildAt(i).etPhoneName.text.toString())
+                    types.add(getPhoneType("Mobile"))
                 }
-                mDatas.add("")
-                LogUtils.i("12313", Phone)
-                Phone = Phone.substring(0, Phone.length - 1)
-                detailsAdapter.notifyDataSetChanged()
-                contactUtils.updataContact(id.toLong(), contactName, Phone)
-            }
+                contactMName.etContactName.isEnabled = false
+                isEdit = true
 
+                ContactUtils.updateContact(this, id, contactMName.etContactName.text.toString(), Phone, types)
+                MyToast.showToastCustomerStyleText(this, "编辑成功")
+            }
+        }
+    }
+
+
+    private fun getPhoneType(type: String): Int {
+        val phoneType: Int = when {
+            "Mobile".equals(type, ignoreCase = true) -> ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE
+            "Home".equals(type, ignoreCase = true) -> ContactsContract.CommonDataKinds.Phone.TYPE_HOME
+            "Work".equals(type, ignoreCase = true) -> ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+            else -> ContactsContract.CommonDataKinds.Phone.TYPE_OTHER
+        }
+        return phoneType
+    }
+
+    private fun addAction(isSwipe: Boolean) {
+        goneAction()
+        for (i in lists.indices) {
+            llPhone.getChildAt(i).visibility = View.VISIBLE
+            val swipe = llPhone.getChildAt(i) as SwipeMenuLayout
+            swipe.isSwipeEnable = isSwipe
+            swipe.etPhoneName.isEnabled = isSwipe
+            swipe.etPhoneName.setText(lists[i])
+            swipe.btnDel.setOnClickListener {
+                llAddPhone.visibility = View.VISIBLE
+                val toString = llPhone.getChildAt(i).etPhoneName.text.toString()
+                if (lists.contains(toString)) {
+                    lists.remove(toString)
+                } else {
+                    lists.remove("")
+                }
+                llPhone.getChildAt(i).visibility = View.GONE
+            }
+        }
+    }
+
+    private fun goneAction() {
+        for (i in lists.indices) {
+            val childAt = llPhone.getChildAt(i)
+            childAt.visibility = View.GONE
+            val swipe = childAt as SwipeMenuLayout
+            swipe.quickClose()
         }
     }
 }

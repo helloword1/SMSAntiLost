@@ -3,7 +3,11 @@ package com.goockr.smsantilost
 import android.app.Activity
 import android.app.Application
 import com.goockr.smsantilost.utils.CrashUtil
+import com.zhy.http.okhttp.OkHttpUtils
+import okhttp3.OkHttpClient
 import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 /**
  * Created by Administrator on 2017/10/15.
@@ -19,6 +23,12 @@ class GoockrApplication : Application() {
         super.onCreate()
         val crashUtil = CrashUtil.instance
         crashUtil!!.init(this)
+        val okHttpClient = OkHttpClient.Builder()
+                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
+                .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                .build()
+
+        OkHttpUtils.initClient(okHttpClient)
     }
 
     //添加Activity到容器中

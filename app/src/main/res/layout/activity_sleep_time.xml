@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundGray"
+    tools:context="com.goockr.smsantilost.views.activities.more.SleepTimeActivity">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/x10"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="休眠时段"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <com.suke.widget.SwitchButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x45"
+        android:text="开启后，休眠时段内，将关闭所有防丢提醒"
+        android:textSize="12sp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/x10"/>
+
+    <ListView
+        android:id="@+id/lv_SleepTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="0.5px"
+        android:layout_marginBottom="@dimen/x10"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/ll_AddSleepTime"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="添加休眠时段"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <ImageView
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+    </LinearLayout>
+
+</LinearLayout>

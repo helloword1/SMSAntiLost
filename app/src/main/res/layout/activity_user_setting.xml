@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundGray"
+    android:gravity="center_horizontal"
+    tools:context="com.goockr.smsantilost.views.activities.more.UserSettingActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_ChangeProfile"
+        android:layout_marginTop="@dimen/x10"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x70"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/x10"
+        android:paddingRight="@dimen/x10"
+        android:background="#fff">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@mipmap/img_head_portrait_3"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"/>
+
+        <TextView
+            android:text="我的头像"
+            style="@style/setting_text_style"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <ImageView
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/x15"
+        android:id="@+id/ll_UserName"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:text="用户名称"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <ImageView
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/line_gray_margin"/>
+
+    <LinearLayout
+        android:id="@+id/ll_PhoneBind"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:text="手机绑定"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:text="手机绑定"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginRight="@dimen/x10"
+            android:textColor="@color/appGray"/>
+
+        <ImageView
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/line_gray_margin"/>
+
+    <LinearLayout
+        android:id="@+id/ll_WeChatBind"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:text="微信绑定"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:text="手机绑定"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginRight="@dimen/x10"
+            android:textColor="@color/appGray"/>
+
+        <ImageView
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/x15"
+        android:id="@+id/ll_ChangePWD"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:text="修改密码"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <ImageView
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_SignUp"
+        android:layout_marginTop="@dimen/x15"
+        android:layout_width="@dimen/x250"
+        android:layout_height="@dimen/x40"
+        android:text="退出登录"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:background="@drawable/shape_blue"/>
+
+</LinearLayout>

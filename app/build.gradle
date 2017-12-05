@@ -42,11 +42,10 @@ dependencies {
     compile 'com.yanzhenjie:recyclerview-swipe:1.1.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.jude:swipebackhelper:3.1.2'
+    //网络框架
+    compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
     //地图
@@ -58,7 +57,20 @@ dependencies {
     //通讯录列表
     compile 'com.github.mcxtzhang:SuspensionIndexBar:V1.0.0'
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.2'
-
+    // 下拉刷新
+    compile 'in.srain.cube:ultra-ptr:1.0.11'
+    // 滑块按钮
+    compile 'com.github.zcweng:switch-button:0.0.3@aar'
+    // 时间滚轮
+    compile 'com.contrarywind:Android-PickerView:3.2.7'
+    implementation files('libs/core-3.0.0.jar')
+    // 圆形ImageView
+    compile 'de.hdodenhof:circleimageview:2.2.0'
+    // stickyHeader
+    compile 'se.emilsjolander:stickylistheaders:2.7.0'
+    implementation files('src/libs/pinyin4j-2.5.0.jar')
+    // 百分比布局
+    compile 'com.android.support:percent:26.1.0'
 }
 repositories {
     mavenCentral()

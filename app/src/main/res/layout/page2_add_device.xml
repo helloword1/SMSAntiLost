@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="@dimen/x120"
+        android:layout_height="@dimen/x120">
+
+        <ImageView
+            android:id="@+id/iv_BindingWait"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_binding_wait"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_binding_wait_device"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_Tips"
+        android:layout_marginTop="@dimen/x10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:text="绑定中，请稍后..."/>
+
+    <TextView
+        android:id="@+id/tv_Research"
+        android:layout_marginTop="@dimen/x30"
+        android:layout_width="@dimen/x200"
+        android:layout_height="@dimen/x30"
+        android:background="@drawable/shape_blue"
+        android:text="重新搜索"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:visibility="invisible"/>
+
+</LinearLayout>

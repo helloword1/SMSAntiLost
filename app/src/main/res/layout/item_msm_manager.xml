@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/x8"
+    android:background="@color/white"
+    android:paddingTop="@dimen/x12">
+
+    <ImageView
+        android:id="@+id/ivCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingBottom="@dimen/x8"
+        android:paddingLeft="@dimen/x14"
+        android:paddingRight="@dimen/x8"
+        android:paddingTop="@dimen/x8"
+        android:src="@mipmap/btn_check_box_normal" />
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/ivCheck"
+        android:background="@drawable/tv_stroke_bottom"
+        android:paddingBottom="@dimen/x12">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/tvPhoneNum"
+            android:textColor="@color/textColor"
+            android:textSize="15sp"
+            tools:text="17666666666" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="@dimen/x5"
+            android:drawableRight="@mipmap/icon_right"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            tools:text="12:04" />
+
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvTitle"
+            android:layout_below="@id/tvTitle"
+            android:layout_marginTop="@dimen/x3"
+            android:maxLines="1"
+            android:textSize="14sp"
+            tools:text="17666666666" />
+    </RelativeLayout>
+</RelativeLayout>

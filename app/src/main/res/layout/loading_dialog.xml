@@ -10,29 +10,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/loading_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/x9"
         android:paddingLeft="@dimen/x12"
         android:paddingRight="@dimen/x12"
-        android:paddingTop="@dimen/x9"
-        android:paddingBottom="@dimen/x9"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:paddingTop="@dimen/x9">
 
 
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="50dip"
-            android:layout_height="50dip" />
+        <RelativeLayout
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/x120">
 
-        <TextView
-            android:id="@+id/tipTextView"
+            <ImageView
+                android:id="@+id/ivDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/icon_binding_wait" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/icon_binding_wait_device" />
+
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/x8"
-            android:text="@string/loading"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tipTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="@dimen/x8"
+                android:paddingLeft="@dimen/x8"
+                android:paddingBottom="@dimen/x8"
+                android:text="@string/loading"
+                android:textColor="@color/textColor"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/tip"
+                android:layout_width="@dimen/x25"
+                android:layout_height="wrap_content"
+                android:text="."
+                android:layout_marginLeft="@dimen/x3"
+                android:textColor="@color/textColor"
+                android:textSize="16sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

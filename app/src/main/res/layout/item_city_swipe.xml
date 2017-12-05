@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.goockr.smsantilost.graphics.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:ios="false">
+    android:background="@color/white"
+    android:paddingLeft="@dimen/x12">
 
     <RelativeLayout
-        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/x12">
+        android:background="@drawable/tv_stroke_bottom"
+        android:paddingBottom="@dimen/x12"
+        android:paddingTop="@dimen/x12">
 
         <ImageView
             android:id="@+id/ivAvatar"
             android:layout_width="@dimen/x38"
             android:layout_height="@dimen/x38"
-            tools:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/ic_launcher_background"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/ivAvatar"
-            android:paddingLeft="15dp"
-            tools:text="安徽" />
+            android:text="安徽"
+            android:textColor="@color/textColor"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tvPhoneNum"
@@ -35,15 +37,8 @@
             android:layout_marginTop="@dimen/x3"
             android:layout_toRightOf="@id/ivAvatar"
             android:paddingLeft="15dp"
-            tools:text="安徽" />
+            android:text="安徽"
+            android:visibility="gone" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnDel"
-        android:layout_width="@dimen/x72"
-        android:layout_height="match_parent"
-        android:background="#ec120a"
-        android:clickable="true"
-        android:text="删除"
-        android:textColor="@android:color/white" />
-</com.goockr.smsantilost.graphics.SwipeMenuLayout>
+</RelativeLayout>

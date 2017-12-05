@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:ios="false"
+    app:swipeEnable="true" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x55"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/x10"
+        android:paddingRight="@dimen/x10">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_friends_icon"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/x40"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_friends_name"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="@dimen/x10"
+                android:text="新的好友" />
+
+            <TextView
+                android:id="@+id/tv_friends_num"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="@dimen/x10"
+                android:text="新的好友" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="@dimen/x65"
+            android:layout_height="@dimen/x30">
+
+            <TextView
+                android:id="@+id/tv_Accept"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_blue"
+                android:text="接受"
+                android:gravity="center"
+                android:textColor="#fff"/>
+
+            <TextView
+                android:id="@+id/tv_State"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="已接受"
+                android:gravity="center"
+                android:textColor="@color/appGray"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_Del"
+        android:layout_width="@dimen/x72"
+        android:layout_height="match_parent"
+        android:background="#ED673E"
+        android:clickable="true"
+        android:text="删除"
+        android:textColor="@android:color/white" />
+
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

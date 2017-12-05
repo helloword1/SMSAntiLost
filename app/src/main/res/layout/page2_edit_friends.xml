@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundGray">
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/x10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/x10"
+        android:background="#fff"
+        android:paddingRight="@dimen/x10">
+
+        <EditText
+            android:id="@+id/et_InputFriendsRemark"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x45"
+            android:background="@null"
+            android:hint="请输入好友备注"
+            android:textSize="14sp"/>
+
+        <ImageView
+            android:id="@+id/iv_CleanRemark"
+            style="@style/setting_icon_sytle"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/btn_del"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

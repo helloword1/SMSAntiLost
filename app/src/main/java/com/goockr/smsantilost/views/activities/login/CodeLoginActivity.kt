@@ -4,18 +4,21 @@ import android.text.TextUtils
 import android.view.View
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.LoginCodeBean
-import com.goockr.smsantilost.entries.RequestParam
+import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.entries.ValidateCodeBean
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.https.DefaultObserver
-import com.goockr.smsantilost.utils.*
+import com.goockr.smsantilost.https.MyStringCallback
+import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.CountDownButtonHelper
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.HomeActivity
+import com.google.gson.Gson
+import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
 import cxx.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_code_login.*
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import okhttp3.Call
+import java.lang.Exception
 
 class CodeLoginActivity(override val contentView: Int = R.layout.activity_code_login) : BaseActivity(),View.OnClickListener {
     override fun initView() {
@@ -36,15 +39,15 @@ class CodeLoginActivity(override val contentView: Int = R.layout.activity_code_l
                     return
                 }
                 showProgressDialog()
-                val param = RequestParam()
-                param.put("mobile", tvLoginUser.text.toString())
-                NetWorkUtil.LoginApi(SysInterceptor(this))?.getCode(param)?.
-                        subscribeOn(Schedulers.io())?.
-                        observeOn(AndroidSchedulers.
-                                mainThread())?.
-                        subscribe(object : DefaultObserver<ValidateCodeBean>(this) {
-                            override fun onNext(t: ValidateCodeBean) {
-                                super.onNext(t)
+                OkHttpUtils
+                        .post()
+                        .url(Constant.BASE_URL + NetApi.GET_CODE)
+                        .addParams("mobile", tvLoginUser.text.toString())
+                        .build()
+                        .execute(object : MyStringCallback() {
+                            override fun onResponse(response: String?, id: Int) {
+                                val t = Gson().fromJson(response, ValidateCodeBean::class.java)
+                                dismissDialog()
                                 if (t.result == 0) {
                                     val timer = CountDownButtonHelper(tvLoginPasswordDelete,
                                             "获取验证码", "重新获取", 60, 1)
@@ -53,32 +56,30 @@ class CodeLoginActivity(override val contentView: Int = R.layout.activity_code_l
                                     tvLoginPassword.setText(t.code.toString())
                                 }
                                 MyToast.showToastCustomerStyleText(this@CodeLoginActivity, "${t.msg}")
-                            }
-
-                            override fun onCompleted() {
 
                             }
 
-                            override fun onError(e: Throwable) {
-                                super.onError(e)
-                                LogUtils.i("", e.toString())
+                            override fun onError(call: Call?, e: Exception?, id: Int) {
+                                dismissDialog()
+                                MyToast.showToastCustomerStyleText(this@CodeLoginActivity, "网络错误")
                             }
-
                         })
+
+
             }
             R.id.btn_confir -> {
                 if (isValid()) {
                     showProgressDialog()
-                    val param = RequestParam()
-                    param.put("mobile", tvLoginUser.text.toString())
-                    param.put("vcode", tvLoginPassword.text.toString())
-                    NetWorkUtil.LoginApi(SysInterceptor(this))?.LoginCode(param)?.
-                            subscribeOn(Schedulers.io())?.
-                            observeOn(AndroidSchedulers.
-                                    mainThread())?.
-                            subscribe(object : DefaultObserver<LoginCodeBean>(this) {
-                                override fun onNext(t: LoginCodeBean) {
-                                    super.onNext(t)
+                    OkHttpUtils
+                            .post()
+                            .url(Constant.BASE_URL + NetApi.LOGIN_CODE)
+                            .addParams("mobile", tvLoginUser.text.toString())
+                            .addParams("vcode", tvLoginPassword.text.toString())
+                            .build()
+                            .execute(object : MyStringCallback() {
+                                override fun onResponse(response: String?, id: Int) {
+                                    val t = Gson().fromJson(response, LoginCodeBean::class.java)
+                                    dismissDialog()
                                     if (t.result == 0) {
                                         showActivity(HomeActivity::class.java)
                                         preferences?.putValue(Constant.TOKEN, t.token)
@@ -86,18 +87,16 @@ class CodeLoginActivity(override val contentView: Int = R.layout.activity_code_l
                                         finish()
                                     }
                                     MyToast.showToastCustomerStyleText(this@CodeLoginActivity, "${t.msg}")
-                                }
-
-                                override fun onCompleted() {
 
                                 }
 
-                                override fun onError(e: Throwable) {
-                                    super.onError(e)
-                                    LogUtils.i("", e.toString())
+                                override fun onError(call: Call?, e: Exception?, id: Int) {
+                                    dismissDialog()
+                                    MyToast.showToastCustomerStyleText(this@CodeLoginActivity, "网络错误")
                                 }
-
                             })
+
+
                 }
             }
         }

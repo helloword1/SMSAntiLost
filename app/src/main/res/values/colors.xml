@@ -12,9 +12,31 @@
     <color name="gray">#dddddd</color>
     <color name="textColor">#1e1e1e</color>
     <color name="msmTextColorGray">#6d6c6c</color>
-    <color name="linetColor">#2d2a2a</color>
+    <color name="linetColor">#f0f0f0</color>
     <color name="textTitleColor">#333333</color>
     <color name="partTranslucent">#39000000</color>
+    <color name="dddddd">#39918e8e</color>
+
+    <color name="tipsBackGround">#FCF3E1</color>
+    <color name="tipsText">#EC9E51</color>
+    <color name="appGray">#aaaaaa</color>
+    <color name="deepGray">#cccccc</color>
+    <color name="backgroundGray">#F7F7F7</color>
+
+    <!--ZXing-->
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="possible_result_points">#c0ffbd21</color> <!-- Android standard ICS color -->
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c099cc00</color> <!-- Android standard ICS color -->
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="viewfinder_laser">#ffcc0000</color> <!-- Android standard ICS color -->
+    <color name="viewfinder_mask">#60000000</color>
     <color name="some_black">#39918e8e</color>
     <color name="ddd">#ebe7e7</color>
+    <color name="some_white">#f0f0f0</color>
+    <color name="some_white_et">#f9f6f6</color>
+    <color name="blue">#6892DA</color>
 </resources>

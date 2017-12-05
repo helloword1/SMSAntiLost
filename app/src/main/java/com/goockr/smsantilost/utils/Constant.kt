@@ -12,11 +12,21 @@ object Constant {
     val MSG_CLIENT_REV_NEW: Int = 44
     val REQUEST_ENABLE_VISIBILITY: Int = 22
 
-    var BASE_URL="http://192.168.1.56:8088/antilost/api/"
-    var TOKEN="token"
-    var LOGIN_PHONE="login_phone"
-    var LOGIN_MSM_CODE="login_msm_code"
-    var CONTACT_NAME="contact_name"
-    var CONTACT_PHONE="contact_phone"
-    var CONTACT_ID="contact_id"
+    val BASE_URL="http://192.168.1.56:8088/antilost/api/"
+    val TOKEN="token"
+    val LOGIN_PHONE="login_phone"
+    val LOGIN_MSM_CODE="login_msm_code"
+    val CONTACT_NAME="contact_name"
+    val CONTACT_PHONE="contact_phone"
+    val CONTACT_ID="contact_id"
+    val CONTACT_RESULT_ID=55
+
+    val MSM_NAME="msm_name"
+    val MSM_Time="msm_time"
+    val MSM_CONTENT="msm_content"
+    val MSM_RESULT_ID=66
+
+    val CHOICE_CONTACT_RESULT_ID=77
+    val CREATE_CONTACT_RESULT_ID=88
+    val MSM_MANAGER_RESULT_ID=99
 }

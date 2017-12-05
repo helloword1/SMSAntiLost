@@ -4,19 +4,22 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.entries.RequestParam
+import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.entries.ValidateCodeBean
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.https.DefaultObserver
-import com.goockr.smsantilost.utils.*
+import com.goockr.smsantilost.https.MyStringCallback
+import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.LOGIN_MSM_CODE
+import com.goockr.smsantilost.utils.CountDownButtonHelper
 import com.goockr.smsantilost.views.activities.BaseActivity
+import com.google.gson.Gson
 import com.jude.swipbackhelper.SwipeBackHelper
+import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
 import cxx.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_register.*
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import okhttp3.Call
+import java.lang.Exception
 
 class RegisterActivity(override val contentView: Int = R.layout.activity_register) : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +27,7 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
         //设置右滑不finsh界面
         SwipeBackHelper.getCurrentPage(this)
                 .setSwipeBackEnable(true)
-        SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(true)
+        SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(false)
     }
 
     override fun initView() {
@@ -41,37 +44,31 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
 
                 if (isValidPhone()) {
                     showProgressDialog()
-                    val param = RequestParam()
-                    param.put("mobile", tvLoginUser.text.toString())
-                    NetWorkUtil.LoginApi(SysInterceptor(this))?.getCode(param)?.
-                            subscribeOn(Schedulers.io())?.
-                            observeOn(AndroidSchedulers.
-                                    mainThread())?.
-                            subscribe(object : DefaultObserver<ValidateCodeBean>(this) {
-                                override fun onNext(t: ValidateCodeBean) {
-                                    super.onNext(t)
+                    OkHttpUtils
+                            .post()
+                            .url(Constant.BASE_URL + NetApi.GET_CODE)
+                            .addParams("mobile", tvLoginUser.text.toString())
+                            .build()
+                            .execute(object : MyStringCallback() {
+                                override fun onResponse(response: String?, id: Int) {
+                                    val t = Gson().fromJson(response, ValidateCodeBean::class.java)
+                                    dismissDialog()
                                     if (t.result == 0) {
                                         val timer = CountDownButtonHelper(getCode,
                                                 "获取验证码", "重新获取", 60, 1)
                                         timer.start()
                                         preferences?.putValue(LOGIN_MSM_CODE, t.code.toString())
-                                        tvLoginPassword.setText(t.code.toString())
+//                                        tvLoginPassword.setText(t.code.toString())
                                     }
                                     MyToast.showToastCustomerStyleText(this@RegisterActivity, "${t.msg}")
                                 }
 
-                                override fun onCompleted() {
-
+                                override fun onError(call: Call?, e: Exception?, id: Int) {
+                                    dismissDialog()
+                                    MyToast.showToastCustomerStyleText(this@RegisterActivity, "网络错误")
                                 }
-
-                                override fun onError(e: Throwable) {
-                                    super.onError(e)
-                                    LogUtils.i("", e.toString())
-                                }
-
                             })
                 }
-
             }
             R.id.tvCodeLogin -> showActivity(LoginActivity::class.java)
             R.id.btn_confir -> {

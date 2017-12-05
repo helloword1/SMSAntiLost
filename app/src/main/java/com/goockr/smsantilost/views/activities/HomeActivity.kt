@@ -1,6 +1,7 @@
 package com.goockr.smsantilost.views.activities
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.views.activities.antilost.AddActivity
 import com.goockr.smsantilost.views.fragments.*
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.karumi.dexter.Dexter
@@ -19,6 +21,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.msm_title_view.*
+import kotlinx.android.synthetic.main.msm_title_view.view.*
 
 class HomeActivity(override val contentView: Int = R.layout.activity_home) : BaseActivity()/*, BottomTabBar.OnSelectListener */ {
     private var homeFragment: MoreFragment? = null
@@ -43,6 +46,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.READ_CONTACTS,
+                            Manifest.permission.WRITE_CONTACTS,
                             Manifest.permission.READ_PHONE_STATE
                     ).withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
@@ -64,7 +68,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         //初始化titlebar
         ll?.removeAllViews()
         var inflate1 = layoutInflater.inflate(R.layout.msm_title_view, null)
-        inflate1.findViewById<View>(R.id.llMsm).setOnClickListener {
+        inflate1.llMsm.setOnClickListener {
             if (msmFragment == null) {
                 msmFragment = MSMFragment()
             }
@@ -76,7 +80,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             tvContactLine.visibility = View.GONE
             current = msmFragment
         }
-        inflate1.findViewById<View>(R.id.llContact).setOnClickListener {
+        inflate1.llContact.setOnClickListener {
             if (contactFragment == null) {
                 contactFragment = ContactFragment()
             }
@@ -89,7 +93,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             current = contactFragment
         }
         ll?.addView(inflate1)
-        var beginTransaction = supportFragmentManager.beginTransaction()
+        val beginTransaction = supportFragmentManager.beginTransaction()
         if (msmFragment == null) {
             msmFragment = MSMFragment()
             beginTransaction.add(R.id.homeFrameLayout, msmFragment).commit()
@@ -101,19 +105,21 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             var inflate = layoutInflater.inflate(R.layout.base_title_view, null)
             title = inflate.findViewById(R.id.title)
             titleBack = inflate.findViewById(R.id.titleBack)
+            titleAdd = inflate.findViewById(R.id.titleAdd)
+            titleRight = inflate.findViewById(R.id.titleRight)
             when (it) {
                 0 -> {
                     if (!isMsmAndContact) {
                         if (msmFragment == null) {
                             msmFragment = MSMFragment()
                         }
-                        isMsmAndContact = true
+//                        isMsmAndContact = true
                         switchContent(msmFragment!!)
                     } else {
                         if (contactFragment == null) {
                             contactFragment = ContactFragment()
                         }
-                        isMsmAndContact = false
+//                        isMsmAndContact = false
                         switchContent(contactFragment!!)
                     }
 
@@ -124,11 +130,18 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                     ll?.removeAllViews()
                     ll?.addView(inflate)
                     titleBack?.visibility = View.GONE
+                    titleAdd?.visibility = View.VISIBLE
+                    titleRight?.visibility = View.GONE
                     if (antiLostFragment == null) {
                         antiLostFragment = AntiLostFragment()
                     }
                     title?.text = "防丢"
                     switchContent(antiLostFragment!!)
+                    titleAdd?.setOnClickListener {
+                        var intent = Intent()
+                        intent.setClass(this, AddActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
                 2 -> {
                     if (locationFragment == null) {
@@ -137,6 +150,8 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                     ll?.removeAllViews()
                     ll?.addView(inflate)
                     titleBack?.visibility = View.GONE
+                    titleAdd?.visibility = View.GONE
+                    titleRight?.visibility = View.GONE
                     title?.text = "定位"
                     switchContent(locationFragment!!)
                 }
@@ -147,7 +162,9 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                     ll?.removeAllViews()
                     ll?.addView(inflate)
                     titleBack?.visibility = View.GONE
+                    titleAdd?.visibility = View.GONE
                     title?.text = "更多"
+                    titleRight?.visibility = View.VISIBLE
                     switchContent(homeFragment!!)
                 }
             }
@@ -158,7 +175,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
     /**
      * 切换当前显示的fragment
      */
-    fun switchContent(to: Fragment) {
+    private fun switchContent(to: Fragment) {
         if (current !== to) {
             val transaction = supportFragmentManager.beginTransaction()
 

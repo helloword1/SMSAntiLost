@@ -3,18 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:paddingLeft="@dimen/x12"
     android:paddingRight="@dimen/x12">
 
     <ImageView
         android:id="@+id/ivContactName"
-        android:layout_width="@dimen/x24"
-        android:layout_height="@dimen/x24"
-        android:src="@mipmap/ic_launcher_round" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_contacts" />
 
     <com.goockr.smsantilost.graphics.CleanableEditText
         android:id="@+id/etContactName"
@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x5"
         android:background="@drawable/tv_stroke_bottom"
-        android:drawableRight="@mipmap/login_delete"
         android:hint="请输入名字"
         android:paddingBottom="@dimen/x18"
         android:paddingTop="@dimen/x18"

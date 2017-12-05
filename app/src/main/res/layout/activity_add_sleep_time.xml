@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundGray"
+    tools:context="com.goockr.smsantilost.views.activities.more.AddSleepTimeActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_SleepTimeName"
+        android:layout_marginTop="@dimen/x10"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="名称"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_SleepTimeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="名称"
+            android:layout_marginRight="@dimen/x10"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
+        <ImageView
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_SleepTimeStart"
+        android:layout_marginTop="@dimen/x10"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始时间"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_SleepTimeStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="14:00"
+            android:layout_marginRight="@dimen/x10"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
+        <ImageView
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/line_gray_margin"/>
+
+    <LinearLayout
+        android:id="@+id/ll_SleepTimeStop"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="结束时间"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_SleepTimeStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="14:00"
+            android:layout_marginRight="@dimen/x10"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
+        <ImageView
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/line_gray_margin"/>
+
+    <LinearLayout
+        android:id="@+id/ll_SleepTimeRepeat"
+        style="@style/setting_ll_style">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="重复"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_SleepTimeRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="每天"
+            android:layout_marginRight="@dimen/x10"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
+        <ImageView
+            style="@style/setting_icon_sytle"
+            android:src="@mipmap/icon_right"/>
+
+    </LinearLayout>
+
+</LinearLayout>

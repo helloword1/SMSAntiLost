@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_CodeTips"
+        android:layout_marginTop="@dimen/x10"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x40"
+        android:text="已发送验证码到138***000"
+        android:padding="@dimen/x10"
+        android:gravity="center_vertical"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:background="#fff">
+
+            <ImageView
+                android:id="@+id/iv_CodeIcon"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/x10"
+                style="@style/setting_icon_sytle"
+                android:src="@mipmap/ic_launcher"/>
+
+            <EditText
+                android:id="@+id/et_VerificationCode1"
+                android:layout_toRightOf="@id/iv_CodeIcon"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x40"
+                android:paddingLeft="@dimen/x10"
+                android:paddingRight="@dimen/x10"
+                android:paddingTop="@dimen/x5"
+                android:paddingBottom="@dimen/x5"
+                android:hint="短信验证码"
+                android:background="@null"
+                android:textSize="14sp"
+                android:inputType="number"/>
+
+            <ImageView
+                android:id="@+id/iv_CleanVerificationCode1"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x10"
+                style="@style/setting_icon_sytle"
+                android:src="@mipmap/ic_launcher" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/x25"
+            android:text="42S重新获取"
+            android:gravity="center"
+            android:background="@drawable/shape_blue"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:layout_marginRight="@dimen/x10"/>
+
+    </LinearLayout>
+
+</LinearLayout>

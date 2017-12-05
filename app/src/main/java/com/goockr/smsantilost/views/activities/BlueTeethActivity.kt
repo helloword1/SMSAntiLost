@@ -12,7 +12,7 @@ class BlueTeethActivity(override val contentView: Int=R.layout.activity_blueteet
         //设置右滑不finsh界面
         SwipeBackHelper.getCurrentPage(this)
                 .setSwipeBackEnable(false)
-        SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(true)
+        SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(false)
     }
     override fun onClick(p0: View?) {
 
