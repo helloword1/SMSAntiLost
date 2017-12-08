@@ -97,7 +97,7 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
                                 }
 
                                 override fun onError(call: Call?, e: Exception?, id: Int) {
-                                    MyToast.showToastCustomerStyleText(this@LoginActivity, "网络错误")
+                                    MyToast.showToastCustomerStyleText(this@LoginActivity, getString(R.string.networkError))
                                 }
                             })
                 }
@@ -107,11 +107,11 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
 
     private fun isVail(): Boolean {
         if (!NotNull.isNotNull(tvLoginUser.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, "请输入账号")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.EnterNumber))
             return false
         }
         if (!NotNull.isNotNull(tvLoginPassword.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, "请输入密码")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.enterPwd))
             return false
         }
         return true
@@ -122,7 +122,7 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
 
         if (event.keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN) {
             if (System.currentTimeMillis() - exitTime > 2000) {
-                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.exitNext), Toast.LENGTH_SHORT).show()
                 exitTime = System.currentTimeMillis().toDouble()
             } else {
                 // TODO 退出客户端

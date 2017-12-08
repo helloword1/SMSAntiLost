@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.adapter_create_send_msm_item.*
 
 /**
  * Created by LJN on 2017/11/14.
+ * 新建联系人
  */
 
 class CreateContactActivity(override val contentView: Int = R.layout.activity_create_contact) : BaseActivity() {
@@ -51,7 +52,7 @@ class CreateContactActivity(override val contentView: Int = R.layout.activity_cr
                 Phone.add(llPhone.getChildAt(i).etPhoneName.text.toString())
                 types.add(getPhoneType("Mobile"))
             }
-            ContactUtils.addContact(this, contactMName.etContactName.text.toString(), Phone, types)
+            ContactUtils.addContact(applicationContext, contactMName.etContactName.text.toString(), Phone, types)
             MyToast.showToastCustomerStyleText(this, "新建成功")
             setResult(Activity.RESULT_OK)
             finish()

@@ -1,12 +1,16 @@
 package com.goockr.smsantilost.views.activities.more
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.FriendsListBean
 import com.goockr.smsantilost.utils.MyComparator
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.adapters.NewFriendsAdapter
 import kotlinx.android.synthetic.main.activity_new_friends.*
+import kotlinx.android.synthetic.main.empty_view.view.*
 import java.util.*
 
 class NewFriendsActivity(override val contentView: Int = R.layout.activity_new_friends) : BaseActivity() {
@@ -58,9 +62,16 @@ class NewFriendsActivity(override val contentView: Int = R.layout.activity_new_f
         Collections.sort(mDatas, comparator)
     }
 
+    @SuppressLint("InflateParams")
     private fun initListView() {
         initMData()
         mAdapter = NewFriendsAdapter(this,mDatas)
+        val emptyView = layoutInflater.inflate(R.layout.empty_view, null)
+        emptyView.ivEmptyView.setImageResource(R.mipmap.no_mail_list_figure)
+        emptyView.tvEmptyView.text="暂无新好友"
+        emptyView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)//设置LayoutParams
+        (lv_NewFriends.parent as ViewGroup).addView(emptyView)//添加到当前的View hierarchy
+        lv_NewFriends.emptyView= emptyView
         lv_NewFriends.adapter = mAdapter
     }
 }

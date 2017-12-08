@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.custom_title_view.*
 
 /**
  * Created by LJN on 2017/11/14.
+ * 短信管理
  */
 
 class MSMManagerActivity(override val contentView: Int = R.layout.activity_msm_manager) : BaseActivity() {

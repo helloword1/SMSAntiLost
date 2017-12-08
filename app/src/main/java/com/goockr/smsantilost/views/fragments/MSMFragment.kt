@@ -22,6 +22,7 @@ import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.msm.MSMManagerActivity
 import com.goockr.smsantilost.views.activities.msm.NewMSMActivity
 import com.goockr.smsantilost.views.adapters.MsmSwipeAdapter
+import kotlinx.android.synthetic.main.empty_view.view.*
 import kotlinx.android.synthetic.main.fragment_msm.*
 import kotlinx.android.synthetic.main.item_msm_swipe.view.*
 import kotlin.concurrent.thread
@@ -52,7 +53,12 @@ class MSMFragment : BaseFragment() {
         manager = LinearLayoutManager(activity)
         recycleView.layoutManager = manager
         msmSwipeDelMenuAdapter = MsmSwipeDelMenuAdapter(activity, mDatas)
+        val emptyView = layoutInflater.inflate(R.layout.empty_view, null)
+        emptyView.ivEmptyView.setImageResource(R.mipmap.no_msg_figure)
+        emptyView.tvEmptyView.text="暂无短信"
+        recycleView.setEmptyView(emptyView)
         recycleView.adapter = msmSwipeDelMenuAdapter
+
         initRefresh()
         for (mData in 1..10) {
             val element = MsmBean()

@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.AntilostBean
 import com.goockr.smsantilost.views.activities.antilost.KeyActivity
 import com.goockr.smsantilost.views.adapters.AntilostAdapter
 import kotlinx.android.synthetic.main.fragment_antilost.*
+
+
 
 /**
  * Created by ning.wen on 2016/11/1.
@@ -30,6 +33,10 @@ class AntiLostFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val emptyView = layoutInflater.inflate(R.layout.anti_empty_view, null)
+        emptyView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)//设置LayoutParams
+        (antilost_list_view.parent as ViewGroup).addView(emptyView)//添加到当前的View hierarchy
+        antilost_list_view.emptyView = emptyView
     }
 
     override fun onResume() {
@@ -49,11 +56,11 @@ class AntiLostFragment : BaseFragment() {
         val bean3 = AntilostBean(R.mipmap.icon_portable_computer, "笔记本", "2017-03-30", false, "已连接")
         val bean4 = AntilostBean(R.mipmap.icon_vice_card_phone, "手机副卡", "2017-03-30", false, "已连接")
         val bean5 = AntilostBean(R.mipmap.icon_other, "其他", "2017-03-30", false, "已连接")
-        lists!!.add(bean1)
-        lists!!.add(bean2)
-        lists!!.add(bean3)
-        lists!!.add(bean4)
-        lists!!.add(bean5)
+//        lists!!.add(bean1)
+//        lists!!.add(bean2)
+//        lists!!.add(bean3)
+//        lists!!.add(bean4)
+//        lists!!.add(bean5)
     }
 
     /**
@@ -61,6 +68,7 @@ class AntiLostFragment : BaseFragment() {
      */
     private fun initMView() {
         listsAdapter = AntilostAdapter(lists, context)
+
         antilost_list_view.adapter = listsAdapter
     }
 

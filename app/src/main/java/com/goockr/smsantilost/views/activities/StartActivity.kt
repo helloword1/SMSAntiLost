@@ -14,7 +14,6 @@ import com.goockr.smsantilost.views.activities.login.LoginActivity
 /**
  * 程序入口界面
  *
- *
  * 修改时间:
  * 修改内容:
  */
@@ -50,6 +49,7 @@ class StartActivity(override val contentView:Int=R.layout.activity_start) : Base
         var isLogin = preferences?.getStringValue(Constant.HAD_LOGIN)
         if (TextUtils.equals(isLogin,"true")) {
             showActivity(HomeActivity::class.java)
+//            showActivity(TestActivity::class.java)
             finish()
             return
         } else {

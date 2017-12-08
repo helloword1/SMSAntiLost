@@ -135,7 +135,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                     if (antiLostFragment == null) {
                         antiLostFragment = AntiLostFragment()
                     }
-                    title?.text = "防丢"
+                    title?.text = getString(R.string.natilost)
                     switchContent(antiLostFragment!!)
                     titleAdd?.setOnClickListener {
                         var intent = Intent()
@@ -152,7 +152,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                     titleBack?.visibility = View.GONE
                     titleAdd?.visibility = View.GONE
                     titleRight?.visibility = View.GONE
-                    title?.text = "定位"
+                    title?.text = getString(R.string.location)
                     switchContent(locationFragment!!)
                 }
                 3 -> {
@@ -163,7 +163,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                     ll?.addView(inflate)
                     titleBack?.visibility = View.GONE
                     titleAdd?.visibility = View.GONE
-                    title?.text = "更多"
+                    title?.text = getString(R.string.more)
                     titleRight?.visibility = View.VISIBLE
                     switchContent(homeFragment!!)
                 }
@@ -197,7 +197,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
 
         if (event.keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN) {
             if (System.currentTimeMillis() - exitTime > 2000) {
-                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.exitNext), Toast.LENGTH_SHORT).show()
                 exitTime = System.currentTimeMillis().toDouble()
             } else {
                 // TODO 退出客户端

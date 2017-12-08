@@ -22,14 +22,19 @@ class SettingContactActivity(override val contentView: Int = R.layout.activity_s
 
     override fun initView() {
         title?.text = "通讯录管理"
+
+        //复制SIM卡联系人到通讯录
         tvCopyContact.setOnClickListener {
             MyToast.showToastCustomerStyleText(this, "功能开发中")
         }
+        //批量删除联系人
         tvDeleteContact.setOnClickListener {
-            MyToast.showToastCustomerStyleText(this, "功能开发中")
+            showActivity(DeleteContactActivity::class.java)
         }
+        //合并重复联系人
         tvUnionContact.setOnClickListener {
-            MyToast.showToastCustomerStyleText(this, "功能开发中")
+            showActivity(MergeContactActivity::class.java)
+
         }
     }
 }

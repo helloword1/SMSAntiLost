@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/binding_guide_bg"
+    android:layout_marginLeft="@dimen/x5"
+    android:layout_marginRight="@dimen/x5"
+    android:layout_marginTop="@dimen/x12">
+
+    <ImageView
+        android:id="@+id/ivAntiEmptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/x38"
+        android:src="@mipmap/icon_binding_guide" />
+
+    <TextView
+        android:id="@+id/tvEmptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivAntiEmptyView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/x8"
+        android:background="@drawable/anti_empty_bg"
+        android:paddingBottom="@dimen/x6"
+        android:paddingLeft="@dimen/x18"
+        android:paddingRight="@dimen/x18"
+        android:paddingTop="@dimen/x6"
+        android:text="绑定指南"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+</RelativeLayout>
+

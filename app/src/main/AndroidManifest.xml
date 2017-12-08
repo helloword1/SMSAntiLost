@@ -95,26 +95,21 @@
         <activity android:name=".views.activities.BlueTeethSearchActivity" />
         <activity
             android:name=".views.activities.antilost.KeyActivity"
-            android:label="@string/title_activity_key"
             android:theme="@style/baseTheme" />
         <activity
             android:name=".views.activities.antilost.SettingActivity"
-            android:label="@string/title_activity_setting"
             android:launchMode="singleTask"
             android:theme="@style/baseTheme" />
         <activity
             android:name=".views.activities.antilost.SetIndexOutActivity"
-            android:label="@string/title_activity_set_index_out"
             android:launchMode="singleTask"
             android:theme="@style/baseTheme" />
         <activity
             android:name=".views.activities.antilost.SelectPhoneSoundActivity"
-            android:label="@string/title_activity_select_phone_sound"
             android:launchMode="singleTask"
             android:theme="@style/baseTheme" />
         <activity
             android:name=".views.activities.antilost.TwoWayAntiActivity"
-            android:label="@string/title_activity_two_way_anti"
             android:theme="@style/baseTheme" />
         <activity
             android:name=".views.activities.antilost.SetSimActivity"
@@ -197,7 +192,7 @@
             android:name=".views.activities.more.SetSleepTimeNameActivity"
             android:launchMode="singleTask"
             android:theme="@style/baseTheme" />
-        <activity android:name=".views.activities.more.RepeatActivity"></activity>
+        <activity android:name=".views.activities.more.RepeatActivity"/>
     </application>
 
 </manifest>

@@ -1,14 +1,16 @@
 package com.goockr.smsantilost.utils
 
-import android.content.ContentProviderOperation
-import android.content.ContentUris
-import android.content.ContentValues
-import android.content.Context
+import android.content.*
 import android.net.Uri
+import android.os.RemoteException
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.StructuredName
+import android.provider.ContactsContract.RawContacts
 import android.provider.ContactsContract.RawContacts.Data
+import com.goockr.smsantilost.entries.ContactsBean
+import com.goockr.smsantilost.entries.PhoneBean
 import java.util.*
+
 
 object ContactUtils {
     /**
@@ -25,12 +27,12 @@ object ContactUtils {
     private fun addContact(context: Context, contactId: String?, name: String, numbers: ArrayList<String>, types: ArrayList<Int>) {
         val rawContactId: Long
         val values = ContentValues()
-        if (contactId == null) {
+        rawContactId = if (contactId == null) {
             val cr = context.contentResolver
             val rawContactUri = cr.insert(ContactsContract.RawContacts.CONTENT_URI, values)
-            rawContactId = ContentUris.parseId(rawContactUri)
+            ContentUris.parseId(rawContactUri)
         } else {
-            rawContactId = java.lang.Long.parseLong(contactId)
+            java.lang.Long.parseLong(contactId)
         }
         //往data表插入姓名数据
         values.clear()
@@ -49,13 +51,13 @@ object ContactUtils {
         }
     }
 
-    fun updateContact(context: Context, contactId: String, name: String, numbers:ArrayList<String>, types: ArrayList<Int>) {
+    fun updateContact(context: Context, contactId: String, name: String, numbers: ArrayList<String>, types: ArrayList<Int>) {
         deleteContact(context, contactId)
         addContact(context, name, numbers, types)
     }
 
 
-    fun deleteContact(context: Context, contactId: String) {
+    private fun deleteContact(context: Context, contactId: String) {
         val ops = ArrayList<ContentProviderOperation>()
         //delete contact
         ops.add(ContentProviderOperation.newDelete(ContactsContract.RawContacts.CONTENT_URI)
@@ -72,6 +74,83 @@ object ContactUtils {
         } catch (e: Exception) {
         }
 
+    }
+
+    /**
+     * 批量添加通讯录
+     *
+     * @throws OperationApplicationException
+     * @throws RemoteException
+     */
+    @Throws(RemoteException::class, OperationApplicationException::class)
+    fun BatchAddContact(context: Context, list: List<PhoneBean>) {
+        val ops = ArrayList<ContentProviderOperation>()
+        var rawContactInsertIndex = 0
+        for (contact in list) {
+            rawContactInsertIndex = ops.size // 有了它才能给真正的实现批量添加
+
+            ops.add(ContentProviderOperation.newInsert(RawContacts.CONTENT_URI)
+                    .withValue(RawContacts.ACCOUNT_TYPE, null)
+                    .withValue(RawContacts.ACCOUNT_NAME, null)
+                    .withYieldAllowed(true).build())
+
+            // 添加姓名
+            ops.add(ContentProviderOperation
+                    .newInsert(
+                            android.provider.ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(Data.RAW_CONTACT_ID,
+                            rawContactInsertIndex)
+                    .withValue(Data.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE)
+                    .withValue(StructuredName.DISPLAY_NAME, contact.getMPhone())
+                    .withYieldAllowed(true).build())
+            // 添加号码
+            ops.add(ContentProviderOperation
+                    .newInsert(
+                            android.provider.ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(Data.RAW_CONTACT_ID,
+                            rawContactInsertIndex)
+                    .withValue(Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, contact.phone)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.LABEL, "").withYieldAllowed(true).build())
+        }
+        try {
+            context.contentResolver.applyBatch(ContactsContract.AUTHORITY, ops)
+        } catch (e: Exception) {
+        }
+    }
+
+    /**
+     * 批量删除通讯录
+     *
+     * @throws OperationApplicationException
+     * @throws RemoteException
+     */
+    @Throws(RemoteException::class, OperationApplicationException::class)
+    fun BatchDeleteContact(context: Context, list: List<PhoneBean>) {
+        val ops = ArrayList<ContentProviderOperation>()
+        var rawContactInsertIndex = 0
+        for (contact in list) {
+            rawContactInsertIndex = ops.size // 有了它才能给真正的实现批量添加
+
+            ops.add(ContentProviderOperation.newInsert(RawContacts.CONTENT_URI)
+                    .withValue(RawContacts.ACCOUNT_TYPE, null)
+                    .withValue(RawContacts.ACCOUNT_NAME, null)
+                    .withYieldAllowed(true).build())
+            ops.add(ContentProviderOperation.newDelete(ContactsContract.RawContacts.CONTENT_URI)
+                    .withSelection(ContactsContract.RawContacts.CONTACT_ID + "=" + contact.id, null)
+                    .build())
+
+            //delete contact information such as phone number,email
+            ops.add(ContentProviderOperation.newDelete(ContactsContract.Data.CONTENT_URI)
+                    .withSelection(ContactsContract.Data.CONTACT_ID + "=" + contact.id, null)
+                    .build())
+
+        }
+        try {
+            context.contentResolver.applyBatch(ContactsContract.AUTHORITY, ops)
+        } catch (e: Exception) {
+        }
     }
 
     fun getContactId(context: Context): String? {
@@ -113,7 +192,7 @@ object ContactUtils {
 
             var p: Contact.Phone? = null
             val count = phoneCursor.count
-            phones = ArrayList<Contact.Phone>()
+            phones = ArrayList()
             val i = 0
             while (phoneCursor.moveToNext()) {
                 var PhoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
@@ -129,6 +208,38 @@ object ContactUtils {
         }
         cursor.close()
         return phones
+    }
+
+    //获取联系人
+    private var PHONES_PROJECTION = arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.CONTACT_ID)
+
+    fun getSystemContactInfos(context: Context): List<ContactsBean> {
+        val infos = ArrayList<ContactsBean>()
+        val cursor = context.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PHONES_PROJECTION, null, null, null)
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                var isAdded = true
+                val contactName = cursor.getString(0)
+                val phoneNumber = cursor.getString(1)
+                val id = cursor.getString(2)
+                for (mData in infos) {
+                    if (mData.name == contactName) {
+                        mData.phone += "," + phoneNumber
+                        isAdded = false
+                        LogUtils.i("12313123", mData.phone)
+                    }
+                }
+                if (isAdded) {
+                    val info = ContactsBean()
+                    info.name = contactName
+                    info.phone = phoneNumber
+                    info.id = id
+                    infos.add(info)
+                }
+            }
+            cursor.close()
+        }
+        return infos
     }
 
 }

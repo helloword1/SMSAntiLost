@@ -5,13 +5,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="@dimen/x88"
-        android:layout_height="@dimen/x88"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/x50"
-        android:drawablePadding="@dimen/x8"
-        android:src="@mipmap/ic_launcher_round" />
+    <include layout="@layout/logo_layout" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +13,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="@dimen/x16"
         android:layout_marginRight="@dimen/x16"
-        android:layout_marginTop="@dimen/x40"
         android:orientation="vertical">
 
         <LinearLayout
@@ -42,9 +35,9 @@
                 android:layout_marginLeft="@dimen/x5"
                 android:layout_weight="1"
                 android:background="@null"
-                android:maxLength="11"
                 android:drawableRight="@mipmap/login_delete"
-                android:hint="手机号码"
+                android:hint="@string/phoneNumber"
+                android:maxLength="11"
                 android:paddingBottom="@dimen/x12"
                 android:paddingLeft="@dimen/x8"
                 android:paddingRight="@dimen/x12"
@@ -97,9 +90,9 @@
                 android:layout_marginRight="@dimen/x5"
                 android:layout_weight="1"
                 android:background="@null"
-                android:maxLength="20"
+                android:hint="@string/pleaseInputPwd"
                 android:inputType="textPassword"
-                android:hint="请输入账号密码"
+                android:maxLength="20"
                 android:paddingBottom="@dimen/x12"
                 android:paddingLeft="@dimen/x8"
                 android:paddingTop="@dimen/x12"
@@ -111,16 +104,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/x3"
-                android:padding="@dimen/x6"
                 android:layout_marginTop="@dimen/x3"
+                android:padding="@dimen/x6"
                 android:src="@mipmap/icon_invisible" />
         </LinearLayout>
     </LinearLayout>
 
     <Button
         android:id="@+id/btnConfir"
-        android:text="@string/longin"
-        style="@style/loginConfir" />
+        style="@style/loginConfir"
+        android:text="@string/longin" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -135,7 +128,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="注册用户"
+            android:text="@string/registerUser"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
 
@@ -145,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right"
-            android:text="验证码登陆"
+            android:text="@string/codeLogin"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
     </LinearLayout>

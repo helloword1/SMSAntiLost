@@ -19,6 +19,7 @@ import java.util.*
 
 /**
  * Created by LJN on 2017/11/14.
+ * 新建短信
  */
 
 class MSMControlActivity(override val contentView: Int = R.layout.activity_msm_control) : BaseActivity() {

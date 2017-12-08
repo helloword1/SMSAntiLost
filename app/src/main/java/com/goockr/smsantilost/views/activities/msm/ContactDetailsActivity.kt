@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.adapter_create_send_msm_item.*
 
 /**
  * Created by LJN on 2017/11/14.
+ * 联系人详情
  */
 
 class ContactDetailsActivity(override val contentView: Int = R.layout.activity_create_contact) : BaseActivity() {
@@ -34,7 +35,7 @@ class ContactDetailsActivity(override val contentView: Int = R.layout.activity_c
     private var isEdit: Boolean = true
 
     override fun initView() {
-        title?.text = "联系人详情"
+        title?.text = getString(R.string.contactDetails)
         titleRight1?.visibility = View.VISIBLE
         titleRight1?.text = "编辑"
         val extras = intent.extras
@@ -88,7 +89,7 @@ class ContactDetailsActivity(override val contentView: Int = R.layout.activity_c
                 contactMName.etContactName.isEnabled = false
                 isEdit = true
 
-                ContactUtils.updateContact(this, id, contactMName.etContactName.text.toString(), Phone, types)
+                ContactUtils.updateContact(applicationContext, id, contactMName.etContactName.text.toString(), Phone, types)
                 MyToast.showToastCustomerStyleText(this, "编辑成功")
             }
         }

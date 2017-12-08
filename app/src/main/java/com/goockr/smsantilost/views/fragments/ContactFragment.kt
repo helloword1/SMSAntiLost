@@ -1,8 +1,8 @@
 package com.goockr.smsantilost.views.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.goockr.smsantilost.entries.PhoneBean
 import com.goockr.smsantilost.graphics.SuspensionDecoration
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.CONTACT_RESULT_ID
-import com.goockr.smsantilost.utils.LogUtils
+import com.goockr.smsantilost.utils.ContactUtils.getSystemContactInfos
 import com.goockr.smsantilost.views.activities.msm.CreateContactActivity
 import com.goockr.smsantilost.views.activities.msm.SettingContactActivity
 import com.goockr.smsantilost.views.adapters.CityAdapter
@@ -41,10 +41,12 @@ class ContactFragment : BaseFragment() {
         initView()
     }
 
+    @SuppressLint("InflateParams")
     private fun initView() {
         mManager = LinearLayoutManager(activity)
         rv.layoutManager = mManager
         mAdapter = CityAdapter(this,activity, mDatas as ArrayList<PhoneBean>)
+        rv.setEmptyView(layoutInflater.inflate(R.layout.empty_view, null))
         rv.adapter = mAdapter
         mDecoration = SuspensionDecoration(activity, mDatas)
         rv.addItemDecoration(mDecoration)
@@ -53,7 +55,7 @@ class ContactFragment : BaseFragment() {
 
         thread {
             kotlin.run {
-                val systemContactInfos = getSystemContactInfos()
+                val systemContactInfos = getSystemContactInfos(activity)
                 activity.runOnUiThread { initDatas(systemContactInfos) }
             }
         }
@@ -103,49 +105,12 @@ class ContactFragment : BaseFragment() {
         }, 500)
     }
 
-
-    private var PHONES_PROJECTION = arrayOf(Phone.DISPLAY_NAME, Phone.NUMBER, Phone.CONTACT_ID)
-    /**
-     * 获取系统联系人信息
-     *
-     * @return
-     */
-
-    private fun getSystemContactInfos(): List<ContactsBean> {
-        val infos = ArrayList<ContactsBean>()
-        val cursor = activity.contentResolver.query(Phone.CONTENT_URI, PHONES_PROJECTION, null, null, null)
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                var isAdded = true
-                val contactName = cursor.getString(0)
-                val phoneNumber = cursor.getString(1)
-                val id = cursor.getString(2)
-                for (mData in infos) {
-                    if (mData.name == contactName) {
-                        mData.phone += "," + phoneNumber
-                        isAdded = false
-                        LogUtils.i("12313123", mData.phone)
-                    }
-                }
-                if (isAdded) {
-                    val info = ContactsBean()
-                    info.name = contactName
-                    info.phone = phoneNumber
-                    info.id = id
-                    infos.add(info)
-                }
-            }
-            cursor.close()
-        }
-        return infos
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode== Constant.CONTACT_RESULT_ID){
             thread {
                 kotlin.run {
-                    val systemContactInfos = getSystemContactInfos()
+                    val systemContactInfos = getSystemContactInfos(activity)
                     activity.runOnUiThread { initDatas(systemContactInfos) }
                 }
             }

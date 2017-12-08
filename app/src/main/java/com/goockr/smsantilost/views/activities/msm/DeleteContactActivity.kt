@@ -1,5 +1,6 @@
 package com.goockr.smsantilost.views.activities.msm
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -9,24 +10,26 @@ import android.view.View
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.ContactsBean
 import com.goockr.smsantilost.entries.PhoneBean
-import com.goockr.smsantilost.graphics.SuspensionDecoration
+import com.goockr.smsantilost.graphics.DeleteDecoration
+import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.ContactUtils
 import com.goockr.smsantilost.views.activities.BaseActivity
-import com.goockr.smsantilost.views.adapters.ChoiceContactAdapter
+import com.goockr.smsantilost.views.adapters.DeleteContactAdapter
 import com.jude.swipbackhelper.SwipeBackHelper
-import kotlinx.android.synthetic.main.activity_choice_contact.*
+import kotlinx.android.synthetic.main.activity_delete_contact.*
 import kotlin.concurrent.thread
 
 /**
  * Created by LJN on 2017/11/14.
+ * 批量删除联系人
  */
 
-class ChoiceContactActivity(override val contentView: Int = R.layout.activity_choice_contact) : BaseActivity() {
+class DeleteContactActivity(override val contentView: Int = R.layout.activity_delete_contact) : BaseActivity() {
     private var mDatas = ArrayList<PhoneBean>()
-    private var serializable = ArrayList<PhoneBean>()
-    private var mAdapter: ChoiceContactAdapter? = null
-    private var mDecoration: SuspensionDecoration? = null
+    private var mAdapter: DeleteContactAdapter? = null
+    private var mDecoration: DeleteDecoration? = null
     private var mManager: LinearLayoutManager? = null
+    private var isAllchoice = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //设置右滑不finsh界面
@@ -35,19 +38,18 @@ class ChoiceContactActivity(override val contentView: Int = R.layout.activity_ch
         SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initView() {
-        title?.text = getString(R.string.comtactList)
+        title?.text = "批量删除联系人"
         titleRight1?.visibility = View.VISIBLE
         titleRight1?.setTextColor(ContextCompat.getColor(this, R.color.blue))
-        titleRight1?.text = getString(R.string.concert)
-        val extras = intent.extras
-        serializable.addAll(extras.getSerializable("PHONE_DATA") as ArrayList<PhoneBean>)
+        titleRight1?.text = "删除"
         mManager = LinearLayoutManager(this)
         recycleView.layoutManager = mManager
-        mAdapter = ChoiceContactAdapter(this, mDatas)
+        mAdapter = DeleteContactAdapter(this, mDatas)
         recycleView.adapter = mAdapter
-        mDecoration = SuspensionDecoration(this, mDatas)
-        mDecoration?.setIsChoice(false, serializable.size)
+        mDecoration = DeleteDecoration(this, mDatas)
+        mDecoration?.setIsChoice(false)
         recycleView.addItemDecoration(mDecoration)
 
         thread {
@@ -56,19 +58,35 @@ class ChoiceContactActivity(override val contentView: Int = R.layout.activity_ch
                 runOnUiThread { initDatas(systemContactInfos) }
             }
         }
+        //删除
         titleRight1?.setOnClickListener {
-            val intent = Intent()
-            val bundle = Bundle()
             val beans = ArrayList<PhoneBean>()
-            val elements = mAdapter?.getLists()
-            elements?.mapTo(beans) { mDatas[it] }
-            bundle.putSerializable("CHOICE_RETURN", beans)
-            intent.putExtras(bundle)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            mAdapter?.getLists()?.filterTo(beans) { it.isshowRight }
+            ContactUtils.BatchDeleteContact(applicationContext,beans)
+            mDatas.removeAll(beans)
+            mAdapter?.notifyDataSetChanged()
+            MyToast.showToastCustomerStyleText(this,"删除成功")
+            haveChoice.text = "已选中0人"
+        }
+        allChoice.setOnClickListener {
+            val beans = ArrayList<PhoneBean>()
+            mAdapter?.getLists()?.filterTo(beans) { it.isshowRight }
+            if (beans.size!=mDatas.size) {
+                allChoice.setTextColor(ContextCompat.getColor(this, R.color.blue))
+                mDatas.map { it.isshowRight = true }
+                haveChoice.text = "已选中${mDatas.size}人"
+
+            } else {
+                allChoice.setTextColor(ContextCompat.getColor(this, R.color.statueBarColor))
+                mDatas.map { it.isshowRight = false }
+                haveChoice.text = "已选中0人"
+            }
+            mAdapter?.notifyDataSetChanged()
         }
         mAdapter?.setoOnGetAdapterListener {
-            mDecoration?.setIsChoice(false, mAdapter?.getLists()?.size!!)
+            val beans = ArrayList<PhoneBean>()
+            mAdapter?.getLists()!!.filterTo(beans) { it.isshowRight }
+            haveChoice.text = "已选中${beans.size}人"
         }
         titleBack?.setOnClickListener {
             val intent = Intent()
@@ -89,9 +107,6 @@ class ChoiceContactActivity(override val contentView: Int = R.layout.activity_ch
                 cityBean.setMPhone(data[i].name)//设置名字
                 cityBean.phone = (data[i].phone)//设置电话
                 cityBean.id = (data[i].id)//设置id
-                serializable
-                        .filter { cityBean.id == it.id }
-                        .forEach { cityBean.isshowRight = true }
                 mDatas.add(cityBean)
             }
             mAdapter?.notifyDataSetChanged()
