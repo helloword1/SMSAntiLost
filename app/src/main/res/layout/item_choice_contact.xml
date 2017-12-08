@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/x12">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tv_stroke_bottom"
+        android:paddingBottom="@dimen/x12"
+        android:paddingTop="@dimen/x12">
+
+        <TextView
+            android:id="@+id/tvCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="安徽"
+            android:textColor="@color/textColor"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tvPhoneNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCity"
+            android:layout_marginTop="@dimen/x3"
+            android:layout_toRightOf="@id/ivAvatar"
+            android:paddingLeft="15dp"
+            android:text="安徽"
+            android:visibility="gone" />
+        <ImageView
+            android:id="@+id/ivRightAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_check"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x14"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+</RelativeLayout>
