@@ -14,7 +14,7 @@
         android:drawablePadding="@dimen/x12"
         android:drawableTop="@mipmap/blueteeth_searchring1"
         android:gravity="center_horizontal"
-        android:text="搜索中..."
+        android:text="@string/searching"
         android:textColor="@color/colorAccent"
         android:textSize="16sp" />
 

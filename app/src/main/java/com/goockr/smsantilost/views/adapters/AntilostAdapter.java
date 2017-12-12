@@ -59,9 +59,9 @@ public class AntilostAdapter extends BaseAdapter {
         holder.mName.setText(antilostBean.getName());
         holder.mLastDate.setText(antilostBean.getLastDate());
         if (antilostBean.isConnectState()) {
-            holder.mConnnect.setText("已连接");
+            holder.mConnnect.setText(R.string.hadConnect);
         }else {
-            holder.mConnnect.setText("未连接");
+            holder.mConnnect.setText(R.string.disConnect);
         }
         return convertView;
     }

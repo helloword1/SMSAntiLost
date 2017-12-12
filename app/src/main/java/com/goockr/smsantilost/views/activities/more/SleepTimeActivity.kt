@@ -2,18 +2,13 @@ package com.goockr.smsantilost.views.activities.more
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
-import android.util.Log
 import android.view.View
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.SleepTimeBean
 import com.goockr.smsantilost.utils.FileCache
-import com.goockr.smsantilost.utils.LogUtils
-import com.goockr.smsantilost.utils.ObjectSaveUtils
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.adapters.SleepTimeAdapter
 import kotlinx.android.synthetic.main.activity_sleep_time.*
-import java.io.File
 
 class SleepTimeActivity(override val contentView: Int = R.layout.activity_sleep_time) : BaseActivity() {
 
@@ -52,7 +47,7 @@ class SleepTimeActivity(override val contentView: Int = R.layout.activity_sleep_
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        title?.text = "休眠时段"
+        title?.text = getString(R.string.sleepTime)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }

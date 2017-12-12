@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/x3"
-            android:text="短信"
+            android:text="@string/sms"
             android:textColor="@color/colorAccent"
             android:textSize="12sp" />
     </LinearLayout>
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/x3"
-            android:text="防丢"
+            android:text="@string/natilost"
             android:textColor="@color/textColor"
             android:textSize="12sp" />
     </LinearLayout>
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/x3"
-            android:text="定位"
+            android:text="@string/location"
             android:textColor="@color/textColor"
             android:textSize="12sp" />
     </LinearLayout>
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/x3"
-            android:text="更多"
+            android:text="@string/more"
             android:textColor="@color/textColor"
             android:textSize="12sp" />
     </LinearLayout>

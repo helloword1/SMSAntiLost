@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tvBlueTooth"
             android:textColor="@color/colorPrimary"
-            android:text="搜索中..."/>
+            android:text="@string/searching"/>
 
 
     </LinearLayout>

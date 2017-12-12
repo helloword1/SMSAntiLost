@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="显示SIM卡的联系人"/>
+            android:text="@string/simShowContact"/>
 
         <View
             android:layout_width="0dp"
@@ -36,7 +36,7 @@
         android:layout_height="@dimen/x45"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/x10"
-        android:text="开启后，勿扰区域内，将关闭所有防丢提醒"
+        android:text="@string/openAnti"
         android:textSize="12sp"/>
 
     <ListView

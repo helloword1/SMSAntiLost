@@ -82,7 +82,7 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
         titleRight = titleLayout.findViewById(R.id.titleRight)
         titleBack = titleLayout.findViewById(R.id.titleBack)
 
-        title?.text = "添加设备"
+        title?.text = getString(R.string.addDivece)
         ll?.addView(titleLayout)
     }
 
@@ -243,7 +243,7 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
                 //toast("搜索结束")
                 mScaleAnimation?.cancel()
-                tvBlueTooth.text = "搜索完成"
+                tvBlueTooth.text = getString(R.string.searchComplete)
             } else if (BluetoothDevice.ACTION_FOUND == action) {
                 val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                 if (isNewDevice(device)) {

@@ -37,7 +37,7 @@ class ContactDetailsActivity(override val contentView: Int = R.layout.activity_c
     override fun initView() {
         title?.text = getString(R.string.contactDetails)
         titleRight1?.visibility = View.VISIBLE
-        titleRight1?.text = "编辑"
+        titleRight1?.text = getString(R.string.edit)
         val extras = intent.extras
         val contactName = extras.getString(CONTACT_NAME)
         val contactPhone = extras.getString(CONTACT_PHONE)
@@ -62,7 +62,7 @@ class ContactDetailsActivity(override val contentView: Int = R.layout.activity_c
         titleRight1?.setOnClickListener {
             if (isEdit) {
                 //编辑
-                titleRight1?.text = "完成"
+                titleRight1?.text = getString(R.string.complete)
                 llAddPhone.visibility = View.VISIBLE
                 tvSendMsm.visibility = View.GONE
                 for (i in lists.indices) {
@@ -74,7 +74,7 @@ class ContactDetailsActivity(override val contentView: Int = R.layout.activity_c
                 isEdit = false
             } else {
                 //完成
-                titleRight1?.text = "编辑"
+                titleRight1?.text = getString(R.string.edit)
                 llAddPhone.visibility = View.GONE
                 tvSendMsm.visibility = View.VISIBLE
                 val Phone = ArrayList<String>()
@@ -90,7 +90,7 @@ class ContactDetailsActivity(override val contentView: Int = R.layout.activity_c
                 isEdit = true
 
                 ContactUtils.updateContact(applicationContext, id, contactMName.etContactName.text.toString(), Phone, types)
-                MyToast.showToastCustomerStyleText(this, "编辑成功")
+                MyToast.showToastCustomerStyleText(this, getString(R.string.editSucceed))
             }
         }
     }

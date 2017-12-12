@@ -161,21 +161,19 @@ class LocationFragment : BaseFragment() {
         flBottom!!.visibility = View.INVISIBLE
     }
 
-    /* @Override
-    public void onPause() {
-        super.onPause();
-        mLocationClient.stopLocation();
+    override fun onPause() {
+        super.onPause()
+        mLocationClient?.stopLocation();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mLocationClient.startLocation();
+    override fun onResume() {
+        super.onResume()
+        mLocationClient?.stopLocation();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mLocationClient.onDestroy();
-    }*/
+    override fun onDestroy() {
+        super.onDestroy()
+        mLocationClient?.onDestroy();
+    }
+
 }

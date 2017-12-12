@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
-        android:text="绑定中，请稍后..."/>
+        android:text="@string/binding"/>
 
     <TextView
         android:id="@+id/tv_Research"
@@ -39,7 +39,7 @@
         android:layout_width="@dimen/x200"
         android:layout_height="@dimen/x30"
         android:background="@drawable/shape_blue"
-        android:text="重新搜索"
+        android:text="@string/reSearching"
         android:gravity="center"
         android:textColor="#fff"
         android:visibility="invisible"/>

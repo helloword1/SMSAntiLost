@@ -27,10 +27,10 @@ class SetUserNameActivity(override val contentView: Int = R.layout.activity_set_
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        titleOk?.text = "保存"
+        titleOk?.text = getString(R.string.save)
         titleOk?.visibility = View.VISIBLE
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
-        title?.text = "编辑用户名称"
+        title?.text = getString(R.string.editUserName)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }
@@ -66,7 +66,7 @@ class SetUserNameActivity(override val contentView: Int = R.layout.activity_set_
         }
 
         titleOk?.setOnClickListener {
-            ToastUtils.showShort(this,"保存成功")
+            ToastUtils.showShort(this,getString(R.string.saveSucceed))
         }
     }
 }

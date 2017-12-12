@@ -20,7 +20,7 @@ class SetSimActivity(override val contentView: Int = R.layout.activity_set_sim) 
         val titleLayout = layoutInflater.inflate(R.layout.base_title_view, null)
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
-        title?.text = "SIM卡号码设置"
+        title?.text = getString(R.string.SIMNumberSetting)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }

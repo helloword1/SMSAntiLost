@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.adapter_create_phone_item.view.*
  * “”
  */
 
-open class CreateContactAdapter(mContext: Context, Datas: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class CreateContactAdapter(private val mContext: Context, Datas: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val TITLE: Int = 101
     private val NAME: Int = 102
     private val PHONRS: Int = 103
@@ -60,7 +60,7 @@ open class CreateContactAdapter(mContext: Context, Datas: ArrayList<String>) : R
                 }
                 else -> {
                     val phoneViewHolder = holder as PhoneViewHolder
-                    phoneViewHolder.etPhoneName.hint = "请输入电话号码"
+                    phoneViewHolder.etPhoneName.hint = mContext.getString(R.string.inputPhone)
                     phoneViewHolder.btnDel.setOnClickListener {
                         mDatas.removeAt(position)
                         notifyDataSetChanged()

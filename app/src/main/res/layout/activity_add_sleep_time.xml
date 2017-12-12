@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="名称"/>
+            android:text="@string/name"/>
 
         <View
             android:layout_width="0dp"
@@ -27,7 +27,7 @@
             android:id="@+id/tv_SleepTimeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="名称"
+            android:text="@string/name"
             android:layout_marginRight="@dimen/x10"
             android:textSize="12sp"
             android:visibility="gone"/>
@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="开始时间"/>
+            android:text="@string/beginTime"/>
 
         <View
             android:layout_width="0dp"
@@ -78,7 +78,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="结束时间"/>
+            android:text="@string/endTime"/>
 
         <View
             android:layout_width="0dp"
@@ -110,7 +110,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="重复"/>
+            android:text="@string/repeat"/>
 
         <View
             android:layout_width="0dp"
@@ -121,7 +121,7 @@
             android:id="@+id/tv_SleepTimeRepeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="每天"
+            android:text="@string/everyDay"
             android:layout_marginRight="@dimen/x10"
             android:textSize="12sp"
             android:visibility="gone"/>

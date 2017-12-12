@@ -37,7 +37,7 @@
                 android:background="@null"
                 android:maxLength="11"
                 android:drawableRight="@mipmap/login_delete"
-                android:hint="手机号码"
+                android:hint="@string/phoneNumber"
                 android:paddingBottom="@dimen/x12"
                 android:paddingLeft="@dimen/x8"
                 android:paddingRight="@dimen/x12"
@@ -91,7 +91,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:maxLength="10"
-                android:hint="请输入验证码"
+                android:hint="@string/inputCode"
                 android:paddingBottom="@dimen/x12"
                 android:paddingLeft="@dimen/x8"
                 android:paddingTop="@dimen/x12"
@@ -108,7 +108,7 @@
                 android:paddingLeft="@dimen/x12"
                 android:paddingRight="@dimen/x12"
                 android:paddingTop="@dimen/x5"
-                android:text="获取验证码"
+                android:text="@string/getMsmCode"
                 android:textColor="@color/colorAccent"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -133,7 +133,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="注册用户"
+            android:text="@string/registerUser"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
 
@@ -143,7 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right"
-            android:text="账号登陆"
+            android:text="@string/phoneLogin"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
     </LinearLayout>

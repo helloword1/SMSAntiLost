@@ -46,7 +46,7 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
         val titleLayout = layoutInflater.inflate(R.layout.base_title_view, null)
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
-        title?.text = "账号设置"
+        title?.text = getString(R.string.accountSetting)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }
@@ -117,11 +117,11 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
         tv_Text1 = customView.tv_Text1
         tv_Text2 = customView.tv_Text2
         tv_Text3 = customView.tv_Text3
-        tv_Text1?.text = "是否确定退出登录？"
+        tv_Text1?.text = getString(R.string.exitLogin)
         tv_Text2?.visibility = View.GONE
         tv_Text3?.visibility = View.GONE
-        tv_Cancel?.text = "取消"
-        tv_Ensure?.text = "退出"
+        tv_Cancel?.text = getString(R.string.cancel)
+        tv_Ensure?.text = getString(R.string.concert)
         tv_Cancel?.setOnClickListener {
             dialog?.dismiss()
         }

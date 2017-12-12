@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
-        android:text="越界模式设置"
+        android:text="@string/outBoundsSetting"
         android:padding="@dimen/x10"
         android:gravity="center_vertical"
         android:textColor="@color/textTitleColor"/>
@@ -28,7 +28,7 @@
             style="@style/setting_icon_sytle"/>
 
         <TextView
-            android:text="越界提醒设置"
+            android:text="@string/RemindOutBoundsSetting"
             style="@style/setting_text_style"/>
 
         <View
@@ -46,7 +46,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
-        android:text="寻物模式设置"
+        android:text="@string/findModeSetting"
         android:padding="@dimen/x10"
         android:gravity="center_vertical"
         android:textColor="@color/textTitleColor"/>
@@ -61,7 +61,7 @@
             android:src="@mipmap/icon_two_ways_anti_lost"/>
 
         <TextView
-            android:text="双向防丢"
+            android:text="@string/Bi_directionalAntiLoss"
             style="@style/setting_text_style"/>
 
         <View
@@ -70,7 +70,7 @@
             android:layout_weight="1"/>
 
         <TextView
-            android:text="开"
+            android:text="@string/turnOn"
             style="@style/setting_text_small_style"/>
 
         <ImageView
@@ -83,7 +83,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
-        android:text="其他设置"
+        android:text="@string/otherSetting"
         android:padding="@dimen/x10"
         android:gravity="center_vertical"
         android:textColor="@color/textTitleColor"/>
@@ -98,7 +98,7 @@
             android:src="@mipmap/icon_sim_card_number_setting"/>
 
         <TextView
-            android:text="SIM卡号码设置"
+            android:text="@string/SIMNumberSetting"
             style="@style/setting_text_style"/>
 
         <View
@@ -124,7 +124,7 @@
             android:src="@mipmap/icon_modify_name"/>
 
         <TextView
-            android:text="修改名称"
+            android:text="@string/changeName"
             style="@style/setting_text_style"/>
 
         <View
@@ -149,7 +149,7 @@
             android:src="@mipmap/icon_transfer_permissions"/>
 
         <TextView
-            android:text="转移权限"
+            android:text="@string/ChangeRights"
             style="@style/setting_text_style"/>
 
         <View
@@ -174,7 +174,7 @@
             android:src="@mipmap/icon_unbound"/>
 
         <TextView
-            android:text="解除绑定"
+            android:text="@string/Unbinding"
             style="@style/setting_text_style"/>
 
         <View

@@ -2,7 +2,10 @@ package com.goockr.smsantilost
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
+import android.content.res.Configuration
 import com.goockr.smsantilost.utils.CrashUtil
+import com.goockr.smsantilost.utils.LocaleUtil
 import com.zhy.http.okhttp.OkHttpUtils
 import okhttp3.OkHttpClient
 import java.util.*
@@ -21,6 +24,8 @@ class GoockrApplication : Application() {
      */
     override fun onCreate() {
         super.onCreate()
+        //改变语言
+        LocaleUtil.changeAppLanguage(this)
         val crashUtil = CrashUtil.instance
         crashUtil!!.init(this)
         val okHttpClient = OkHttpClient.Builder()
@@ -47,7 +52,16 @@ class GoockrApplication : Application() {
         }
     }
 
+    fun getContext(): Context {
+        return this
+    }
     companion object {
         var isDebug = true//全局log 关闭或打开
+    }
+
+    //用于当系统设置语言变化时进行语言设置
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        LocaleUtil.setLanguage(this, newConfig)
     }
 }

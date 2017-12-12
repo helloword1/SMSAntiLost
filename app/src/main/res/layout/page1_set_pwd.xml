@@ -43,7 +43,7 @@
                 android:paddingRight="@dimen/x10"
                 android:paddingTop="@dimen/x5"
                 android:paddingBottom="@dimen/x5"
-                android:hint="短信验证码"
+                android:hint="@string/msmCode"
                 android:background="@null"
                 android:textSize="14sp"
                 android:inputType="number"/>
@@ -61,7 +61,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="@dimen/x25"
-            android:text="42S重新获取"
+            android:text="@string/reGetTime"
             android:gravity="center"
             android:background="@drawable/shape_blue"
             android:textColor="#fff"

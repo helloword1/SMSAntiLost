@@ -43,7 +43,7 @@ class LikeAppleComfirDialog : Dialog {
         init()
     }
 
-    // Ë«°´Å¥
+    // åŒæŒ‰é’®
     fun init() {
         val inflater = LayoutInflater.from(context)
         var view: View? = null
@@ -53,9 +53,9 @@ class LikeAppleComfirDialog : Dialog {
             tvCancel.setOnClickListener(OnDialogClickListener())
         } else if (index == 1) {
             view = inflater.inflate(R.layout.apple_confir_dialog, null)
-            tvTitle1Line.text = "ÕâÊÇµÚÒ»ĞĞ"
+            tvTitle1Line.text = "è¿™æ˜¯ç¬¬ä¸€è¡Œ"
             tvConfirm1Line.setOnClickListener(OnDialogClickListener())
-        } else if (index == 3) {// 2ĞĞµ¯¿ò
+        } else if (index == 3) {// 2è¡Œå¼¹æ¡†
             view = inflater.inflate(R.layout.apple_two_line_dialog, null)
             tvConfirm2Line.setOnClickListener(OnDialogClickListener())
         }
@@ -63,12 +63,12 @@ class LikeAppleComfirDialog : Dialog {
         setContentView(view)
         val dialogWindow = window
         val lp = dialogWindow.attributes
-        val d = context!!.resources.displayMetrics // »ñÈ¡ÆÁÄ»¿í¡¢¸ßÓÃ
-        lp.width = (d.widthPixels * 0.8).toInt() // ¸ß¶ÈÉèÖÃÎªÆÁÄ»µÄ0.6
+        val d = context!!.resources.displayMetrics // è·å–å±å¹•å®½ã€é«˜ç”¨
+        lp.width = (d.widthPixels * 0.8).toInt() // é«˜åº¦è®¾ç½®ä¸ºå±å¹•çš„0.6
         dialogWindow.attributes = lp
     }
 
-    lateinit var clickListenerInterface: DialogAppleClickListener //½Ó¿Ú¿ÉÒÔÑÓÊ±¼ÓÔØ
+    lateinit var clickListenerInterface: DialogAppleClickListener //æ¥å£å¯ä»¥å»¶æ—¶åŠ è½½
     fun setDialogClicklistener(dialogClickListener: DialogAppleClickListener) {
         this.clickListenerInterface = dialogClickListener
     }

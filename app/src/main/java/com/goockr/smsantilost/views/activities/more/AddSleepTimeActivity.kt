@@ -39,8 +39,8 @@ class AddSleepTimeActivity(override val contentView: Int = R.layout.activity_add
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        title?.text = "添加休眠时段"
-        titleOk?.text = "完成"
+        title?.text = getString(R.string.addSleepTime)
+        titleOk?.text = getString(R.string.complete)
         titleOk?.visibility = View.VISIBLE
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
@@ -84,7 +84,7 @@ class AddSleepTimeActivity(override val contentView: Int = R.layout.activity_add
                 setResult(RESULT_BEAN,i)
                 finish()
             }else {
-                ToastUtils.showShort(this,"信息没填完整")
+                ToastUtils.showShort(this,getString(R.string.infoIsEmpty))
             }
         }
     }
@@ -104,7 +104,7 @@ class AddSleepTimeActivity(override val contentView: Int = R.layout.activity_add
                 tv_SleepTimeStart.visibility = View.VISIBLE
         })
                 .setDate(selectedDate)
-                .setTitleText("开始时间")
+                .setTitleText(getString(R.string.beginTime))
                 .setTitleBgColor(resources.getColor(R.color.colorPrimary))
                 .setSubmitColor(Color.parseColor("#ffffff"))
                 .setCancelColor(Color.parseColor("#ffffff"))
@@ -112,7 +112,7 @@ class AddSleepTimeActivity(override val contentView: Int = R.layout.activity_add
                 .setRangDate(startDate, endDate)
                 .setContentSize(18)
                 .setType(booleanArrayOf(false, false, false, true, true, false))
-                .setLabel("年", "月", "日", "时", "分", "秒")
+                .setLabel(getString(R.string.year), getString(R.string.month), getString(R.string.day), getString(R.string.hour), getString(R.string.minute), getString(R.string.second))
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .build()
     }
@@ -132,7 +132,7 @@ class AddSleepTimeActivity(override val contentView: Int = R.layout.activity_add
                 tv_SleepTimeStop.visibility = View.VISIBLE
         })
                 .setDate(selectedDate)
-                .setTitleText("结束")
+                .setTitleText(getString(R.string.end))
                 .setTitleBgColor(resources.getColor(R.color.colorPrimary))
                 .setSubmitColor(Color.parseColor("#ffffff"))
                 .setCancelColor(Color.parseColor("#ffffff"))
@@ -140,7 +140,7 @@ class AddSleepTimeActivity(override val contentView: Int = R.layout.activity_add
                 .setRangDate(startDate, endDate)
                 .setContentSize(18)
                 .setType(booleanArrayOf(false, false, false, true, true, false))
-                .setLabel("年", "月", "日", "时", "分", "秒")
+                .setLabel(getString(R.string.year), getString(R.string.month), getString(R.string.day), getString(R.string.hour), getString(R.string.minute), getString(R.string.second))
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .build()
     }

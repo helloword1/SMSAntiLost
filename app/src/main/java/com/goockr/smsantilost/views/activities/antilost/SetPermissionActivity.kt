@@ -41,13 +41,13 @@ class SetPermissionActivity(override val contentView: Int = R.layout.activity_se
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
 
-        titleOk?.text = "确定"
+        titleOk?.text = getString(R.string.concert)
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
         titleOk?.isClickable = false
         titleOk?.visibility = View.VISIBLE
         titleOk?.setTextColor(resources.getColor(R.color.colorPrimary))
 
-        title?.text = "转移权限"
+        title?.text = getString(R.string.ChangeRights)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }

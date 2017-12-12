@@ -74,15 +74,15 @@ class RegisterNextActivity(override val contentView: Int = R.layout.activity_reg
 
     private fun isVail(): Boolean {
         if (!NotNull.isNotNull(tvPwd.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, "请输入密码")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.enterPwd))
             return false
         }
         if (!NotNull.isNotNull(tvPwdNext.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, "请再次输入密码")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.enterPwdNext))
             return false
         }
         if (!TextUtils.equals(tvPwd.text.toString(), tvPwdNext.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, "请输入两次相同的密码")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.enterSamePwd))
             return false
         }
         return true

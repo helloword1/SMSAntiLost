@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="钥匙"
+            android:text="@string/key"
             android:layout_marginLeft="@dimen/x10"
             android:textSize="17sp"/>
 
@@ -68,7 +68,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="钱包"
+            android:text="@string/wallet"
             android:layout_marginLeft="@dimen/x10"
             android:textSize="17sp"/>
 
@@ -111,7 +111,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="笔记本"
+            android:text="@string/noteBook"
             android:layout_marginLeft="@dimen/x10"
             android:textSize="17sp"/>
 
@@ -154,7 +154,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="手机副卡"
+            android:text="@string/secondCard"
             android:layout_marginLeft="@dimen/x10"
             android:textSize="17sp"/>
 
@@ -196,7 +196,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="其他"
+            android:text="@string/other"
             android:layout_marginLeft="@dimen/x10"
             android:textSize="17sp"/>
 

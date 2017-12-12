@@ -32,8 +32,8 @@ class RepeatActivity(override val contentView: Int = R.layout.activity_repeat) :
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        title?.text = "重复"
-        titleOk?.text = "完成"
+        title?.text = getString(R.string.repeat)
+        titleOk?.text = getString(R.string.complete)
         titleOk?.visibility = View.VISIBLE
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
         titleBack?.setOnClickListener { finish() }
@@ -42,13 +42,13 @@ class RepeatActivity(override val contentView: Int = R.layout.activity_repeat) :
 
     private fun initListView() {
         mData = ArrayList<RepeatBean>()
-        mData?.add(RepeatBean("星期日", false))
-        mData?.add(RepeatBean("星期一", false))
-        mData?.add(RepeatBean("星期二", false))
-        mData?.add(RepeatBean("星期三", false))
-        mData?.add(RepeatBean("星期四", false))
-        mData?.add(RepeatBean("星期五", false))
-        mData?.add(RepeatBean("星期六", false))
+        mData?.add(RepeatBean(getString(R.string.sunDay), false))
+        mData?.add(RepeatBean(getString(R.string.Monday), false))
+        mData?.add(RepeatBean(getString(R.string.Tuesday), false))
+        mData?.add(RepeatBean(getString(R.string.Wednesday), false))
+        mData?.add(RepeatBean(getString(R.string.Thursday), false))
+        mData?.add(RepeatBean(getString(R.string.Friday), false))
+        mData?.add(RepeatBean(getString(R.string.Saturday), false))
         val adapter = RepeatAdapter(mData, this)
         lv_Repeat.adapter = adapter
         lv_Repeat.setOnItemClickListener { parent, view, position, id ->
@@ -78,16 +78,16 @@ class RepeatActivity(override val contentView: Int = R.layout.activity_repeat) :
                 setResult(RESULT_REPEAT, i)
                 finish()
             } else {
-                ToastUtils.showShort(this, "请选择重复日期")
+                ToastUtils.showShort(this, getString(R.string.choiceRepeatDate))
             }
         }
     }
 
     private fun checkDate(list: ArrayList<RepeatBean>): String {
         if (list[0].isSelected && list[6].isSelected && !list[1].isSelected && !list[2].isSelected && !list[3].isSelected && !list[4].isSelected && !list[5].isSelected) {
-            return "周末"
+            return getString(R.string.week)
         } else if (!list[0].isSelected && !list[6].isSelected) {
-            return "工作日"
+            return getString(R.string.workDate)
         } else {
             var str = StringBuffer()
             for (i in list) {

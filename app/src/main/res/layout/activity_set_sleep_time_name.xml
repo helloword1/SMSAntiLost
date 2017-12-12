@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/x45"
             android:background="@null"
-            android:hint="请输入休眠时段名称"
+            android:hint="@string/inputSleepTimeName"
             android:textSize="14sp"/>
 
         <ImageView

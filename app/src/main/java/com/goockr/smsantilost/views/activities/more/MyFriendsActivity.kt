@@ -38,8 +38,8 @@ class MyFriendsActivity(override val contentView: Int = R.layout.activity_my_fri
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        title?.text = "我的好友"
-        titleOk?.text = "添加"
+        title?.text = getString(R.string.myFiends)
+        titleOk?.text = getString(R.string.add)
         titleOk?.setTextColor(resources.getColor(R.color.colorPrimary))
         titleOk?.visibility = View.VISIBLE
         titleBack?.setOnClickListener { finish() }

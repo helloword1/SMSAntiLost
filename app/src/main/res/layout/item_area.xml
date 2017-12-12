@@ -23,7 +23,7 @@
             android:id="@+id/tv_area_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="公司"/>
+            android:text="@string/company"/>
 
         <View
             android:layout_width="0dp"
@@ -50,7 +50,7 @@
         android:layout_height="match_parent"
         android:background="#ED673E"
         android:clickable="true"
-        android:text="删除"
+        android:text="@string/delete"
         android:textColor="@android:color/white" />
 
 </com.mcxtzhang.swipemenulib.SwipeMenuLayout>

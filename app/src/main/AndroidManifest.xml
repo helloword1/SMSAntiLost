@@ -34,7 +34,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
     <application
         android:name=".GoockrApplication"
         android:allowBackup="true"
@@ -72,6 +72,8 @@
             android:launchMode="singleTask" />
         <activity android:name=".views.activities.HomeActivity" />
         <activity android:name=".views.activities.msm.CreateContactActivity" />
+        <activity android:name=".views.activities.msm.DeleteContactActivity" />
+        <activity android:name=".views.activities.msm.MergeContactActivity" />
         <activity
             android:name=".views.activities.msm.MSMControlActivity"
             android:windowSoftInputMode="adjustPan" />
@@ -182,6 +184,10 @@
             android:theme="@style/baseTheme" />
         <activity
             android:name=".views.activities.more.SleepTimeActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.MultilingualLanguageActivity"
             android:launchMode="singleTask"
             android:theme="@style/baseTheme" />
         <activity

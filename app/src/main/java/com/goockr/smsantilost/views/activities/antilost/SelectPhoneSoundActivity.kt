@@ -39,7 +39,7 @@ class SelectPhoneSoundActivity(override val contentView: Int = R.layout.activity
         val titleLayout = layoutInflater.inflate(R.layout.base_title_view, null)
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
-        title?.text = "断开提醒声音"
+        title?.text = getString(R.string.cutRemindSound)
         ll?.addView(titleLayout)
     }
 
@@ -48,10 +48,10 @@ class SelectPhoneSoundActivity(override val contentView: Int = R.layout.activity
      */
     private fun initMData() {
         mDataList = ArrayList()
-        var bean1 = PhoneSoundBean("默认")
-        var bean2 = PhoneSoundBean("悦耳")
-        var bean3 = PhoneSoundBean("尖锐")
-        var bean4 = PhoneSoundBean("报警")
+        var bean1 = PhoneSoundBean(getString(R.string.defaultSound))
+        var bean2 = PhoneSoundBean(getString(R.string.sweetSound))
+        var bean3 = PhoneSoundBean(getString(R.string.sharpSound))
+        var bean4 = PhoneSoundBean(getString(R.string.alarmSound))
         mDataList?.add(bean1)
         mDataList?.add(bean2)
         mDataList?.add(bean3)

@@ -55,7 +55,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="设置备注"/>
+            android:text="@string/settingNotes"/>
 
         <View
             android:layout_width="0dp"
@@ -74,7 +74,7 @@
         android:layout_width="@dimen/x260"
         android:layout_height="@dimen/x40"
         android:background="@drawable/shape_blue"
-        android:text="删除好友"
+        android:text="@string/deleteFriends"
         android:textColor="#fff"
         android:gravity="center"/>
 

@@ -55,7 +55,7 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
                                     dismissDialog()
                                     if (t.result == 0) {
                                         val timer = CountDownButtonHelper(getCode,
-                                                "获取验证码", "重新获取", 60, 1)
+                                                getString(R.string.getMsmCode), getString(R.string.ReWantMsmCode), 60, 1)
                                         timer.start()
                                         preferences?.putValue(LOGIN_MSM_CODE, t.code.toString())
 //                                        tvLoginPassword.setText(t.code.toString())
@@ -65,7 +65,7 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
 
                                 override fun onError(call: Call?, e: Exception?, id: Int) {
                                     dismissDialog()
-                                    MyToast.showToastCustomerStyleText(this@RegisterActivity, "网络错误")
+                                    MyToast.showToastCustomerStyleText(this@RegisterActivity, getString(R.string.networkError))
                                 }
                             })
                 }
@@ -85,11 +85,11 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
     private fun isValid(): Boolean {
         if (isValidPhone()) {
             if (!NotNull.isNotNull(tvLoginPassword.text.toString())) {
-                MyToast.showToastCustomerStyleText(this, "请输入的短信验证码")
+                MyToast.showToastCustomerStyleText(this, getString(R.string.inputRightMsmCode))
                 return false
             }
             if (!TextUtils.equals(preferences?.getStringValue(LOGIN_MSM_CODE), tvLoginPassword.text.toString())) {
-                MyToast.showToastCustomerStyleText(this, "验证码错误")
+                MyToast.showToastCustomerStyleText(this, getString(R.string.msmCodeError))
                 return false
             }
         } else {
@@ -101,12 +101,12 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
     private fun isValidPhone(): Boolean {
 
         if (!NotNull.isNotNull(tvLoginUser.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, "请输入手机号码")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.inputPhoneNumber))
             return false
         }
         var phone = StringUtils.isPhone(tvLoginUser.text.toString())
         if (!phone) {
-            MyToast.showToastCustomerStyleText(this, "请输入正确的手机号码")
+            MyToast.showToastCustomerStyleText(this,  getString(R.string.inputRightNumber))
             return false
         }
 

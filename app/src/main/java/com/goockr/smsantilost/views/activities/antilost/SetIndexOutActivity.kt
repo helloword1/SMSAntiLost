@@ -34,7 +34,7 @@ class SetIndexOutActivity(override val contentView: Int = R.layout.activity_set_
         val titleLayout = layoutInflater.inflate(R.layout.base_title_view, null)
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
-        title?.text = "越界提醒设置"
+        title?.text = getString(R.string.TranundaryReminding)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }

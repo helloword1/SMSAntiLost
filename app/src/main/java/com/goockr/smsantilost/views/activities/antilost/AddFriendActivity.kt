@@ -36,8 +36,8 @@ class AddFriendActivity(override val contentView: Int = R.layout.activity_add_fr
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
 
-        title?.text = "添加好友"
-        titleOk?.text = "发送"
+        title?.text = getString(R.string.addFriends)
+        titleOk?.text = getString(R.string.sending)
         titleOk?.visibility = View.VISIBLE
         titleOk?.setTextColor(resources.getColor(R.color.colorPrimary))
         titleBack?.setOnClickListener { finish() }
@@ -53,11 +53,11 @@ class AddFriendActivity(override val contentView: Int = R.layout.activity_add_fr
             // 检查好友手机号码
             var flag = true
             if (!flag) { // 未注册
-                tv_Text1?.text = "该手机号码未注册"
+                tv_Text1?.text = getString(R.string.notRegist)
                 dialog?.show()
             } else { // 无效
-                tv_Text1?.text = "无效手机号码"
-                tv_Ensure?.text = "重新输入"
+                tv_Text1?.text = getString(R.string.notEffect)
+                tv_Ensure?.text = getString(R.string.reInput)
                 dialog?.show()
             }
         }
@@ -73,7 +73,7 @@ class AddFriendActivity(override val contentView: Int = R.layout.activity_add_fr
         dialog?.setCanceledOnTouchOutside(true)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         tv_Cancel = customView.findViewById(R.id.tv_Cancel)
-        tv_Cancel?.text = "返回"
+        tv_Cancel?.text = getString(R.string.back)
         tv_Ensure = customView.findViewById(R.id.tv_Ensure)
         tv_Text1 = customView.findViewById(R.id.tv_Text1)
         tv_Text2 = customView.findViewById(R.id.tv_Text2)

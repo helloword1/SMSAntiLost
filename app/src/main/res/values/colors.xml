@@ -16,6 +16,7 @@
     <color name="textTitleColor">#333333</color>
     <color name="partTranslucent">#39000000</color>
     <color name="dddddd">#39918e8e</color>
+    <color name="mapBg">#7d4287ff</color>
 
     <color name="tipsBackGround">#FCF3E1</color>
     <color name="tipsText">#EC9E51</color>

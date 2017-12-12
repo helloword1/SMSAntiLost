@@ -11,6 +11,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import com.goockr.smsantilost.R
 import com.mcxtzhang.indexlib.suspension.ISuspensionInterface
 
 /**
@@ -133,7 +134,7 @@ class DeleteDecoration(private var context: Context, private var mDatas: List<IS
             c.drawText(tag, child.paddingLeft.toFloat(), (parent.paddingTop + this.mTitleHeight - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.mPaint)
             var s = ""
             if (isNotChoice) {
-                s = "当前通讯录有${this.mDatas!!.size}人"
+                s = context.getString(R.string.contactSum)+"${this.mDatas!!.size}人"
                 //右边字体
                 this.textPaint.color = COLOR_RIGHT_TEXT_COLOR
                 this.textPaint.textSize = 32f

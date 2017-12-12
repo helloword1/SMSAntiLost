@@ -42,7 +42,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="钥匙"
+                android:text="@string/key"
                 android:textSize="17sp" />
 
             <LinearLayout
@@ -56,14 +56,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="距离最近  "
+                    android:text="@string/nearBy"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/antilost_item_lastDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="刚刚"
+                    android:text="@string/now"
                     android:textColor="#999999"
                     android:textSize="12sp" />
 
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/x20"
                 android:gravity="center"
-                android:text="已连接"
+                android:text="@string/hadConnect"
                 android:textSize="12sp" />
 
             <ImageView

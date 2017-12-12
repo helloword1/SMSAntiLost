@@ -1,2 +1,381 @@
 <resources>
+
+
+    <string name="loading"> is loading </string>
+
+    <string name="SmsAntiLost"> SMS anti-loss device </string>
+
+    <string name="app_name"> SMS anti-loss device </string>
+
+    <string name="notifyTitle"> prompt </string>
+
+    <string name="gpsNotifyMsg"> current phone scan bluetooth needs to open location function. </string>
+
+    <string name="setting"> to set </string>
+
+    <string name="cancel"> cancel </string>
+
+    <string name="longin"> login </string>
+
+
+    <string name="viewfinderview_status_text1"> puts the qr code/bar code into the viewfinder frame </string>
+
+    <string name="viewfinderview_status_text2"> can automatically scan </string>
+
+    <string name="button_ok"> OK </string>
+
+    <string name="msg_camera_framework_bug">Sorry, the Android camera encountered a problem. You may need to restart the device.</string>
+
+    <string name="phoneNumber"> cell phone number </string>
+
+    <string name="pleaseInputPwd"> please enter your account password </string>
+
+    <string name="registerUser"> registered user </string>
+
+    <string name="codeLogin"> verification code login </string>
+
+    <string name="networkError"> network error </string>
+
+    <string name="EnterNumber"> please enter your account </string>
+
+    <string name="enterPwd"> please enter password </string>
+
+    <string name="exitNext"> press the exit program </string>
+
+    <string name="natilost"> anti-loss </string>
+
+    <string name="location"> location </string>
+
+    <string name="more"> more </string>
+
+    <string name="comtactList"> address book </string>
+
+    <string name="concert"> determines </string>
+
+    <string name="search"> search </string>
+
+    <string name="contactDetails"> contact details </string>
+
+    <string name="edit"> edit </string>
+
+    <string name="complete"> complete </string>
+
+    <string name="editSucceed"> editing success </string>
+
+    <string name="add"> to add </string>
+
+    <string name="addDivece"> add device </string>
+
+    <string name="addFriends"> add buddy </string>
+
+    <string name="scanning"> scan </string>
+
+    <string name="searchComplete"> search completes </string>
+
+    <string name="searching"> search… </string>
+
+    <string name="binding"> binding, please… </string>
+
+    <string name="searchingM"> research </string>
+
+    <string name="key"> key </string>
+
+    <string name="wallet"> wallet </string>
+
+    <string name="noteBook"> noteBook </string>
+
+    <string name="secondCard"> phone card </string>
+
+    <string name="other"> other </string>
+
+    <string name="send"> send </string>
+
+    <string name="notRegist"> the phone number is not registered </string>
+
+    <string name="notEffect"> invalid cell phone number </string>
+
+    <string name="reInput"> re-input </string>
+
+    <string name="back"> returns </string>
+
+
+    <string name="inputOtherPhone"> please enter the phone number </string>
+
+    <string name="inviteFriendsDownLoad"> invites family and friends to download </string>
+
+    <string name="simInsert">SIM card bit insert </string>
+
+    <string name="downRefresh"> down to refresh </string>
+
+    <string name="belling"> ring </string>
+
+    <string name="simCard"> SIM card </string>
+
+    <string name="notInsert"> does not insert </string>
+
+    <string name="cutRemindSound"> disconnect alert sound </string>
+
+    <string name="defaultSound"> default </string>
+
+    <string name="sweetSound"> sweet </string>
+
+    <string name="sharpSound"> sharp </string>
+
+    <string name="alarmSound"> alarm </string>
+
+    <string name="TranundaryReminding"> cross-border remind Settings </string>
+
+    <string name="disconnectedSound"> disconnects, the phone reminds the voice </string>
+
+    <string name="disconnectedTime"> disconnects, the phone alert time is </string>
+
+    <string name="disconnectSoundAndTime"> device when disconnected from the phone, the phone\'s \"ring" and "reminder time"</string>
+
+    <string name="connectedSound"> cell phone reminds </string>
+    when reconnecting with the device
+
+    <string name="ModifyName"> modifies the name </string>
+
+    <string name="CanSave"> can save </string>
+
+    <string name="ChangeRights"> transfer permissions </string>
+
+    <string name="ChoiceUserChange"> please select the user who is transferring the permission (you need to add your friend first to transfer the permissions) </string>
+
+    <string name="SIMNumberSetting">SIM card number setting </string>
+
+    <string name="BindingLogic"> solution binding logic </string>
+
+    <string name="UnbindingSure"> to determine the device binding? </string>
+
+    <string name="UnbindingAndLost"> after the binding, you will not be able to operate the device </string>
+
+    <string name="outBoundsSetting"> transboundary mode setting </string>
+
+    <string name="RemindOutBoundsSetting"> transboundary reminder set </string>
+
+    <string name="findModeSetting"> seeker mode Settings </string>
+
+    <string name="Bi_directionalAntiLoss"> two-way anti-loss </string>
+
+    <string name="turnOn"> turn on </string>
+
+    <string name="otherSetting"> other Settings </string>
+
+    <string name="changeName"> modifies the name </string>
+
+    <string name="Unbinding"> to unbind </string>
+
+    <string name="twoWayTurnOn"> will enable the device to ring the phone by double-clicking the function button. </string>
+
+    <string name="phoneRemindSound"> phone alert sound </string>
+
+    <string name="RemindTime"> phone alert time </string>
+
+    <string name="soundAndVibration"> sound and vibration </string>
+
+    <string name="small"> small </string>
+
+    <string name="big"> </string>
+
+    <string name="vibration"> shock </string>
+
+    <string name="inputCode"> please enter the verification code </string>
+
+    <string name="getMsmCode"> gets the verification code </string>
+
+    <string name="phoneLogin"> account login </string>
+
+    <string name="ReWantMsmCode"> retrieves </string>
+
+    <string name="NetError"> network error </string>
+
+    <string name="inputRightNumber"> please enter the correct phone number </string>
+
+    <string name="inputRightMsmCode"> please enter SMS verification code </string>
+
+    <string name="msmCodeError"> verification code error </string>
+
+    <string name="inputPhoneNumber"> please enter your phone number </string>
+
+    <string name="nextStep"> next </string>
+
+    <string name="settingPwd"> please set password </string>
+
+    <string name="settingPwdNext"> again confirms password </string>
+
+    <string name="enterPwdNext"> please enter password again </string>
+
+    <string name="enterSamePwd"> please enter the same password twice </string>
+
+    <string name="name"> name </string>
+
+    <string name="beginTime"> start time </string>
+
+    <string name="endTime"> end time </string>
+
+    <string name="repeat"> repeat </string>
+
+    <string name="everyDay"> per day </string>
+
+    <string name="addSleepTime"> added sleep time </string>
+
+    <string name="infoIsEmpty"> information is not complete </string>
+
+
+    <string name="year"> year </string>
+
+    <string name="month"> month </string>
+
+    <string name="day">day </string>
+
+    <string name="hour">hour </string>
+
+    <string name="minute"> minute </string>
+
+    <string name="second"> second </string>
+
+    <string name="end"> end </string>
+
+    <string name="antiDisturb"> anti-disturb zone </string>
+
+    <string name="simShowContact"> display SIM card contact </string>
+
+    <string name="openAnti"> will be turned off and all anti-loss reminders </string>
+
+    <string name="radiusSetting"> radius: current radius 1m</string>
+
+    <string name="settingM"> radius: current radius </string>
+
+    <string name="changePhone"> modifies the phone number </string>
+
+    <string name="inputNewPhone"> input new phone number </string>
+
+    <string name="settingNotes"> setting remarks </string>
+
+    <string name="deleteFriends"> deleted friend </string>
+
+    <string name="inputFriendsNotes"> please enter your friend comment </string>
+
+    <string name="editGoodsFriends"> edit friend </string>
+
+    <string name="nickname"> nickname: </string>
+
+    <string name="myFiends"> my friend </string>
+
+    <string name="newFriends"> new friend </string>
+
+    <string name="notNewsFriends"> has no new friends </string>
+
+    <string name="sunDay"> </string>
+
+    <string name="Monday"> Monday </string>
+
+    <string name="Tuesday"> Tuesday </string>
+
+    <string name="Wednesday"> Wednesday </string>
+
+    <string name="Thursday"> Thursday </string>
+
+    <string name="Friday"> </string>
+
+    <string name="Saturday"> Saturday </string>
+
+    <string name="choiceRepeatDate"> please select duplicate date </string>
+
+    <string name="week"> weekend </string>
+
+    <string name="workDate"> working day </string>
+
+    <string name="changePwd"> change password </string>
+
+    <string name="changeSucceed"> changes success </string>
+
+    <string name="pwdNotSame"> password is inconsistent </string>
+
+    <string name="inputNewPwd"> input new password </string>
+
+    <string name="msmCode"> text verification code </string>
+
+    <string name="reGetTime">42S is retrieved </string>
+
+    <string name="sleepTimeName"> sleep time name </string>
+
+    <string name="inputSleepTimeName"> please enter hibernation name </string>
+
+    <string name="save"> save </string>
+
+    <string name="editUserName"> edit user name </string>
+
+    <string name="saveSucceed"> saves success </string>
+
+    <string name="sleepTime"> sleep time </string>
+
+    <string name="accountSetting"> account setting </string>
+
+    <string name="exitLogin"> is sure to quit login? </string>
+
+    <string name="myIcon"> my head </string>
+
+    <string name="userName"> user name </string>
+
+    <string name="binddingPhone"> phone binding </string>
+
+    <string name="phoneBinding"> phone binding </string>
+
+    <string name="wetchatBinding"> WeChat binding </string>
+
+    <string name="exit"> exits login </string>
+
+    <string name="hadConnect"> is connected </string>
+
+    <string name="disConnect"> is not connected </string>
+
+    <string name="nearBy"> is closest to </string>
+
+    <string name="now"> just </string>
+
+    <string name="company"> company </string>
+
+    <string name="delete"> delete </string>
+
+    <string name="inputName"> please input the name </string>
+
+    <string name="inputPhone"> please enter your phone number </string>
+
+    <string name="sendSms"> send message </string>
+
+    <string name="addPhone"> add phone </string>
+
+    <string name="deviceName"> device name </string>
+
+    <string name="inputSearchInfo"> please enter the search information </string>
+
+    <string name="NoonBreak"> lunch break </string>
+
+    <string name="computor"> notebook </string>
+
+    <string name="aboutMe"> about us </string>
+
+    <string name="emptySms"> no SMS </string>
+
+    <string name="scanningSucceed"> scan success </string>
+
+    <string name="contactSum"> current address book has </string>
+
+    <string name="moreSetting"> setting </string>
+
+    <string name="MultilingualLanguage"> multinational language </string>
+
+    <string name="China"> simplified Chinese </string>
+
+    <string name="hk"> traditional Chinese </string>
+
+    <string name="English"> English </string>
+
+    <string name="settingSuscceed"> setting success </string>
+
+    <string name="SMS"> message </string>
+
 </resources>
+

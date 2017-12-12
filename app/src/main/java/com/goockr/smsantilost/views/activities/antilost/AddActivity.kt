@@ -36,7 +36,7 @@ class AddActivity(override val contentView: Int = R.layout.activity_add) : BaseA
         titleRight = titleLayout.findViewById(R.id.titleRight)
         titleBack = titleLayout.findViewById(R.id.titleBack)
 
-        title?.text = "添加"
+        title?.text = getString(R.string.add)
         titleBack?.setOnClickListener { finish() }
 
         ll?.addView(titleLayout)

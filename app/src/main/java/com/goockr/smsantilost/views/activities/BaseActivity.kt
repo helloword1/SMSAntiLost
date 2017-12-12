@@ -1,7 +1,6 @@
 package com.goockr.smsantilost.views.activities
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
@@ -41,9 +40,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var titleRight1: TextView? = null
     var preferences: SharedPreferencesUtils? = null// 配置文件
     protected var baseLine: View? = null
-    protected var fileImagePath: String? = null
     protected var status_bar: View? = null
-    private val bitmap: Bitmap? = null
     private var goockrApplication: GoockrApplication? = null
 
     abstract val contentView: Int

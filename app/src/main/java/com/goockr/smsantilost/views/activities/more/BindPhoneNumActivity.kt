@@ -37,10 +37,10 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        titleOk?.text = "下一步"
+        titleOk?.text = getString(R.string.nextStep)
         titleOk?.visibility = View.VISIBLE
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
-        title?.text = "修改手机号码"
+        title?.text = getString(R.string.changePhone)
         ll?.addView(titleLayout)
     }
 
@@ -60,13 +60,13 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
             if (mCurrent == 1) {
                 // 先检查有没有输入验证码
                 if (TextUtils.isEmpty(et_VerificationCode1.text)) {
-                    ToastUtils.showShort(this, "请输入验证码")
+                    ToastUtils.showShort(this, R.string.inputCode)
                 } else {
                     showPage2()
                 }
             } else if (mCurrent == 2) {
                 if (TextUtils.isEmpty(et_VerificationCode2.text)) {
-                    ToastUtils.showShort(this, "请输入验证码")
+                    ToastUtils.showShort(this, R.string.inputCode)
                 } else {
                     dialog?.show()
                 }
@@ -96,29 +96,29 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
 
     private fun showPage1() {
         ll_page1.visibility = View.VISIBLE
-        title?.text = "修改手机号码"
+        title?.text = getString(R.string.changePhone)
         mCurrent = 1
         ll_page2.visibility = View.GONE
     }
 
     private fun showPage2() {
         ll_page1.visibility = View.GONE
-        title?.text = "输入新手机号码"
+        title?.text = getString(R.string.inputNewPhone)
         mCurrent = 2
         ll_page2.visibility = View.VISIBLE
     }
 
     private fun initDialog() {
-        var builder = AlertDialog.Builder(this)
-        var customView = layoutInflater.inflate(R.layout.dialog_bind_success, null)
+        val builder = AlertDialog.Builder(this)
+        val customView = layoutInflater.inflate(R.layout.dialog_bind_success, null)
         builder.setView(customView)
         builder.setIcon(R.mipmap.ic_launcher)
         dialog = builder.create()
         dialog?.setCancelable(true)
         dialog?.setCanceledOnTouchOutside(true)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        var tv_Ok = customView.findViewById<View>(R.id.tv_Ok)
-        tv_Ok.setOnClickListener {
+        val tvOk = customView.findViewById<View>(R.id.tv_Ok)
+        tvOk.setOnClickListener {
             dialog?.hide()
         }
     }

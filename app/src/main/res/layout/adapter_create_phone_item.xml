@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x5"
             android:background="@drawable/tv_stroke_bottom"
-            android:hint="请输入手机号码"
+            android:hint="@string/inputPhone"
             android:inputType="number"
             android:maxLength="15"
             android:paddingBottom="@dimen/x18"
@@ -45,7 +45,7 @@
         android:layout_height="match_parent"
         android:background="#ec120a"
         android:clickable="true"
-        android:text="删除"
+        android:text="@string/delete"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 </com.mcxtzhang.swipemenulib.SwipeMenuLayout>

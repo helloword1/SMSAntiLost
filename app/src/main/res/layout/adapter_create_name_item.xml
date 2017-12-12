@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x5"
         android:background="@drawable/tv_stroke_bottom"
-        android:hint="请输入名字"
+        android:hint="@string/inputName"
         android:paddingBottom="@dimen/x18"
         android:paddingTop="@dimen/x18"
         android:textColor="@color/textColor"

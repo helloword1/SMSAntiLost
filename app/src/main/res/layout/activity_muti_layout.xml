@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tv_stroke_bottom"
+        android:paddingBottom="@dimen/x12"
+        android:id="@+id/rlC"
+        android:paddingTop="@dimen/x12">
+
+        <TextView
+            android:id="@+id/tvCLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/x14"
+            android:text="@string/china"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/ivCLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x14"
+            android:src="@mipmap/icon_check"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tv_stroke_bottom"
+        android:paddingBottom="@dimen/x12"
+        android:id="@+id/rlH"
+        android:paddingTop="@dimen/x12">
+
+        <TextView
+            android:id="@+id/tvHLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/x14"
+            android:text="@string/hk"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/ivHLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x14"
+            android:src="@mipmap/icon_check"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rlE"
+        android:background="@drawable/tv_stroke_bottom"
+        android:paddingBottom="@dimen/x12"
+        android:paddingTop="@dimen/x12">
+
+        <TextView
+            android:id="@+id/tvELanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/x14"
+            android:text="@string/english"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/ivELanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x14"
+            android:src="@mipmap/icon_check"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>

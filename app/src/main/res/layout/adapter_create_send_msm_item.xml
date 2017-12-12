@@ -17,7 +17,7 @@
         android:gravity="center"
         android:paddingBottom="@dimen/x12"
         android:paddingTop="@dimen/x12"
-        android:text="发送信息"
+        android:text="@string/sendSms"
         android:textColor="@color/white"
         android:textSize="16sp" />
 
@@ -45,7 +45,7 @@
             android:layout_marginLeft="@dimen/x5"
             android:paddingBottom="@dimen/x18"
             android:paddingTop="@dimen/x18"
-            android:text="添加电话"
+            android:text="@string/addPhone"
             android:textColor="@color/textColor"
             android:textSize="15sp" />
     </LinearLayout>

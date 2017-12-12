@@ -34,7 +34,7 @@ class EditFriendsActivity(override val contentView: Int = R.layout.activity_edit
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        title?.text = "编辑好友"
+        title?.text = getString(R.string.editGoodsFriends)
         ll?.addView(titleLayout)
         tv_FriendsName.text = mName
         tv_FriendsNum.text = mNum
@@ -81,7 +81,7 @@ class EditFriendsActivity(override val contentView: Int = R.layout.activity_edit
         // 保存备注
         titleOk?.setOnClickListener {
             showPage1()
-            tv_FriendsRemark.text = "昵称:" + et_InputFriendsRemark.text
+            tv_FriendsRemark.text = getString(R.string.nickname) + et_InputFriendsRemark.text
             tv_FriendsRemark.visibility = View.VISIBLE
         }
     }
@@ -110,7 +110,7 @@ class EditFriendsActivity(override val contentView: Int = R.layout.activity_edit
         mCurrentPage = 2
         ll_page2.visibility = View.VISIBLE
         titleOk?.visibility = View.VISIBLE
-        titleOk?.text = "完成"
+        titleOk?.text = getString(R.string.complete)
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
         if (TextUtils.isEmpty(et_InputFriendsRemark.text)) {
             titleOk?.setTextColor(resources.getColor(R.color.appGray))

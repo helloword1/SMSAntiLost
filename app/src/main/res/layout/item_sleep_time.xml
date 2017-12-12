@@ -22,7 +22,7 @@
             android:id="@+id/tv_time_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="午休"/>
+            android:text="@string/NoonBreak"/>
 
         <View
             android:layout_width="0dp"
@@ -41,7 +41,7 @@
             android:layout_marginLeft="@dimen/x5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="周末"
+            android:text="@string/week"
             android:textSize="12sp"/>
 
         <ImageView
@@ -57,7 +57,7 @@
         android:layout_height="match_parent"
         android:background="#FA3A3A"
         android:clickable="true"
-        android:text="删除"
+        android:text="@string/delete"
         android:textColor="@android:color/white" />
 
 </com.mcxtzhang.swipemenulib.SwipeMenuLayout>

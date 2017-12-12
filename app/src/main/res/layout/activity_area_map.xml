@@ -4,76 +4,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context="com.goockr.smsantilost.views.activities.more.AreaMapActivity">
 
-    <com.amap.api.maps.MapView
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="@dimen/x45"
+        android:background="@color/backgroundGray">
 
-        <RelativeLayout
+        <AutoCompleteTextView
+            android:id="@+id/et_Search"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/x45"
-            android:background="@color/backgroundGray">
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_white_corners"
+            android:completionThreshold="1"
+            android:dropDownVerticalOffset="@dimen/x1"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:hint="请输入关键字"
+            android:imeOptions="actionDone"
+            android:inputType="text|textAutoComplete"
+            android:maxLength="20"
+            android:paddingLeft="@dimen/x14"
+            android:paddingRight="@dimen/x14"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textColorHint="#C0C0C0"
+            android:textSize="15.0sp" />
 
-            <EditText
-                android:id="@+id/et_Search"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/x8"
-                android:background="@drawable/shape_white_corners"
-                android:gravity="center"
-                android:textSize="15sp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"/>
+        <ImageView
+            android:id="@+id/etDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="@dimen/x8"
+            android:paddingLeft="@dimen/x14"
+            android:paddingRight="@dimen/x14"
+            android:paddingTop="@dimen/x8"
+            android:src="@mipmap/btn_del"
+            android:visibility="gone" />
 
-            <LinearLayout
-                android:id="@+id/ll_SearchIcon"
+        <LinearLayout
+            android:id="@+id/ll_SearchIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="false"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/x20"
+                android:layout_height="@dimen/x20"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:clickable="false">
+                android:layout_marginLeft="@dimen/x5"
+                android:text="@string/search" />
 
-                <ImageView
-                    android:layout_width="@dimen/x20"
-                    android:layout_height="@dimen/x20"
-                    android:src="@mipmap/ic_launcher"/>
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="搜索"
-                    android:layout_marginLeft="@dimen/x5"/>
+    </RelativeLayout>
 
-            </LinearLayout>
-
-        </RelativeLayout>
-    </com.amap.api.maps.MapView>
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/x70"
-        android:orientation="vertical"
+        android:background="#fff"
         android:gravity="center_horizontal"
-        android:background="#fff">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_CurrentRadius"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="半径设置：当前半径1m"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/radiusSetting" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/x10"
             android:paddingRight="@dimen/x10">
 
@@ -82,20 +108,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <SeekBar
                 android:id="@+id/sb_Radius"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:max="999"/>
+                android:max="999" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1000m"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
         </LinearLayout>
 

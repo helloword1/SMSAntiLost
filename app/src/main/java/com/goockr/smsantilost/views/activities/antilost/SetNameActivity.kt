@@ -28,12 +28,12 @@ class SetNameActivity(override val contentView: Int = R.layout.activity_set_name
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
 
-        titleOk?.text = "完成"
+        titleOk?.text = getString(R.string.complete)
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
         titleOk?.isClickable = false
         titleOk?.visibility = View.VISIBLE
 
-        title?.text = "修改名称"
+        title?.text = getString(R.string.ModifyName)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }
@@ -44,7 +44,7 @@ class SetNameActivity(override val contentView: Int = R.layout.activity_set_name
     private fun initClickEvent() {
         // 保存SIM卡号码的逻辑
         titleOk?.setOnClickListener {
-            ToastUtils.showShort(this,"可以保存")
+            ToastUtils.showShort(this,getString(R.string.CanSave))
         }
         // editText监听
         et_InputName.addTextChangedListener(object : TextWatcher{

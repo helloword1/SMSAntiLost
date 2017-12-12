@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
-            android:hint="请输入对方的手机号码"
+            android:hint="@string/inputOtherPhone"
             android:layout_marginLeft="@dimen/x10"
             android:textSize="16sp"/>
 
@@ -49,7 +49,7 @@
         android:layout_marginTop="@dimen/x40"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="邀请家人朋友下载"/>
+        android:text="@string/inviteFriendsDownLoad"/>
 
     <TextView
         android:layout_marginTop="@dimen/x10"
@@ -57,7 +57,7 @@
         android:layout_height="@dimen/x30"
         android:gravity="center"
         android:textColor="#fff"
-        android:text="邀请家人朋友下载"
+        android:text="@string/inviteFriendsDownLoad"
         android:background="@drawable/shape_blue"/>
 
 </LinearLayout>

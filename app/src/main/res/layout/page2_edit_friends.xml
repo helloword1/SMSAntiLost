@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/x45"
             android:background="@null"
-            android:hint="请输入好友备注"
+            android:hint="@string/inputFriendsNotes"
             android:textSize="14sp"/>
 
         <ImageView

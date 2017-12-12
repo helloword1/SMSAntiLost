@@ -35,7 +35,7 @@ class CodeLoginActivity(override val contentView: Int = R.layout.activity_code_l
             R.id.tvCodeLogin -> showActivity(LoginActivity::class.java)
             R.id.tvLoginPasswordDelete -> {
                 if (!NotNull.isNotNull(tvLoginUser.text.toString())) {
-                    MyToast.showToastCustomerStyleText(this, "请输入手机号码")
+                    MyToast.showToastCustomerStyleText(this, getString(R.string.inputRightNumber))
                     return
                 }
                 showProgressDialog()
@@ -50,7 +50,7 @@ class CodeLoginActivity(override val contentView: Int = R.layout.activity_code_l
                                 dismissDialog()
                                 if (t.result == 0) {
                                     val timer = CountDownButtonHelper(tvLoginPasswordDelete,
-                                            "获取验证码", "重新获取", 60, 1)
+                                            getString(R.string.getMsmCode), getString(R.string.ReWantMsmCode), 60, 1)
                                     timer.start()
                                     preferences?.putValue(Constant.LOGIN_MSM_CODE, t.code.toString())
                                     tvLoginPassword.setText(t.code.toString())
@@ -61,7 +61,7 @@ class CodeLoginActivity(override val contentView: Int = R.layout.activity_code_l
 
                             override fun onError(call: Call?, e: Exception?, id: Int) {
                                 dismissDialog()
-                                MyToast.showToastCustomerStyleText(this@CodeLoginActivity, "网络错误")
+                                MyToast.showToastCustomerStyleText(this@CodeLoginActivity, getString(R.string.networkError))
                             }
                         })
 
@@ -92,7 +92,7 @@ class CodeLoginActivity(override val contentView: Int = R.layout.activity_code_l
 
                                 override fun onError(call: Call?, e: Exception?, id: Int) {
                                     dismissDialog()
-                                    MyToast.showToastCustomerStyleText(this@CodeLoginActivity, "网络错误")
+                                    MyToast.showToastCustomerStyleText(this@CodeLoginActivity, getString(R.string.NetError))
                                 }
                             })
 
@@ -105,15 +105,15 @@ class CodeLoginActivity(override val contentView: Int = R.layout.activity_code_l
     private fun isValid(): Boolean {
 
         if (!StringUtils.isPhone(tvLoginUser.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, "请输入正确的手机号码")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.inputRightNumber))
             return false
         }
         if (!NotNull.isNotNull(tvLoginPassword.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, "请输入的短信验证码")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.inputRightMsmCode))
             return false
         }
         if (!TextUtils.equals(preferences?.getStringValue(Constant.LOGIN_MSM_CODE), tvLoginPassword.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, "请输入正确的短信验证码")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.inputRightMsmCode))
             return false
         }
         return true

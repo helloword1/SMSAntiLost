@@ -12,7 +12,7 @@
         android:layout_height="@dimen/x20"
         android:background="@color/tipsBackGround"
         android:gravity="center"
-        android:text="SIM卡位插入"
+        android:text="@string/simInsert"
         android:textColor="@color/tipsText"
         android:textSize="11sp" />
 
@@ -73,7 +73,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="下拉刷新"
+                        android:text="@string/downRefresh"
                         android:textColor="@color/appGray"
                         android:textSize="12sp" />
 
@@ -147,7 +147,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/x6"
-                        android:text="响铃"
+                        android:text="@string/belling"
                         android:textColor="@color/white" />
 
                 </LinearLayout>
@@ -173,7 +173,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/x5"
-                    android:text="SIM卡"
+                    android:text="@string/simCard"
                     android:textColor="@color/appGray"
                     android:textSize="12sp" />
 
@@ -186,7 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/x12"
-                    android:text="未插入"
+                    android:text="@string/notInsert"
                     android:textColor="@color/appGray"
                     android:textSize="12sp" />
 

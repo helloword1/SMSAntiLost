@@ -33,10 +33,10 @@ class SetPwdActivity(override val contentView: Int = R.layout.activity_set_pwd) 
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        titleOk?.text = "下一步"
+        titleOk?.text = getString(R.string.nextStep)
         titleOk?.visibility = View.VISIBLE
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
-        title?.text = "修改密码"
+        title?.text = getString(R.string.changePwd)
         ll?.addView(titleLayout)
     }
 
@@ -59,17 +59,17 @@ class SetPwdActivity(override val contentView: Int = R.layout.activity_set_pwd) 
             if (mCurrent == 1) {
                 // 检查是否输入验证码
                 if (TextUtils.isEmpty(et_VerificationCode1.text)) {
-                    ToastUtils.showShort(this,"请输入验证码")
+                    ToastUtils.showShort(this,getString(R.string.inputCode))
                 }else {
                     showPage2()
                 }
             }else if (mCurrent == 2) {
                 // 检查两次新密码输入是否一致
                 if (et_InputNewPWD.text.equals(et_InputNewPWDAgain.text)) {
-                    ToastUtils.showShort(this,"修改成功")
+                    ToastUtils.showShort(this,getString(R.string.changeSucceed))
                     finish()
                 }else {
-                    ToastUtils.showShort(this,"密码不一致")
+                    ToastUtils.showShort(this,getString(R.string.pwdNotSame))
                 }
             }
         }
@@ -129,14 +129,14 @@ class SetPwdActivity(override val contentView: Int = R.layout.activity_set_pwd) 
     private fun showPage1() {
         ll_page1.visibility = View.VISIBLE
         mCurrent = 1
-        title?.text = "修改密码"
+        title?.text = getString(R.string.changePwd)
         ll_page2.visibility = View.GONE
     }
 
     private fun showPage2() {
         ll_page1.visibility = View.GONE
         mCurrent = 2
-        title?.text = "输入新密码"
+        title?.text = getString(R.string.inputNewPwd)
         ll_page2.visibility = View.VISIBLE
     }
 }

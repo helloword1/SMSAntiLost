@@ -30,7 +30,7 @@ class TwoWayAntiActivity(override val contentView: Int = R.layout.activity_two_w
         val titleLayout = layoutInflater.inflate(R.layout.base_title_view, null)
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
-        title?.text = "双向防丢"
+        title?.text = getString(R.string.Bi_directionalAntiLoss)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }

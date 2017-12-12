@@ -30,8 +30,8 @@ class SetSleepTimeNameActivity(override val contentView: Int = R.layout.activity
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        title?.text = "休眠时段名称"
-        titleOk?.text = "完成"
+        title?.text = getString(R.string.sleepTimeName)
+        titleOk?.text = getString(R.string.complete)
         titleOk?.visibility = View.VISIBLE
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
         titleBack?.setOnClickListener { finish() }
@@ -61,7 +61,7 @@ class SetSleepTimeNameActivity(override val contentView: Int = R.layout.activity
         // 完成按钮
         titleOk?.setOnClickListener {
             if (TextUtils.isEmpty(et_InputSleepTimeName.text)) {
-                ToastUtils.showShort(this,"请输入休眠时段名称")
+                ToastUtils.showShort(this,getString(R.string.inputSleepTimeName))
             }else {
                 val intent = Intent()
                 intent.putExtra("sleepTimeName", et_InputSleepTimeName.text.toString())

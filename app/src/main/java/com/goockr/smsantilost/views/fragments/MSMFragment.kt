@@ -55,7 +55,7 @@ class MSMFragment : BaseFragment() {
         msmSwipeDelMenuAdapter = MsmSwipeDelMenuAdapter(activity, mDatas)
         val emptyView = layoutInflater.inflate(R.layout.empty_view, null)
         emptyView.ivEmptyView.setImageResource(R.mipmap.no_msg_figure)
-        emptyView.tvEmptyView.text="暂无短信"
+        emptyView.tvEmptyView.text=getString(R.string.emptySms)
         recycleView.setEmptyView(emptyView)
         recycleView.adapter = msmSwipeDelMenuAdapter
 

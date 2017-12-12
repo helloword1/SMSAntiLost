@@ -102,7 +102,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         }
 
         homeBottom.setTabbarCallbackListener {
-            var inflate = layoutInflater.inflate(R.layout.base_title_view, null)
+            val inflate = layoutInflater.inflate(R.layout.base_title_view, null)
             title = inflate.findViewById(R.id.title)
             titleBack = inflate.findViewById(R.id.titleBack)
             titleAdd = inflate.findViewById(R.id.titleAdd)

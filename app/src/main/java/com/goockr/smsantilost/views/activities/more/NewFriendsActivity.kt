@@ -35,7 +35,7 @@ class NewFriendsActivity(override val contentView: Int = R.layout.activity_new_f
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        title?.text = "新的好友"
+        title?.text = getString(R.string.newFriends)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }
@@ -68,7 +68,7 @@ class NewFriendsActivity(override val contentView: Int = R.layout.activity_new_f
         mAdapter = NewFriendsAdapter(this,mDatas)
         val emptyView = layoutInflater.inflate(R.layout.empty_view, null)
         emptyView.ivEmptyView.setImageResource(R.mipmap.no_mail_list_figure)
-        emptyView.tvEmptyView.text="暂无新好友"
+        emptyView.tvEmptyView.text=getString(R.string.notNewsFriends)
         emptyView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)//设置LayoutParams
         (lv_NewFriends.parent as ViewGroup).addView(emptyView)//添加到当前的View hierarchy
         lv_NewFriends.emptyView= emptyView

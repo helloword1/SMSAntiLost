@@ -16,7 +16,7 @@
 
         <TextView
             style="@style/index_out_text_style"
-            android:text="断开时，手机提醒声音"/>
+            android:text="@string/disconnectedSound"/>
 
         <View
             android:layout_width="0dp"
@@ -27,7 +27,7 @@
             android:id="@+id/tv_PhoneSound"
             style="@style/setting_text_small_style"
             android:layout_height="wrap_content"
-            android:text="默认"/>
+            android:text="@string/defaultSound"/>
 
         <ImageView
             style="@style/setting_icon_sytle"
@@ -43,7 +43,7 @@
         style="@style/setting_ll_style">
 
         <TextView
-            android:text="断开时，手机提醒时长"
+            android:text="@string/disconnectedTime"
             style="@style/index_out_text_style"/>
 
         <View
@@ -65,7 +65,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
-        android:text="设备与手机断开时，手机的“响铃”和“提醒时长”"
+        android:text="@string/disconnectSoundAndTime"
         android:padding="@dimen/x10"
         android:gravity="center_vertical"
         android:textSize="12sp"/>
@@ -74,7 +74,7 @@
         style="@style/setting_ll_style">
 
         <TextView
-            android:text="断开时，手机提醒时长"
+            android:text="@string/disconnectedTime"
             style="@style/index_out_text_style"/>
 
         <View
@@ -93,7 +93,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
-        android:text="手机与设备重新连接时，手机提醒"
+        android:text="@string/connectedSound"
         android:padding="@dimen/x10"
         android:gravity="center_vertical"
         android:textSize="12sp"/>

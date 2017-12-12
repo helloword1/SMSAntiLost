@@ -38,7 +38,7 @@ class SettingActivity(override val contentView: Int = R.layout.activity_setting)
         val titleLayout = layoutInflater.inflate(R.layout.base_title_view, null)
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
-        title?.text = "设置"
+        title?.text =getString(R.string.setting)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }
@@ -88,7 +88,7 @@ class SettingActivity(override val contentView: Int = R.layout.activity_setting)
             }
             R.id.tv_Ensure -> {
                 // 解绑逻辑
-                ToastUtils.showShort(this,"解绑逻辑")
+                ToastUtils.showShort(this,getString(R.string.BindingLogic))
             }
         }
     }
@@ -107,8 +107,8 @@ class SettingActivity(override val contentView: Int = R.layout.activity_setting)
         tv_Text1 = customView.findViewById(R.id.tv_Text1)
         tv_Text2 = customView.findViewById(R.id.tv_Text2)
         tv_Text3 = customView.findViewById(R.id.tv_Text3)
-        tv_Text1?.text = "确定解除设备绑定吗？"
-        tv_Text2?.text = "解除绑定后，你将无法操作该设备"
+        tv_Text1?.text = getString(R.string.UnbindingSure)
+        tv_Text2?.text = getString(R.string.UnbindingAndLost)
         tv_Text3?.visibility = View.GONE
     }
 }

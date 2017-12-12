@@ -16,7 +16,7 @@
 
         <TextView
             style="@style/index_out_text_style"
-            android:text="双向防丢"/>
+            android:text="@string/Bi_directionalAntiLoss"/>
 
         <View
             android:layout_width="0dp"
@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
-        android:text="开启后，可让设备通过“双击”功能按键，来让手机响铃。"
+        android:text="@string/twoWayTurnOn"
         android:padding="@dimen/x10"
         android:gravity="center_vertical"
         android:textSize="12sp"/>
@@ -45,7 +45,7 @@
 
         <TextView
             style="@style/index_out_text_style"
-            android:text="手机提醒声音"/>
+            android:text="@string/phoneRemindSound"/>
 
         <View
             android:layout_width="0dp"
@@ -56,7 +56,7 @@
             android:id="@+id/tv_PhoneSound1"
             style="@style/setting_text_small_style"
             android:layout_height="wrap_content"
-            android:text="默认"/>
+            android:text="@string/defaultSound"/>
 
         <ImageView
             style="@style/setting_icon_sytle"
@@ -72,7 +72,7 @@
         style="@style/setting_ll_style">
 
         <TextView
-            android:text="手机提醒时长"
+            android:text="@string/RemindTime"
             style="@style/index_out_text_style"/>
 
         <View
@@ -95,7 +95,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
-        android:text="声音与震动"
+        android:text="@string/soundAndVibration"
         android:padding="@dimen/x10"
         android:gravity="center_vertical"
         android:textSize="12sp"/>
@@ -105,7 +105,7 @@
         style="@style/setting_ll_style">
 
         <TextView
-            android:text="小"
+            android:text="@string/small"
             style="@style/index_out_text_style"/>
 
         <SeekBar
@@ -116,7 +116,7 @@
             android:progressDrawable="@drawable/style_seekbar"/>
 
         <TextView
-            android:text="大"
+            android:text="@string/big"
             style="@style/index_out_text_style"/>
 
     </LinearLayout>
@@ -130,7 +130,7 @@
 
         <TextView
             style="@style/index_out_text_style"
-            android:text="震动"/>
+            android:text="@string/vibration"/>
 
         <View
             android:layout_width="0dp"

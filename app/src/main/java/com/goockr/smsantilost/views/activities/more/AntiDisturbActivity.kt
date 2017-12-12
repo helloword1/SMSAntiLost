@@ -29,7 +29,7 @@ class AntiDisturbActivity(override val contentView: Int = R.layout.activity_anti
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
-        title?.text = "防打扰区域"
+        title?.text = getString(R.string.antiDisturb)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
     }
