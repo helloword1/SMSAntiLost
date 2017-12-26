@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/x12">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvLeftDate"
@@ -12,6 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="2017年9月2日 23：00"
+        android:paddingTop="@dimen/x8"
+        android:paddingBottom="@dimen/x3"
         android:textColor="@color/msmTextColorGray"
         android:textSize="12sp" />
 
@@ -20,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x12"
         android:layout_marginRight="@dimen/x12"
-        android:layout_marginTop="@dimen/x5"
+        android:paddingBottom="@dimen/x5"
         android:orientation="horizontal">
 
         <TextView

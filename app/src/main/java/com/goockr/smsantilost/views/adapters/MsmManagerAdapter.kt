@@ -12,18 +12,21 @@ import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.MsmBean
 import kotlinx.android.synthetic.main.item_msm_manager.view.*
 
-class MsmManagerAdapter(var mContext: Context,var mDatas: ArrayList<MsmBean>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MsmManagerAdapter(var mContext: Context, var mDatas: ArrayList<MsmBean>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mInflater: LayoutInflater = LayoutInflater.from(mContext)
     private var lists = ArrayList<MsmBean>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(mInflater.inflate(R.layout.item_msm_manager, parent, false))
     }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder as ViewHolder
         val msmBean = mDatas!![position]
-        holder.tvTime.text = msmBean.mTime
-        holder.tvTitle.text = msmBean.mTitl
-        holder.tvContent.text = msmBean.Content
+        holder.tvTime.text = msmBean.smsTime
+        holder.tvTitle.text = msmBean.smsTitle
+        if (msmBean.contentBeans.size > 0) {
+            holder.tvContent.text = msmBean.contentBeans[msmBean.contentBeans.size - 1].msmStr
+        }
         if (msmBean.isCheck) {
             holder.ivCheck.setImageResource(R.mipmap.btn_check_box_selected)
         } else {

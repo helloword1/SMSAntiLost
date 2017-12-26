@@ -180,4 +180,23 @@ object LocaleUtil {
         }
     }
 
+     fun dealWith(date: String): String {
+        if (date.contains("_")) {
+            val dates = date.split("_")
+            val date0 = dates[0]
+            val date1 = dates[1]
+            return "${date0.split("-")[0]}年${date0.split("-")[1]}" +
+                    "月${date0.split("-")[2]}日 ${date1.split("-")[0]}:${date1.split("-")[1]}"
+        }
+        return ""
+    }
+    fun dealWithForSms(date: String): String {
+        if (date.contains("_")) {
+            val dates = date.split("_")
+            val date0 = dates[0]
+            return "${date0.split("-")[0]}/${date0.split("-")[1]}" +
+                    "/${date0.split("-")[2]}"
+        }
+        return ""
+    }
 }

@@ -3,23 +3,40 @@ package com.goockr.smsantilost.views.activities.antilost
 import `in`.srain.cube.views.ptr.PtrDefaultHandler
 import `in`.srain.cube.views.ptr.PtrFrameLayout
 import `in`.srain.cube.views.ptr.header.MaterialHeader
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
+import android.os.Message
+import android.os.SystemClock
 import android.view.View
+import android.view.ViewGroup
+import com.amap.api.location.AMapLocation
+import com.amap.api.location.AMapLocationClient
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.utils.CalculateUtils
+import com.goockr.smsantilost.entries.AntilostBean
+import com.goockr.smsantilost.entries.DeviceBean
+import com.goockr.smsantilost.entries.DeviceBeanDao
+import com.goockr.smsantilost.utils.*
+import com.goockr.smsantilost.utils.Constant.BUZZER
+import com.goockr.smsantilost.utils.Constant.INIT
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.jude.swipbackhelper.SwipeBackHelper
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_key.*
 
 /**
  * 钥匙界面
  */
 class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseActivity() {
-
     private var iconId: Int = 0
-    private var name: String? = null
+    private var name: AntilostBean? = null
+    private var mThread: Thread? = null
+    private var mLocationClient: AMapLocationClient? = null
+    private var latitude = ""
+    private var longitude = ""
+    private var address = ""
+    private var deviceBean: DeviceBean?=null
+    private var deviceBeanDao: DeviceBeanDao?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,24 +46,53 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
         SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(false)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun initView() {
         initMData()
-        initMView()
+        initMTitle()
+        initMPullToRefresh()
         initClickEvent()
     }
+
+    override fun onResume() {
+        super.onResume()
+        initMView()
+    }
+
 
     /**
      * 初始化数据
      */
     private fun initMData() {
-        iconId = intent.getIntExtra("icon",0)
-        name = intent.getStringExtra("name")
+        iconId = intent.extras.getInt("icon")
+        name = intent.extras.getSerializable("device") as AntilostBean?
+
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initMView() {
-        initMTitle()
-        initMPullToRefresh()
+        if (mLocationClient!!.isStarted) {
+            mLocationClient?.stopLocation()
+        }
+        val connect = instance!!.isConnect
+        if (connect) {
+            instance?.setUiHandler(myHandler)
+            instance?.write(Constant.INIT)
+            //开始定位
+            mLocationClient?.startLocation()
+        } else {
+            tvNotify.visibility = View.VISIBLE
+            tvNotify.text = getString(R.string.deviceNoConnect)
+        }
+        tvDeviceDate.text = DateUtils.getDate(DateUtils.parsePatterns[5])
+        tvDeviceAddress.text = name?.address + " >"
+        address=name?.address!!
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mLocationClient!!.isStarted) {
+            mLocationClient?.stopLocation()
+        }
     }
 
     /**
@@ -59,7 +105,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
         header.setColorSchemeColors(colors)
         // 调整刷新图标位置
         val calculateUtils = CalculateUtils(this)
-        header.layoutParams = PtrFrameLayout.LayoutParams(-1, -2)
+        header.layoutParams = PtrFrameLayout.LayoutParams(-1, -2) as ViewGroup.LayoutParams?
         header.setPadding(0, calculateUtils.dp2px(15), 0, calculateUtils.dp2px(10))
         header.setPtrFrameLayout(ptrFrameLayout)
         // 设置刷新完毕时关闭的时间
@@ -70,6 +116,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
         ptrFrameLayout.setLastUpdateTimeRelateObject(this)
         ptrFrameLayout.setPtrHandler(object : PtrDefaultHandler() {
             override fun onRefreshBegin(frame: PtrFrameLayout?) {
+                initMView()
                 frame!!.postDelayed({
                     ptrFrameLayout.refreshComplete()
                 }, 1500)
@@ -84,6 +131,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
     /**
      * 初始化头部
      */
+    @SuppressLint("InflateParams")
     private fun initMTitle() {
         ll?.removeAllViews()
         mainIcon.setImageResource(iconId)
@@ -92,27 +140,140 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
         titleRight = titleLayout.findViewById(R.id.titleRight)
         titleBack = titleLayout.findViewById(R.id.titleBack)
 
-        title?.text = name
+        title?.text = name?.deviceName
         titleRight?.visibility = View.VISIBLE
         titleRight?.setImageResource(R.mipmap.btn_nav_set_up)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
+        if (instance?.isConnect!!) {
+            instance?.write(INIT)
+        }
+        dealWithSignal(name?.distance)
+        //定位
+        val mLocationListener = MyAMapLocationListener()
+        mLocationListener.setLocationListener {
+            if (it != null) {
+                if (it.errorCode == 0) {
+                    //可在其中解析amapLocation获取相应内容。
+                    runOnUiThread { parseData(it) }
+                } else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    LogUtils.e("AmapError", "location Error, ErrCode:"
+                            + it.errorCode + ", errInfo:"
+                            + it.errorInfo)
+                }
+            }
+        }
+        mLocationClient = goockrApplication?.mLocationClient
+        mLocationClient?.setLocationListener(mLocationListener)
+        //开始定位
+//        mLocationClient?.startLocation()
+
+        deviceBeanDao = goockrApplication?.mDaoSession?.deviceBeanDao
+        deviceBean = deviceBeanDao?.queryBuilder()?.where(DeviceBeanDao.Properties.
+                Mac.eq(name?.mac))?.unique()
+        latitude=deviceBean?.latitude.toString()
+        longitude=deviceBean?.longitude.toString()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun parseData(it: AMapLocation) {
+        tvDeviceAddress.text = it.address + " >"
+        latitude = it.latitude.toString()
+        longitude = it.longitude.toString()
+
+        checkNotNull(deviceBean).address = it.address
+        checkNotNull(deviceBean).latitude = it.latitude
+        checkNotNull(deviceBean).longitude = it.longitude
+        deviceBeanDao?.update(deviceBean)
+    }
+
+    override fun handleMyMessage(msg: Message?) {
+        super.handleMyMessage(msg)
+        val msgStr = msg?.obj?.toString()
+        if (msgStr!!.startsWith("Init_")) {
+            //电量
+            val battery = msgStr.split(",")[0].split("_")[1]
+            dealWithBattery(battery)
+            //是否有SIM卡
+            val sim = msgStr.split(",")[1].split("_")[1]
+            dealWithSIM(sim)
+            //是否在充电中
+            val charge = msgStr.split(",")[2].split("_")[1]
+            dealWithCharge(charge)
+        }
+
+    }
+
+    private fun dealWithCharge(charge: String) {
+
+    }
+
+    private fun dealWithSIM(s: String) {
+        if (s.toInt() == 0) {
+            tvNotify.visibility = View.VISIBLE
+            tvNotify.text = getString(R.string.simNoInsert)
+            SimPhone.text = getString(R.string.notInsert)
+        } else if (s.toInt() == 1) {
+            tvNotify.visibility = View.GONE
+            SimPhone.text = s
+        }
+    }
+
+    private fun dealWithBattery(s: String) {
+        when {
+            s.toInt() > 90 -> ivBattery.setImageResource(R.mipmap.icon_equipment_capacity_5)
+            s.toInt() > 73 -> ivBattery.setImageResource(R.mipmap.icon_equipment_capacity_4)
+            s.toInt() > 51 -> ivBattery.setImageResource(R.mipmap.icon_equipment_capacity_3)
+            s.toInt() > 34 -> ivBattery.setImageResource(R.mipmap.icon_equipment_capacity_2)
+            s.toInt() > 17 -> ivBattery.setImageResource(R.mipmap.icon_equipment_capacity_1)
+            s.toInt() > 0 -> ivBattery.setImageResource(R.mipmap.icon_equipment_capacity_0)
+        }
+
+    }
+
+    private fun dealWithSignal(distance: String?) {
+        when {
+            distance?.toDouble()!! > -50.0 -> ivSignal.setImageResource(R.mipmap.icon_bluetooth_signal_4)
+            distance.toDouble() > -70.0 -> ivSignal.setImageResource(R.mipmap.icon_bluetooth_signal_3)
+            distance.toDouble() > -80.0 -> ivSignal.setImageResource(R.mipmap.icon_bluetooth_signal_2)
+            distance.toDouble() > -90.0 -> ivSignal.setImageResource(R.mipmap.icon_bluetooth_signal_1)
+        }
     }
 
 
     private fun initClickEvent() {
         llBell.setOnClickListener {
-            mainBack.setImageDrawable(resources.getDrawable(R.drawable.animation_search))
-            var anim = mainBack.drawable as AnimationDrawable
-            anim.start()
+            if (instance!!.isConnect) {
+                mainBack.setImageDrawable(resources.getDrawable(R.drawable.animation_search))
+                val anim = mainBack.drawable as AnimationDrawable
+                if (!NotNull.isNotNull(mThread) || !mThread!!.isAlive) {
+                    mThread = Thread({
+                        while (!Thread.currentThread().isInterrupted) {
+                            SystemClock.sleep(1000)
+                            instance?.write(BUZZER)
+                        }
+                    })
+                    mThread?.start()
+                    anim.start()
+                } else {
+                    mThread?.interrupt()
+                    mThread = null
+                    anim.stop()
+                }
+            }
+        }
+        llLocation.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString(Constant.LONGITUDE, longitude)
+            bundle.putString(Constant.LATITUDE, latitude)
+            bundle.putString(Constant.ADDRESS, address)
+            showActivity(DeviceMapActivity::class.java, bundle)
         }
         // 设置按钮点击跳转
         titleRight?.setOnClickListener {
-            val intent = Intent()
-            intent.setClass(this, SettingActivity::class.java)
-            startActivity(intent)
+            showActivity(SettingActivity::class.java)
         }
     }
-
 }
 

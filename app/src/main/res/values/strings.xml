@@ -164,7 +164,7 @@
     <string name="exit">退出登录</string>
     <string name="hadConnect">已连接</string>
     <string name="disConnect">未连接</string>
-    <string name="nearBy">距离最近</string>
+    <string name="nearBy">距离近</string>
     <string name="now">刚刚</string>
     <string name="company">公司</string>
     <string name="delete">删除</string>
@@ -187,4 +187,15 @@
     <string name="english">English</string>
     <string name="settingSuscceed">设置成功</string>
     <string name="sms">短信</string>
+    <string name="currentArea">佛山</string>
+    <string name="searchResult">搜索结果</string>
+    <string name="settingAntiAreaName">防打扰区域名称设置</string>
+    <string name="pleaseInputName">请输入区域名称</string>
+    <string name="openBlueTooth">请打开蓝牙</string>
+    <string name="disName">未命名</string>
+    <string name="connectSucceed">连接成功</string>
+    <string name="connectFail">连接失败</string>
+    <string name="deviceNoConnect">设备未连接</string>
+    <string name="simNoInsert">SIM卡未插入</string>
+    <string name="deviceHasAdd">该设备已添加</string>
 </resources>

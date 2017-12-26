@@ -14,6 +14,7 @@ import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.MsmBean
 import com.goockr.smsantilost.graphics.CleanableEditText
 import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.LocaleUtil.dealWithForSms
 import com.goockr.smsantilost.views.activities.msm.MSMControlActivity
 import com.goockr.smsantilost.views.fragments.MSMFragment
 import kotlinx.android.synthetic.main.item_msm_search.view.*
@@ -59,19 +60,21 @@ open class MsmSwipeAdapter(protected var mContext: Context, private var fragment
         } else {
             holder as ViewHolder
             val msmBean = mDatas!![position]
-            holder.tvTime.text = msmBean.mTime
-            holder.tvTitle.text = msmBean.mTitl
-            holder.tvContent.text = msmBean.Content
+            holder.tvTime.text = dealWithForSms(msmBean.smsTime)
+            holder.tvTitle.text = msmBean.smsTitle
+            if (msmBean.contentBeans.size>0){
+                holder.tvContent.text = msmBean.contentBeans[msmBean.contentBeans.size-1].msmStr
+            }
             if (msmBean.isShow) {
                 holder.ivAvatar.visibility = View.VISIBLE
             } else {
                 holder.ivAvatar.visibility = View.INVISIBLE
             }
             holder.content.setOnClickListener {
+                msmBean.isShow=false
+                notifyDataSetChanged()
                 val bundle = Bundle()
-                bundle.putString(Constant.MSM_NAME, msmBean.mTitl)
-                bundle.putString(Constant.MSM_Time, msmBean.mTime)
-                bundle.putString(Constant.MSM_CONTENT, msmBean.Content)
+                bundle.putString(Constant.MSM_NAME, msmBean.smsTitle)
                 val intent = Intent(mContext, MSMControlActivity::class.java)
                 intent.putExtras(bundle)
                 fragment.startActivityForResult(intent, Constant.MSM_RESULT_ID)

@@ -3,22 +3,22 @@ package com.goockr.smsantilost.views.activities.antilost
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Bundle
-import android.os.Handler
-import android.util.Log
+import android.os.Message
 import android.view.KeyEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
-import android.view.animation.ScaleAnimation
+import com.amap.api.location.AMapLocation
+import com.amap.api.location.AMapLocationClient
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.utils.ClsUtils
-import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.entries.DeviceBean
+import com.goockr.smsantilost.entries.DeviceBeanDao
+import com.goockr.smsantilost.graphics.MyToast
+import com.goockr.smsantilost.utils.*
+import com.goockr.smsantilost.utils.Constant.MAC
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.adapters.DeviceAdapter
 import cxx.utils.NotNull
@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_add_device.*
 import kotlinx.android.synthetic.main.page1_add_device.*
 import kotlinx.android.synthetic.main.page2_add_device.*
 import kotlinx.android.synthetic.main.page3_add_device.*
+import java.util.*
 
 
 /**
@@ -33,23 +34,27 @@ import kotlinx.android.synthetic.main.page3_add_device.*
  */
 class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_device) : BaseActivity() {
 
-    private var mHandler = Handler()
     private var mDataList = ArrayList<BluetoothDevice>()
+    private var shortList = ArrayList<Short>()
     // 三个页面模式
     private val PAGE1 = 1
     private val PAGE2 = 2
     private val PAGE3 = 3
+    private var isConnect = false
     private var mCurrentPage = 1
-    // 动画
-    var mScaleAnimation: ScaleAnimation? = null
-    var mRotationAnimation: RotateAnimation? = null
+    private var mLocationClient: AMapLocationClient? = null
+    private var longitude = "0.0"
+    private var latitude = "0.0"
+    private var address = ""
+    //蓝牙
     var mBluetoothAdapter: BluetoothAdapter? = null
     private var btReceiver: MyBtReceiver? = null
+    // 动画
+    var mRotationAnimation: RotateAnimation? = null
     private var adapter: DeviceAdapter? = null
     private var bluetoothDevice: BluetoothDevice? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var currentPotion = -1
+    override fun initView() {
         initMView()
         initAnimation()
         initMData()
@@ -57,19 +62,13 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
     }
 
     private fun initAnimation() {
-        mScaleAnimation = ScaleAnimation(1f, 1.2f, 1f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        mScaleAnimation?.duration = 1000
-        mScaleAnimation?.repeatMode = Animation.REVERSE
-        mScaleAnimation?.repeatCount = -1
-        iv_InSearch.animation = mScaleAnimation
-
-
         mRotationAnimation = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
         mRotationAnimation?.duration = 2000
         mRotationAnimation?.repeatCount = -1
         mRotationAnimation?.interpolator = LinearInterpolator()
         iv_BindingWait.animation = mRotationAnimation
     }
+
 
     /**
      * 初始化title
@@ -81,9 +80,55 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
         title = titleLayout.findViewById(R.id.title)
         titleRight = titleLayout.findViewById(R.id.titleRight)
         titleBack = titleLayout.findViewById(R.id.titleBack)
-
         title?.text = getString(R.string.addDivece)
         ll?.addView(titleLayout)
+
+        //定位
+        val mLocationListener = MyAMapLocationListener()
+        mLocationListener.setLocationListener {
+            if (it != null) {
+                if (it.errorCode == 0) {
+                    //可在其中解析amapLocation获取相应内容。
+                    runOnUiThread { parseData(it) }
+                } else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    LogUtils.e("AmapError", "location Error, ErrCode:"
+                            + it.errorCode + ", errInfo:"
+                            + it.errorInfo)
+                }
+            }
+        }
+        mLocationClient = goockrApplication?.mLocationClient
+        mLocationClient?.setLocationListener(mLocationListener)
+        //开始定位
+        mLocationClient?.startLocation()
+    }
+
+    private fun parseData(it: AMapLocation) {
+        latitude = it.latitude.toString()
+        longitude = it.longitude.toString()
+        address = it.address
+        mLocationClient?.stopLocation()
+    }
+
+    override fun handleMyMessage(msg: Message?) {
+        when (msg?.what) {
+            Constant.MSG_CONNECT_SUCCEED -> {
+                LogUtils.d("", "" + msg.what)
+                instance?.write(MAC)
+            }
+
+            Constant.MSG_CLIENT_REV_NEW -> {
+                val obj = msg.obj.toString()
+                getBlueMsg(msg.arg1, obj)
+            }
+            Constant.MSG_CONNECT_FAIL -> {
+                if (isConnect) return
+                ToastUtils.showShort(this, "连接失败")
+                showPage1()
+                mRotationAnimation?.cancel()
+            }
+        }
     }
 
     /**
@@ -99,15 +144,14 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
             startActivityForResult(turnOnBtIntent, Constant.REQUEST_ENABLE_BT)
             val intentFilter = IntentFilter()
             btReceiver = MyBtReceiver()
-            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
-            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
+//            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
+//            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
             intentFilter.addAction(BluetoothDevice.ACTION_FOUND)
             intentFilter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST)
             intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
             registerReceiver(btReceiver, intentFilter)
             mBluetoothAdapter?.startDiscovery()
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -126,33 +170,38 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
         }
     }
 
-    /**
-     * 用户打开蓝牙后，显示已绑定的设备列表
-     */
-    private fun showBondDevice() {
-        mDataList.clear()
-        val tmp = mBluetoothAdapter?.bondedDevices
-        for (d in tmp!!) {
-            mDataList.add(d)
+    private fun getBlueMsg(potion: Int, msg: String) {
+        currentPotion = potion
+        when {
+            msg.startsWith("MA_") -> {
+                showPage3()
+                isConnect = true
+            }
+
         }
-        adapter?.notifyDataSetChanged()
+
     }
 
     /**
      * 点击事件
      */
     private fun initClickEvent() {
-        // listView
         lv_Device.setOnItemClickListener { parent, view, position, id ->
-
-            ll_page1.visibility = View.GONE
-            ll_page2.visibility = View.VISIBLE
-            mCurrentPage = 2
+            //            showProgressDialog(getString(R.string.binding))
+            showPage2()
             mRotationAnimation?.start()
             // 用RxAndroid模拟绑定（返回值到时再修改）
             bluetoothDevice = mDataList[position]
-            ClsUtils.createBond(bluetoothDevice!!::class.java, mDataList[position])
-
+            val remoteDevice = BluetoothAdapter.getDefaultAdapter()?.getRemoteDevice(bluetoothDevice?.address)
+            if (NotNull.isNotNull(remoteDevice)) {
+//                instance = ClientThread(position, remoteDevice!!,myHandler, this)
+//                instance = ClientThread()
+                if (NotNull.isNotNull(instance) && instance!!.isConnect) {
+                    instance?.disConnect()
+                }
+                instance?.init(position, remoteDevice!!, myHandler, this)
+                Thread(instance).start()
+            }
         }
         // 返回键
         titleBack?.setOnClickListener {
@@ -162,28 +211,20 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
                 }
                 PAGE2 -> {
                     showPage1()
-                    mHandler.removeCallbacksAndMessages(null)
                 }
                 PAGE3 -> {
                     showPage2()
                 }
             }
         }
-        // 选择绑定的类型
-        ll_Key.setOnClickListener {
-            finish()
-        }
-        ll_Wallet.setOnClickListener {
-            finish()
-        }
-        ll_Pc.setOnClickListener {
-            finish()
-        }
-        ll_ViceCard.setOnClickListener {
-            finish()
-        }
-        ll_Other.setOnClickListener {
-            finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mLocationClient?.stopLocation()
+        if (NotNull.isNotNull(btReceiver)) {
+            unregisterReceiver(btReceiver)
+            mBluetoothAdapter?.cancelDiscovery()
         }
     }
 
@@ -220,69 +261,69 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
         ll_page2.visibility = View.GONE
         ll_page1.visibility = View.GONE
         mCurrentPage = 3
-    }
+        //钥匙
+        ll_Key.setOnClickListener {
+            saveData(getString(R.string.key))
+        }
+        //钱包
+        ll_Wallet.setOnClickListener {
+            saveData(getString(R.string.wallet))
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (NotNull.isNotNull(btReceiver)) {
-            unregisterReceiver(btReceiver)
-            mBluetoothAdapter?.cancelDiscovery()
+        }//笔记本
+        ll_Pc.setOnClickListener {
+            saveData(getString(R.string.computor))
+
+        }//ll_ViceCard
+        ll_ViceCard.setOnClickListener {
+            saveData(getString(R.string.secondCard))
+
+        }//其他
+        ll_Other.setOnClickListener {
+            saveData(getString(R.string.other))
         }
     }
 
-    /**
-     * 广播接受器
-     */
-    private inner class MyBtReceiver : BroadcastReceiver() {
 
-        override fun onReceive(context: Context, intent: Intent) {
-            val action = intent.action
-            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED == action) {
-                //开始搜索
-                mScaleAnimation?.start()
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
-                //toast("搜索结束")
-                mScaleAnimation?.cancel()
-                tvBlueTooth.text = getString(R.string.searchComplete)
-            } else if (BluetoothDevice.ACTION_FOUND == action) {
-                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                if (isNewDevice(device)) {
-                    mDataList.add(device)
-                    adapter?.notifyDataSetChanged()
-                }
-            } else if (action == BluetoothDevice.ACTION_PAIRING_REQUEST)
-            //再次得到的action，会等于PAIRING_REQUEST
-            {
-                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                if (device !== bluetoothDevice) return//如果不是当前蓝牙 退出
-                try {
-                    //1.确认配对
-//                    ClsUtils.setPairingConfirmation(bluetoothDevice!!::class.java, bluetoothDevice!!, true)
-//                    //2.终止有序广播
-                    abortBroadcast()//如果没有将广播终止，则会出现一个一闪而过的配对框。
-                    //3.调用setPin方法进行配对...
-                    val pin = "0000"
-                    ClsUtils.setPin(bluetoothDevice!!::class.java, bluetoothDevice!!, pin)
+    private fun saveData(key: String) {
+        if (currentPotion != -1) {
+            val deviceBeanDao = goockrApplication?.mDaoSession?.deviceBeanDao
+            val deviceBean = deviceBeanDao?.queryBuilder()?.where(DeviceBeanDao.Properties.
+                    Mac.eq(mDataList[currentPotion].address))?.unique()
+            if (!NotNull.isNotNull(deviceBean)) {
+                deviceBeanDao?.insert(DeviceBean(null, key, mDataList[currentPotion].name,
+                        mDataList[currentPotion].name, mDataList[currentPotion].address
+                        , shortList[currentPotion].toString(), DateUtils.getDate(DateUtils.parsePatterns[2]),longitude.toDouble(),latitude.toDouble(),address))
+            }else{
+                deviceBean?.name=mDataList[currentPotion].name
+                deviceBean?.date=DateUtils.getDate(DateUtils.parsePatterns[2])
+                deviceBean?.distance=shortList[currentPotion].toString()
+                deviceBean?.deviceType=key
+                deviceBean?.latitude=latitude.toDouble()
+                deviceBean?.longitude=longitude.toDouble()
+                deviceBean?.address=address
+                deviceBeanDao?.update(deviceBean)
+                MyToast.showToastCustomerStyleText(this,getString(R.string.deviceHasAdd))
+            }
+            goockrApplication?.exitToHome()
+        }
+    }
 
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED == action) {
-                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                when (device.bondState) {
-                    BluetoothDevice.BOND_BONDING ->
-                        Log.d("BlueToothTestActivity", "正在配对......")
-                    BluetoothDevice.BOND_BONDED -> {
-                        showPage3()
-                        Log.d("BlueToothTestActivity", "完成配对")
-                    }
-                    BluetoothDevice.BOND_NONE -> {
-                        showPage1()
-                    }
-
-                }
+    override fun receive(intent: Intent) {
+        val action = intent.action
+        if (BluetoothAdapter.ACTION_DISCOVERY_STARTED == action) {
+            //开始搜索
+        } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
+            //toast("搜索结束")
+            tvBlueTooth.text = getString(R.string.searchComplete)
+        } else if (BluetoothDevice.ACTION_FOUND == action) {
+            val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+            if (isNewDevice(device)) {
+                shortList.add(intent.extras.getShort(BluetoothDevice.EXTRA_RSSI))
+                mDataList.add(device)
+                adapter?.notifyDataSetChanged()
             }
         }
+
     }
 
     /**
@@ -293,6 +334,21 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
     private fun isNewDevice(device: BluetoothDevice): Boolean {
         val repeatFlag = mDataList.any { it.address == device.address }
         //不是已绑定状态，且列表中不重复
-        return device.bondState != BluetoothDevice.BOND_BONDED && !repeatFlag
+        return !repeatFlag
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mLocationClient?.stopLocation()
+        iv_InSearch.stopAnimator()
+    }
+    override fun onPause() {
+        super.onPause()
+        iv_InSearch.stopAnimator()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        iv_InSearch.startAnimator()
     }
 }

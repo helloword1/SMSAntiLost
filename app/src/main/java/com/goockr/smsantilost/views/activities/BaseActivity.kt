@@ -1,9 +1,10 @@
 package com.goockr.smsantilost.views.activities
 
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.os.Bundle
-import android.os.SystemClock
+import android.os.*
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -16,12 +17,12 @@ import android.widget.TextView
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.graphics.LoadingDialog
+import com.goockr.smsantilost.views.blueteeth.ClientThread
 import com.jude.swipbackhelper.SwipeBackHelper
 import cxx.utils.NotNull
 import cxx.utils.SharedPreferencesUtils
 import kotlinx.android.synthetic.main.base_title_view.view.*
 import java.io.Serializable
-import kotlin.concurrent.thread
 
 /**
  * Created by Administrator on 2017/9/26.
@@ -41,7 +42,19 @@ abstract class BaseActivity : AppCompatActivity() {
     var preferences: SharedPreferencesUtils? = null// 配置文件
     protected var baseLine: View? = null
     protected var status_bar: View? = null
-    private var goockrApplication: GoockrApplication? = null
+    protected var goockrApplication: GoockrApplication? = null
+    protected var instance: ClientThread? = null
+    //蓝牙通信
+    protected val myHandler = @SuppressLint("HandlerLeak")
+    object : Handler() {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            handleMyMessage(msg)
+        }
+    }
+
+    //处理蓝牙模块返回信息
+    protected open fun handleMyMessage(msg: Message?) {}
 
     abstract val contentView: Int
 
@@ -64,6 +77,7 @@ abstract class BaseActivity : AppCompatActivity() {
         baseLine = findViewById(R.id.baseLine)
         inflation = LayoutInflater.from(this)
         goockrApplication = application as GoockrApplication
+        instance = goockrApplication?.instance
         goockrApplication?.addActivity(this)
         //滑动删除库初始化
         SwipeBackHelper.onCreate(this)
@@ -72,20 +86,12 @@ abstract class BaseActivity : AppCompatActivity() {
                 .setSwipeSensitivity(0.5f)
                 .setSwipeRelateEnable(true)
                 .setSwipeRelateOffset(300)
-
         initTitleView()
         initContentView()
         initView()
-        initData()
     }
 
-    protected open fun initView() {
-
-    }
-
-    protected fun initData() {
-
-    }
+    protected open fun initView() {}
 
     private fun initContentView() {
         flbase?.addView(inflation!!.inflate(contentView, null))
@@ -100,7 +106,7 @@ abstract class BaseActivity : AppCompatActivity() {
         this.titleBack = titleView.titleBack
         titleOk = titleView.titleOk
         ll?.addView(titleView)
-        titleBack!!.setOnClickListener { finish() }
+        titleBack?.setOnClickListener { finish() }
     }
 
     /**
@@ -137,8 +143,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     /**
      * 跳转到对应的Activity返回的时候可以接受到结果
-     *
-     * @param activityCls 对应的Activity.class
      * @param requestCode 请求码
      */
     fun <T> showActivityForResult(activityCls: Class<T>,
@@ -178,6 +182,7 @@ abstract class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    var thread: Thread? = null
     /**
      * 显示加载对话框
      */
@@ -186,16 +191,18 @@ abstract class BaseActivity : AppCompatActivity() {
             progressDialog = LoadingDialog(this)
         }
         progressDialog?.show()
-
-        thread {
-            kotlin.run {
-                SystemClock.sleep(8000)
-                runOnUiThread {
-                    progressDialog?.hide()
+        if (thread == null) {
+            thread = Thread {
+                kotlin.run {
+                    SystemClock.sleep(8000)
+                    if (thread!!.isInterrupted) return@Thread
+                    runOnUiThread {
+                        thread = null
+                        progressDialog?.hide()
+                    }
                 }
             }
         }
-
     }
 
     /**
@@ -204,6 +211,10 @@ abstract class BaseActivity : AppCompatActivity() {
     fun dismissDialog() {
         if (NotNull.isNotNull(progressDialog) && progressDialog!!.isShowing) {
             progressDialog!!.dismiss()
+            if (thread != null) {
+                thread?.interrupt()
+                thread = null
+            }
             progressDialog = null
         }
     }
@@ -233,9 +244,13 @@ abstract class BaseActivity : AppCompatActivity() {
         progressDialog!!.show()
     }
 
-    companion object {
-        private val TAG = "BaseActivity"
+    protected open fun receive(intent: Intent) {}
+    /**
+     * 广播接受器
+     */
+    protected inner class MyBtReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            receive(intent)
+        }
     }
-
-
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.goockr.smsantilost.graphics.CleanableEditText
+        android:id="@+id/etDisturbName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/x8"
+        android:layout_marginTop="@dimen/x12"
+        android:background="@color/white"
+        android:drawableRight="@mipmap/login_delete"
+        android:hint="输入区域名称"
+        android:paddingBottom="@dimen/x8"
+        android:paddingLeft="@dimen/x14"
+        android:paddingRight="@dimen/x12"
+        android:paddingTop="@dimen/x8"
+        android:textSize="14sp" />
+</LinearLayout>

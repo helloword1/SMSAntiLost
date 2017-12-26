@@ -53,4 +53,7 @@
         <item>ab</item>
         <item>aa</item>
     </string-array>
+    <declare-styleable name="AccelerateCircularView">
+        <attr name="cycleTime" />
+    </declare-styleable>
 </resources>

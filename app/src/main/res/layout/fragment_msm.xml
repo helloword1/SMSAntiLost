@@ -6,9 +6,9 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
-        android:layout_above="@+id/msmBottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/msmBottom">
 
         <com.goockr.smsantilost.graphics.NingRecycleView
             android:id="@+id/recycleView"
@@ -32,5 +32,9 @@
         android:background="@color/transparent"
         android:src="@drawable/msm_new_selector" />
 
+    <include
+        android:id="@+id/emptyView"
+        android:visibility="gone"
+        layout="@layout/empty_view" />
 
 </RelativeLayout>

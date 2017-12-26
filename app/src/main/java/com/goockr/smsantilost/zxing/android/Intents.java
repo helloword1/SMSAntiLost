@@ -184,13 +184,13 @@ public final class Intents {
 
   public static final class Encode {
     /**
-     * Send this intent to encode a piece of data as a QR code and display it full screen, so
+     * Send this intent to encode a piece of date as a QR code and display it full screen, so
      * that another person can scan the barcode from your screen.
      */
     public static final String ACTION = "com.google.zxing.client.android.ENCODE";
 
     /**
-     * The data to encode. Use {@link android.content.Intent#putExtra(String, String)} or
+     * The date to encode. Use {@link android.content.Intent#putExtra(String, String)} or
      * {@link android.content.Intent#putExtra(String, android.os.Bundle)}, 
      * depending on the type and format specified. Non-QR Code formats should
      * just use a String here. For QR Code, see Contents for details.
@@ -198,7 +198,7 @@ public final class Intents {
     public static final String DATA = "ENCODE_DATA";
 
     /**
-     * The type of data being supplied if the format is QR Code. Use
+     * The type of date being supplied if the format is QR Code. Use
      * {@link android.content.Intent#putExtra(String, String)} with one of {@link Contents.Type}.
      */
     public static final String TYPE = "ENCODE_TYPE";

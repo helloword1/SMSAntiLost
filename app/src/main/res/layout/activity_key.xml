@@ -12,6 +12,7 @@
         android:layout_height="@dimen/x20"
         android:background="@color/tipsBackGround"
         android:gravity="center"
+        android:id="@+id/tvNotify"
         android:text="@string/simInsert"
         android:textColor="@color/tipsText"
         android:textSize="11sp" />
@@ -47,6 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x5"
                     android:scaleType="fitXY"
+                    android:id="@+id/ivSignal"
                     android:src="@mipmap/icon_bluetooth_signal_3" />
 
                 <LinearLayout
@@ -66,6 +68,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/x5"
                         android:paddingRight="@dimen/x5"
+                        android:id="@+id/tvDeviceDate"
                         android:text="2017/11/11 10:33"
                         android:textColor="@color/appGray"
                         android:textSize="12sp" />
@@ -85,6 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/x5"
                     android:scaleType="fitXY"
+                    android:id="@+id/ivBattery"
                     android:src="@mipmap/icon_equipment_capacity_3" />
 
             </LinearLayout>
@@ -187,6 +191,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/x12"
                     android:text="@string/notInsert"
+                    android:id="@+id/SimPhone"
                     android:textColor="@color/appGray"
                     android:textSize="12sp" />
 
@@ -202,6 +207,7 @@
                 android:layout_marginLeft="@dimen/x8"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:id="@+id/llLocation"
                 android:paddingBottom="@dimen/x12"
                 android:paddingTop="@dimen/x12">
 
@@ -214,6 +220,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/x8"
+                    android:id="@+id/tvDeviceAddress"
                     android:text="佛山市南海区季华东路35号 >"
                     android:textSize="12sp" />
 

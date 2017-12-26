@@ -36,9 +36,7 @@ class LoadingDialog : Dialog {
                 2 -> {
                     tip.text = ". . ."// 设置加载信息
                 }
-
             }
-
         }
     }
 

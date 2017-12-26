@@ -4,8 +4,13 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import com.amap.api.location.AMapLocationClient
+import com.goockr.smsantilost.entries.DaoMaster
+import com.goockr.smsantilost.entries.DaoSession
 import com.goockr.smsantilost.utils.CrashUtil
 import com.goockr.smsantilost.utils.LocaleUtil
+import com.goockr.smsantilost.views.activities.HomeActivity
+import com.goockr.smsantilost.views.blueteeth.ClientThread
 import com.zhy.http.okhttp.OkHttpUtils
 import okhttp3.OkHttpClient
 import java.util.*
@@ -18,7 +23,13 @@ import java.util.concurrent.TimeUnit
 
 class GoockrApplication : Application() {
     private val activityList = LinkedList<Activity>()
-
+    private val encrypted = false
+    var mDaoSession: DaoSession? = null
+    var instance: ClientThread? = null
+    /**
+     * 声明AMapLocationClient类对象
+     */
+    var mLocationClient: AMapLocationClient? = null
     /**
      * 全局debug
      */
@@ -26,14 +37,28 @@ class GoockrApplication : Application() {
         super.onCreate()
         //改变语言
         LocaleUtil.changeAppLanguage(this)
+        //异常捕捉
         val crashUtil = CrashUtil.instance
-        crashUtil!!.init(this)
+        crashUtil?.init(this)
         val okHttpClient = OkHttpClient.Builder()
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
                 .build()
 
         OkHttpUtils.initClient(okHttpClient)
+        //数据库
+        initDao()
+        //全局蓝牙读写线程runable
+        instance = ClientThread()
+        //定位
+        mLocationClient = AMapLocationClient(this)
+    }
+
+    private fun initDao() {
+        val name = "antilost-db" // 数据库名称
+        val helper = DaoMaster.DevOpenHelper(this, name) // helper
+        val db = helper.writableDb
+        mDaoSession = DaoMaster(db).newSession()
     }
 
     //添加Activity到容器中
@@ -52,9 +77,19 @@ class GoockrApplication : Application() {
         }
     }
 
+    fun exitToHome() {
+        for (activity in activityList) {
+            if (activity is HomeActivity) {
+                activity.sendMac()
+            } else {
+                activity.finish()
+            }
+        }
+    }
     fun getContext(): Context {
         return this
     }
+
     companion object {
         var isDebug = true//全局log 关闭或打开
     }

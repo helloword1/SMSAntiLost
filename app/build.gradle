@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-
+apply plugin: 'org.greenrobot.greendao'
 android {
     signingConfigs {
         debug {
@@ -20,11 +20,19 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    sourceSets {
+        main.java.srcDirs += 'build/generated/source/greendao' // 追加 greendao 代码 至 Java代码源
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    //greendao配置
+    greendao {
+        //版本号，升级时可配置
+        schemaVersion 1
     }
 }
 
@@ -72,6 +80,10 @@ dependencies {
     implementation files('src/libs/pinyin4j-2.5.0.jar')
     // 百分比布局
     compile 'com.android.support:percent:26.1.0'
+    //数据库
+    compile 'org.greenrobot:greendao:3.2.2'
+    compile 'net.zetetic:android-database-sqlcipher:3.5.1@aar'
+//    compile "org.jetbrains.anko:anko:$anko_version" // 添加 anko 全部lib
 }
 repositories {
     mavenCentral()

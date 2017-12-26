@@ -48,10 +48,10 @@ public class AntilostAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         AntilostHolder holder = null;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.item_antilost,parent,false);
+            convertView = mInflater.inflate(R.layout.item_antilost, parent, false);
             holder = new AntilostHolder(convertView);
             convertView.setTag(holder);
-        }else {
+        } else {
             holder = (AntilostHolder) convertView.getTag();
         }
         AntilostBean antilostBean = mList.get(position);
@@ -60,9 +60,16 @@ public class AntilostAdapter extends BaseAdapter {
         holder.mLastDate.setText(antilostBean.getLastDate());
         if (antilostBean.isConnectState()) {
             holder.mConnnect.setText(R.string.hadConnect);
-        }else {
+        } else {
             holder.mConnnect.setText(R.string.disConnect);
         }
+        String distance = antilostBean.getDistance();
+        if (Double.valueOf(distance) > -70) {
+            distance = "距离近";
+        } else {
+            distance = "距离远";
+        }
+        holder.tvDistance.setText(distance);
         return convertView;
     }
 
@@ -75,12 +82,14 @@ public class AntilostAdapter extends BaseAdapter {
         TextView mLastDate;
         // 已连接
         TextView mConnnect;
+        TextView tvDistance;
 
         public AntilostHolder(View view) {
             mImageView = view.findViewById(R.id.antilost_item_icon);
             mName = view.findViewById(R.id.antilost_item_name);
             mLastDate = view.findViewById(R.id.antilost_item_lastDate);
             mConnnect = view.findViewById(R.id.antilost_item_connect);
+            tvDistance = view.findViewById(R.id.tvDistance);
         }
     }
 }

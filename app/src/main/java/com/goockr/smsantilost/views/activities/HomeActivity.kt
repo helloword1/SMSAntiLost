@@ -1,16 +1,26 @@
 package com.goockr.smsantilost.views.activities
 
 import android.Manifest
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Message
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.entries.*
+import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.Constant.MAC
+import com.goockr.smsantilost.utils.DateUtils.stringToLong
+import com.goockr.smsantilost.utils.LogUtils
 import com.goockr.smsantilost.views.activities.antilost.AddActivity
 import com.goockr.smsantilost.views.fragments.*
 import com.jude.swipbackhelper.SwipeBackHelper
@@ -19,9 +29,11 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.msm_title_view.*
 import kotlinx.android.synthetic.main.msm_title_view.view.*
+import java.util.*
 
 class HomeActivity(override val contentView: Int = R.layout.activity_home) : BaseActivity()/*, BottomTabBar.OnSelectListener */ {
     private var homeFragment: MoreFragment? = null
@@ -31,8 +43,17 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
     private var msmFragment: MSMFragment? = null
     private var current: Fragment? = null
     private var isMsmAndContact = true
+    private var isConnect = false
+    private var deviceBeanDao: DeviceBeanDao? = null
+    private var list: List<DeviceBean>? = null
+    private var mDataList = ArrayList<BluetoothDevice>()
+    private var mDevice: BluetoothDevice? = null
+    //蓝牙
+    var mBluetoothAdapter: BluetoothAdapter? = null
+    private var btReceiver: MyBtReceiver? = null
+    private var isShowDate = true
+    var mDatas: ArrayList<MsmBean> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         //设置右滑不finsh界面
         SwipeBackHelper.getCurrentPage(this)
@@ -67,7 +88,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
     fun initMView() {
         //初始化titlebar
         ll?.removeAllViews()
-        var inflate1 = layoutInflater.inflate(R.layout.msm_title_view, null)
+        val inflate1 = layoutInflater.inflate(R.layout.msm_title_view, null)
         inflate1.llMsm.setOnClickListener {
             if (msmFragment == null) {
                 msmFragment = MSMFragment()
@@ -98,8 +119,9 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             msmFragment = MSMFragment()
             beginTransaction.add(R.id.homeFrameLayout, msmFragment).commit()
             current = msmFragment
-            isMsmAndContact=false
+            isMsmAndContact = false
         }
+
 
         homeBottom.setTabbarCallbackListener {
             val inflate = layoutInflater.inflate(R.layout.base_title_view, null)
@@ -113,13 +135,11 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                         if (msmFragment == null) {
                             msmFragment = MSMFragment()
                         }
-//                        isMsmAndContact = true
                         switchContent(msmFragment!!)
                     } else {
                         if (contactFragment == null) {
                             contactFragment = ContactFragment()
                         }
-//                        isMsmAndContact = false
                         switchContent(contactFragment!!)
                     }
 
@@ -138,7 +158,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                     title?.text = getString(R.string.natilost)
                     switchContent(antiLostFragment!!)
                     titleAdd?.setOnClickListener {
-                        var intent = Intent()
+                        val intent = Intent()
                         intent.setClass(this, AddActivity::class.java)
                         startActivity(intent)
                     }
@@ -169,7 +189,111 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                 }
             }
         }
+        startRecover()
+    }
 
+    override fun receive(intent: Intent) {
+        val action = intent.action
+        if (BluetoothDevice.ACTION_FOUND == action) {
+            val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+            if (NotNull.isNotNull(list)) {
+                list!!
+                        .filter {
+                            val mac = it.mac
+                            TextUtils.equals(device.address, mac)
+                        }
+                        .forEach {
+                            if (mDataList.isEmpty()) {
+                                mDataList.add(device)
+                                if (!instance!!.isConnect) {
+                                    instance?.init(0, device, myHandler, this)
+                                    Thread(instance).start()
+                                }
+                                this.mDevice = device
+                            }
+                        }
+            }
+
+        } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
+            //搜索完成
+            if (NotNull.isNotNull(mBluetoothAdapter)) {
+                mBluetoothAdapter?.startDiscovery()
+            }
+        }
+    }
+
+
+    override fun handleMyMessage(msg: Message?) {
+        super.handleMyMessage(msg)
+        when (msg?.what) {
+            Constant.MSG_CONNECT_SUCCEED -> {
+                LogUtils.d("", "" + msg.what)
+                instance?.write(Constant.MAC)
+                //添加连接按钮到列表
+                if (antiLostFragment == null) {
+                    antiLostFragment = AntiLostFragment()
+                }
+                antiLostFragment?.setDevice(mDevice)
+            }
+            Constant.MSG_CLIENT_REV_NEW -> {
+                val obj = msg.obj.toString()
+                val potion = msg.arg1
+                getBlueMsg(potion, obj)
+            }
+            Constant.MSG_CONNECT_DISCONNECT -> {
+                //断开连接，刷新界面
+                antiLostFragment?.disConnect()
+            }
+        }
+    }
+
+    //处理短信
+    private fun getBlueMsg(potion: Int, obj: String) {
+        if (obj.startsWith("Phone")) {
+            val split = obj.split(",")
+            instance?.write(split[3])
+            val content = split[2].split(":")[1]
+            val name = split[0].split(":")[1]
+            val date = split[1].split(":")[1]
+            val goockrApplication = application as GoockrApplication
+            val contentBeanDao = goockrApplication.mDaoSession?.contentBeanDao
+            val msmBeanDao = goockrApplication.mDaoSession?.msmBeanDao
+            val same = msmBeanDao?.queryBuilder()?.where(MsmBeanDao.Properties.SmsTitle.eq(name))?.build()?.unique()
+            //更新数据库
+            if (NotNull.isNotNull(same)) {
+                val list = contentBeanDao?.queryBuilder()?.where(ContentBeanDao.Properties.Date.eq(date))?.build()?.list()
+                //根据时间过滤相同
+                if (list!!.isEmpty()) {
+                    val contentBean = ContentBean(null, date, content, true, true, true, same?.id)
+                    contentBean.setIsShowDate(stringEqDate(same?.contentBeans?.get((same.contentBeans?.size)!! - 1)?.date!!, date))
+                    same.contentBeans?.add(contentBean)
+                    val insert = contentBeanDao.insert(contentBean)
+                    val insert1 = msmBeanDao.update(same)
+                }
+            } else {
+                //添加数据
+                val msmBean = MsmBean(null, name, date, true, false)
+                val insert1 = msmBeanDao?.insert(msmBean)
+                val contentBean = ContentBean(null, date, content, true, true, true, msmBean.id)
+                val insert = contentBeanDao?.insert(contentBean)
+            }
+
+            //添加连接按钮到列表
+            msmFragment?.setDates()
+        } else if (obj.startsWith("MA_")) {
+            instance?.write(Constant.DAT)
+            //表示已经连接
+            isConnect = true
+        }
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        if (NotNull.isNotNull(btReceiver)) {
+            unregisterReceiver(btReceiver)
+            mBluetoothAdapter?.cancelDiscovery()
+        }
     }
 
     /**
@@ -185,7 +309,6 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             if (!to.isAdded) { // 先判断是否被add过
                 transaction.add(R.id.homeFrameLayout, to).commit()
             } else {
-
                 transaction.show(to).commit() // 隐藏当前的fragment，显示下一个
             }
             current = to
@@ -207,5 +330,48 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             return true
         }
         return super.dispatchKeyEvent(event)
+    }
+
+    //第一次新建进来重连加载短信
+    fun initThread() {
+        startRecover()
+    }
+
+    /**
+     * 开启搜索广播
+     */
+    private fun startRecover() {
+        deviceBeanDao = goockrApplication?.mDaoSession?.deviceBeanDao
+        list = deviceBeanDao?.queryBuilder()?.build()?.list()
+        if (!NotNull.isNotNull(list) || list!!.isEmpty() || isConnect) return
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        //蓝牙已开启
+        if (mBluetoothAdapter?.isEnabled!!) {
+            val turnOnBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(turnOnBtIntent, Constant.REQUEST_ENABLE_BT)
+            val intentFilter = IntentFilter()
+            btReceiver = MyBtReceiver()
+            intentFilter.addAction(BluetoothDevice.ACTION_FOUND)
+
+            intentFilter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST)
+            intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
+            registerReceiver(btReceiver, intentFilter)
+            mBluetoothAdapter?.startDiscovery()
+        }
+    }
+
+    private fun stringEqDate(oldeDate: String, newDate: String): Boolean {
+        val oldLong = stringToLong(oldeDate, "yyyy-MM-dd_HH-mm-ss")
+        val newLong = stringToLong(newDate, "yyyy-MM-dd_HH-mm-ss")
+        return newLong - oldLong > 5000
+    }
+
+    //新增设备读取短信
+    fun sendMac() {
+        val connect = instance!!.isConnect
+        if (connect) {
+            instance?.setUiHandler(myHandler)
+            instance?.write(MAC)
+        }
     }
 }

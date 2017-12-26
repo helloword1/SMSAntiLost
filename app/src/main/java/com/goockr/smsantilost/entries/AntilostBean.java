@@ -1,10 +1,12 @@
 package com.goockr.smsantilost.entries;
 
+import java.io.Serializable;
+
 /**
  * Created by tanzhihao on 2017/11/20.
  */
 
-public class AntilostBean {
+public class AntilostBean implements Serializable{
     // 图标
     private int mDrawableId;
     // 钥匙
@@ -15,6 +17,63 @@ public class AntilostBean {
     private boolean connectState;
     // 连接
     private String connect;
+    private String mac;
+
+    private double longitude ;
+    private double latitude ;
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    private String Address ;
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    private String deviceName;
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    private String distance;
+
+    public String getMac() {
+        return mac;
+    }
+
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
 
     public AntilostBean(int drawable, String name, String lastDate, boolean connectState, String connect) {
         mDrawableId = drawable;

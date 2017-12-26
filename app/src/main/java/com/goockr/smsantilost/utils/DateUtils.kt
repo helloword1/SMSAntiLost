@@ -15,7 +15,7 @@ import java.util.*
  */
 object DateUtils {
 
-    private val parsePatterns = arrayOf("yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM", "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM", "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM")
+    val parsePatterns = arrayOf("yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM", "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM", "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM")
 
     /**
      * 得到当前日期字符串 格式（yyyy-MM-dd）
@@ -302,6 +302,38 @@ object DateUtils {
         //格式化日期
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         return sdf.format(c.time)
+    }
+
+    // string类型转换为long类型
+    // strTime要转换的String类型的时间
+    // formatType时间格式
+    // strTime的时间格式和formatType的时间格式必须相同
+    @Throws(ParseException::class)
+    fun stringToLong(strTime: String, formatType: String): Long {
+        val date = stringToDate(strTime, formatType) // String类型转成date类型
+        return if (date == null) {
+            0
+        } else {
+            dateToLong(date)
+        }
+    }
+
+    // string类型转换为date类型
+    // strTime要转换的string类型的时间，formatType要转换的格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日
+    // HH时mm分ss秒，
+    // strTime的时间格式必须要与formatType的时间格式相同
+    @Throws(ParseException::class)
+    fun stringToDate(strTime: String, formatType: String): Date? {
+        val formatter = SimpleDateFormat(formatType)
+        var date: Date? = null
+        date = formatter.parse(strTime)
+        return date
+    }
+
+    // date类型转换为long类型
+    // date要转换的date类型的时间
+    fun dateToLong(date: Date): Long {
+        return date.time
     }
 
 }

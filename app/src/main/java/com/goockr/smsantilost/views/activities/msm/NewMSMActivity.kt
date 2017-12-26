@@ -48,7 +48,7 @@ class NewMSMActivity(override val contentView: Int = R.layout.activity_new_msm) 
         ivSend.setOnClickListener {
             val content = smsSend.text.toString()
             if (TextUtils.equals(content, "")) return@setOnClickListener
-            mDatas.add(ContentBean(data, content, false))
+//            mDatas.add(ContentBean(data, content, false))
             sendMsmAdapter.notifyDataSetChanged()
             smsSend.setText("")
             SystemInput.closeInput(this)

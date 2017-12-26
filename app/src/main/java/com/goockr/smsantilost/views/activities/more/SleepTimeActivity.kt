@@ -27,8 +27,8 @@ class SleepTimeActivity(override val contentView: Int = R.layout.activity_sleep_
     }
 
     private fun initMData() {
-//        var data = CacheUtils.getInstance().getSerializable("sleep",null)
-//        var data = ObjectSaveUtils.getObject(this, "sleep")
+//        var date = CacheUtils.getInstance().getSerializable("sleep",null)
+//        var date = ObjectSaveUtils.getObject(this, "sleep")
         var data = mCache!!.getAsObject("sleep")
         if (data == null) {
             mData = ArrayList()

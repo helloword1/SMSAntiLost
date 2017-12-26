@@ -67,7 +67,7 @@ public final class DecodeHandler extends Handler {
 	}
 
 	/**
-	 * Decode the data within the viewfinder rectangle, and time how long it
+	 * Decode the date within the viewfinder rectangle, and time how long it
 	 * took. For efficiency, reuse the same reader objects from one decode to
 	 * the next.
 	 * 

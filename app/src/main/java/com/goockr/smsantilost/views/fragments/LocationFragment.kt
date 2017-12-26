@@ -11,14 +11,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.amap.api.location.AMapLocation
-import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
-import com.amap.api.location.AMapLocationListener
 import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.MyLocationStyle
+import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.utils.LogUtils
+import com.goockr.smsantilost.utils.MyAMapLocationListener
 import kotlinx.android.synthetic.main.fragment_location.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,29 +28,10 @@ import java.util.*
  */
 
 class LocationFragment : BaseFragment() {
-    /**
-     * 声明AMapLocationClient类对象
-     */
-    var mLocationClient: AMapLocationClient? = null
-    /**
-     * 声明定位回调监听器
-     */
-    var mLocationListener: AMapLocationListener = AMapLocationListener { aMapLocation ->
-        if (aMapLocation != null) {
-            if (aMapLocation.errorCode == 0) {
-                //可在其中解析amapLocation获取相应内容。
 
-                activity.runOnUiThread { parseData(aMapLocation) }
-            } else {
-                //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                LogUtils.e("AmapError", "location Error, ErrCode:"
-                        + aMapLocation.errorCode + ", errInfo:"
-                        + aMapLocation.errorInfo)
-            }
-        }
-    }
     private var aMap: AMap? = null
     private var flBottom: FrameLayout? = null
+    private var goockrApplication:GoockrApplication?=null
 
     /**
      * 声明AMapLocationClientOption对象
@@ -113,18 +94,31 @@ class LocationFragment : BaseFragment() {
     }
 
     private fun initMap() {
-        val myLocationStyle: MyLocationStyle
-        myLocationStyle = MyLocationStyle()//初始化定位蓝点样式类
+        val myLocationStyle = MyLocationStyle()
+        //初始化定位蓝点样式类
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE)//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
         aMap!!.myLocationStyle = myLocationStyle//设置定位蓝点的Style
-        //aMap.getUiSettings().setMyLocationButtonEnabled(true);设置默认定位按钮是否显示，非必需设置。
         aMap!!.isMyLocationEnabled = true// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
         aMap!!.moveCamera(CameraUpdateFactory.zoomTo((1 + 20).toFloat()))
         //初始化定位
-        mLocationClient = AMapLocationClient(context)
-        //设置定位回调监听
-        mLocationClient!!.setLocationListener(mLocationListener)
 
+        val mLocationListener= MyAMapLocationListener()
+        mLocationListener.setLocationListener {
+            if (it != null) {
+                if (it.errorCode == 0) {
+                    //可在其中解析amapLocation获取相应内容。
+                    activity.runOnUiThread { parseData(it) }
+                } else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    LogUtils.e("AmapError", "location Error, ErrCode:"
+                            + it.errorCode + ", errInfo:"
+                            + it.errorInfo)
+                }
+            }
+        }
+        //设置定位回调监听
+        goockrApplication = activity.application as GoockrApplication
+        goockrApplication?.mLocationClient!!.setLocationListener(mLocationListener)
         //初始化AMapLocationClientOption对象
         mLocationOption = AMapLocationClientOption()
         mLocationOption!!.isOnceLocation = true
@@ -135,9 +129,9 @@ class LocationFragment : BaseFragment() {
         //设置是否返回地址信息（默认返回地址信息）
         mLocationOption!!.isNeedAddress = true
         //给定位客户端对象设置定位参数
-        mLocationClient!!.setLocationOption(mLocationOption)
+        goockrApplication?. mLocationClient!!.setLocationOption(mLocationOption)
         //启动定位
-        mLocationClient!!.startLocation()
+        goockrApplication?. mLocationClient!!.startLocation()
     }
 
     private fun initbottom() {
@@ -150,7 +144,6 @@ class LocationFragment : BaseFragment() {
         val ilp = LinearLayout.LayoutParams(resources.getDimension(R.dimen.image_height).toInt(), resources.getDimension(R.dimen.image_height).toInt())
         image.setImageResource(R.mipmap.ic_launcher)
         bar.addView(image, ilp)
-
         val text = TextView(context)
         text.text = "12"
         val tlp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -163,17 +156,11 @@ class LocationFragment : BaseFragment() {
 
     override fun onPause() {
         super.onPause()
-        mLocationClient?.stopLocation();
+        goockrApplication?.mLocationClient?.stopLocation();
     }
 
     override fun onResume() {
         super.onResume()
-        mLocationClient?.stopLocation();
+        goockrApplication?.mLocationClient?.stopLocation();
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mLocationClient?.onDestroy();
-    }
-
 }

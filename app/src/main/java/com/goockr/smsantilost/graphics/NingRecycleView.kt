@@ -41,7 +41,6 @@ class NingRecycleView : RecyclerView {
         oldAdapter?.unregisterAdapterDataObserver(observer)
         super.setAdapter(adapter)
         adapter?.registerAdapterDataObserver(observer)
-
         checkIfEmpty()
     }
 
