@@ -17,6 +17,7 @@ import com.goockr.smsantilost.entries.AntilostBean
 import com.goockr.smsantilost.entries.DeviceBean
 import com.goockr.smsantilost.entries.DeviceBeanDao
 import com.goockr.smsantilost.utils.*
+import com.goockr.smsantilost.utils.Constant.ADDRESS_TYPE
 import com.goockr.smsantilost.utils.Constant.BUZZER
 import com.goockr.smsantilost.utils.Constant.INIT
 import com.goockr.smsantilost.views.activities.BaseActivity
@@ -28,15 +29,15 @@ import kotlinx.android.synthetic.main.activity_key.*
  * 钥匙界面
  */
 class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseActivity() {
-    private var iconId: Int = 0
     private var name: AntilostBean? = null
     private var mThread: Thread? = null
     private var mLocationClient: AMapLocationClient? = null
     private var latitude = ""
     private var longitude = ""
     private var address = ""
-    private var deviceBean: DeviceBean?=null
-    private var deviceBeanDao: DeviceBeanDao?=null
+    private var type = 0
+    private var deviceBean: DeviceBean? = null
+    private var deviceBeanDao: DeviceBeanDao? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +64,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
      * 初始化数据
      */
     private fun initMData() {
-        iconId = intent.extras.getInt("icon")
+        type = intent.extras.getInt(ADDRESS_TYPE)
         name = intent.extras.getSerializable("device") as AntilostBean?
 
     }
@@ -85,7 +86,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
         }
         tvDeviceDate.text = DateUtils.getDate(DateUtils.parsePatterns[5])
         tvDeviceAddress.text = name?.address + " >"
-        address=name?.address!!
+        address = name?.address!!
     }
 
     override fun onDestroy() {
@@ -134,7 +135,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
     @SuppressLint("InflateParams")
     private fun initMTitle() {
         ll?.removeAllViews()
-        mainIcon.setImageResource(iconId)
+        mainIcon.setImageResource(getDeviceID(type))
         val titleLayout = layoutInflater.inflate(R.layout.base_title_view, null)
         title = titleLayout.findViewById(R.id.title)
         titleRight = titleLayout.findViewById(R.id.titleRight)
@@ -172,8 +173,8 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
         deviceBeanDao = goockrApplication?.mDaoSession?.deviceBeanDao
         deviceBean = deviceBeanDao?.queryBuilder()?.where(DeviceBeanDao.Properties.
                 Mac.eq(name?.mac))?.unique()
-        latitude=deviceBean?.latitude.toString()
-        longitude=deviceBean?.longitude.toString()
+        latitude = deviceBean?.latitude.toString()
+        longitude = deviceBean?.longitude.toString()
     }
 
     @SuppressLint("SetTextI18n")
@@ -191,6 +192,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
     override fun handleMyMessage(msg: Message?) {
         super.handleMyMessage(msg)
         val msgStr = msg?.obj?.toString()
+        if (!NotNull.isNotNull(msgStr)) return
         if (msgStr!!.startsWith("Init_")) {
             //电量
             val battery = msgStr.split(",")[0].split("_")[1]
@@ -221,6 +223,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
     }
 
     private fun dealWithBattery(s: String) {
+        tvBatteryTest.text = "$s%"
         when {
             s.toInt() > 90 -> ivBattery.setImageResource(R.mipmap.icon_equipment_capacity_5)
             s.toInt() > 73 -> ivBattery.setImageResource(R.mipmap.icon_equipment_capacity_4)
@@ -268,12 +271,26 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
             bundle.putString(Constant.LONGITUDE, longitude)
             bundle.putString(Constant.LATITUDE, latitude)
             bundle.putString(Constant.ADDRESS, address)
+            bundle.putInt(Constant.ADDRESS_TYPE, type)
+            bundle.putString(Constant.CURRENT_AREA_RADUIS, "0")
+            bundle.putString(Constant.CURRENT_AREA_NAME, "")
             showActivity(DeviceMapActivity::class.java, bundle)
         }
         // 设置按钮点击跳转
         titleRight?.setOnClickListener {
             showActivity(SettingActivity::class.java)
         }
+    }
+
+    private fun getDeviceID(type: Int): Int {
+        when (type) {
+            0 -> return R.mipmap.icon_key_device_details
+            1 -> return R.mipmap.icon_wallet_device_details
+            2 -> return R.mipmap.icon_portable_computer_device_details
+            3 -> return R.mipmap.icon_vice_card_phone_divice_details
+            4 -> return R.mipmap.icon_other_device_details
+        }
+        return 0
     }
 }
 

@@ -1,7 +1,9 @@
 package com.goockr.smsantilost.views.activities.more
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextUtils
@@ -34,6 +36,7 @@ import com.amap.api.services.poisearch.PoiResult
 import com.amap.api.services.poisearch.PoiSearch
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.LogUtils
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.jude.swipbackhelper.SwipeBackHelper
 import cxx.utils.NotNull
@@ -62,11 +65,11 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
     private val searchKey = ""
     private var searchAddress = ""
     private var searchName = ""
-    private var longitude = ""
-    private var latitude = ""
+    private var longitude = "0"
+    private var latitude = "0"
     private var tarketLatLng: LatLng? = null
-    private var currentRadius = -1.0
-    private var currentId = -1
+    private var currentRadius = "0"
+    private var currentId = "0"
     private var mListener: LocationSource.OnLocationChangedListener? = null
     private var mlocationClient: AMapLocationClient? = null
     private var addCircle: Circle? = null
@@ -96,12 +99,13 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
             aMap = map.map
             setUpMap()
         }
-        mLocationClient=goockrApplication?.mLocationClient
+        mLocationClient = goockrApplication?.mLocationClient
     }
 
     /**
      * 初始化title
      */
+    @SuppressLint("SetTextI18n")
     private fun initMView() {
         ll?.removeAllViews()
         val titleLayout = layoutInflater.inflate(R.layout.base_title_view, null)
@@ -115,16 +119,18 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
         et_Search.setText(searchAddress)
+
+
         //下一步
         titleOk?.setOnClickListener {
             searchAddress = et_Search.text.toString()
             val bundle = Bundle()
             bundle.putString(Constant.CURRENT_AREA_NAME, searchName)
-            bundle.putString(Constant.CURRENT_AREA_ID, currentId.toString())
+            bundle.putString(Constant.CURRENT_AREA_ID, currentId)
             bundle.putString(Constant.CURRENT_AREA_LATITUDE, tarketLatLng?.latitude.toString())
             bundle.putString(Constant.CURRENT_AREA_LONGITUDE, tarketLatLng?.longitude.toString())
             bundle.putString(Constant.CURRENT_AREA_ADDRESS, searchAddress)
-            bundle.putString(Constant.CURRENT_AREA_RADUIS, currentRadius.toString())
+            bundle.putString(Constant.CURRENT_AREA_RADUIS, currentRadius)
             showActivity(SetAntiDisturbNameActivity::class.java, bundle)
         }
         et_Search.addTextChangedListener(object : TextWatcher {
@@ -154,26 +160,30 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
             et_Search.setText("")
             etDelete.visibility = View.GONE
         }
-        et_Search.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+        et_Search.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             Log.i("MY", "setOnItemClickListener")
             if (autoTips != null && autoTips?.size!! > position) {
                 val tip = autoTips?.get(position)
                 searchPoi(tip!!)
             }
         }
-
+        val string = "" + (currentRadius.toDouble()) + "m"
+        tv_LeftRadius.text = string
+        tv_CurrentRadius.text = getString(R.string.settingM) + string
+        sb_Radius.progress = currentRadius.toDouble().toInt()
         hideSoftKey(et_Search)
+
     }
 
     private fun initIntent() {
         val extras = intent.extras
         if (NotNull.isNotNull(extras)) {
             searchName = extras.getString(Constant.CURRENT_AREA_NAME)
-            currentId = extras.getString(Constant.CURRENT_AREA_ID).toInt()
+            currentId = extras.getString(Constant.CURRENT_AREA_ID)
             latitude = extras.getString(Constant.CURRENT_AREA_LATITUDE)
             longitude = extras.getString(Constant.CURRENT_AREA_LONGITUDE)
             searchAddress = extras.getString(Constant.CURRENT_AREA_ADDRESS)
-            currentRadius = extras.getString(Constant.CURRENT_AREA_RADUIS).toDouble()
+            currentRadius = extras.getString(Constant.CURRENT_AREA_RADUIS)
         }
     }
 
@@ -181,21 +191,35 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
      * 设置一些amap的属性
      */
     private fun setUpMap() {
-        aMap?.uiSettings?.isZoomControlsEnabled = false
-//        aMap?.setLocationSource(this)// 设置定位监听
-        aMap?.moveCamera(CameraUpdateFactory.zoomTo((1 + 17).toFloat()))
         aMap?.uiSettings?.isMyLocationButtonEnabled = true// 设置默认定位按钮是否显示
         aMap?.isMyLocationEnabled = true// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        aMap?.setMyLocationType(AMap.LOCATION_TYPE_LOCATE)
-        if (!TextUtils.equals(latitude, "0") && !TextUtils.equals(longitude, "0")) {
-            aMap?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude.toDouble(), longitude.toDouble())))
-        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Thread({
+            SystemClock.sleep(3000)
+            runOnUiThread {
+                aMap?.moveCamera(CameraUpdateFactory.zoomTo((16).toFloat()))
+                if (!TextUtils.equals(latitude, "0") && !TextUtils.equals(longitude, "0")) {
+                    val latLng = LatLng(latitude.toDouble(), longitude.toDouble())
+                    aMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+                    val markerOptions = MarkerOptions()
+                    markerOptions.anchor(0.5f, 0.5f).title(searchAddress)
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.defaultcluster)).position(latLng)
+                    aMap?.addMarker(markerOptions)
+                    tarketLatLng = latLng
+                    addCircle = aMap?.addCircle(getCircleOptions())
+                }
+            }
+        }).start()
     }
 
     internal var inputtipsListener: Inputtips.InputtipsListener = Inputtips.InputtipsListener { list, rCode ->
         if (rCode == AMapException.CODE_AMAP_SUCCESS) {// 正确返回
             autoTips = list
             val listString = list.indices.map { list[it].name }
+
             val aAdapter = ArrayAdapter(
                     applicationContext,
                     R.layout.route_inputs, listString)
@@ -228,7 +252,7 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
         firstItem?.cityName = result.district
         firstItem?.adName = ""
         resultData?.clear()
-
+        searchAddress = result.name
         val mapScreenMarkers = aMap?.mapScreenMarkers
         for (marker in mapScreenMarkers!!) {
             val `object` = marker.`object`
@@ -260,7 +284,7 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
     fun getCircleOptions(): CircleOptions {
         return CircleOptions().
                 center(tarketLatLng).
-                radius(currentRadius).
+                radius(currentRadius.toDouble()).
                 fillColor(ContextCompat.getColor(this@AreaMapActivity, R.color.mapBg)).
                 strokeColor(ContextCompat.getColor(this@AreaMapActivity, R.color.mapBg)).
                 strokeWidth(1f)
@@ -271,7 +295,7 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
     /**
      * 开始进行poi搜索
      */
-    protected fun doSearchQuery() {
+    private fun doSearchQuery() {
         currentPage = 0
         query = PoiSearch.Query(searchKey, searchType, "")// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
         query?.cityLimit = true
@@ -300,7 +324,7 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
                     addCircle?.remove()
                 }
                 if (NotNull.isNotNull(tarketLatLng)) {
-                    currentRadius = progress + 1.toDouble()
+                    currentRadius = (progress + 1.toDouble()).toString()
                     addCircle = aMap?.addCircle(getCircleOptions())
                 }
             }
@@ -314,28 +338,14 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
         })
     }
 
-    override fun onPause() {
-        super.onPause()
-        mLocationClient?.stopLocation()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mLocationClient?.stopLocation()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mLocationClient?.onDestroy()
-    }
-
     override fun deactivate() {
+        LogUtils.d("", "")
     }
 
     override fun activate(listener: LocationSource.OnLocationChangedListener?) {
         mListener = listener
         if (mlocationClient == null) {
-            mlocationClient = AMapLocationClient(this)
+            mlocationClient = goockrApplication?.mLocationClient
             mLocationOption = AMapLocationClientOption()
             //设置定位监听
             mlocationClient?.setLocationListener(this)
@@ -352,7 +362,14 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        mlocationClient?.stopLocation()
+        map.onDestroy()
+    }
+
     override fun onLocationChanged(p0: AMapLocation?) {
+        LogUtils.d("", "")
     }
 
     override fun onRegeocodeSearched(p0: RegeocodeResult?, p1: Int) {

@@ -33,6 +33,7 @@ import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.msm_title_view.*
 import kotlinx.android.synthetic.main.msm_title_view.view.*
+import org.json.JSONObject
 import java.util.*
 
 class HomeActivity(override val contentView: Int = R.layout.activity_home) : BaseActivity()/*, BottomTabBar.OnSelectListener */ {
@@ -51,7 +52,6 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
     //蓝牙
     var mBluetoothAdapter: BluetoothAdapter? = null
     private var btReceiver: MyBtReceiver? = null
-    private var isShowDate = true
     var mDatas: ArrayList<MsmBean> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -228,6 +228,13 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         when (msg?.what) {
             Constant.MSG_CONNECT_SUCCEED -> {
                 LogUtils.d("", "" + msg.what)
+                //重连提醒
+                val value = preferences?.getStringValue(Constant.RECONNECT)
+                if (NotNull.isNotNull(value)) {
+                    if (value?.toBoolean()!!) {
+                        overAlert()
+                    }
+                }
                 instance?.write(Constant.MAC)
                 //添加连接按钮到列表
                 if (antiLostFragment == null) {
@@ -243,18 +250,24 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             Constant.MSG_CONNECT_DISCONNECT -> {
                 //断开连接，刷新界面
                 antiLostFragment?.disConnect()
+                //越界提醒
+                overAlert()
             }
         }
     }
 
     //处理短信
     private fun getBlueMsg(potion: Int, obj: String) {
-        if (obj.startsWith("Phone")) {
-            val split = obj.split(",")
-            instance?.write(split[3])
-            val content = split[2].split(":")[1]
-            val name = split[0].split(":")[1]
-            val date = split[1].split(":")[1]
+        if (obj.startsWith("{\"ID\"") && obj.contains("Phone")) {
+            instance?.write("ID_0")
+            if (!obj.contains("}")) return
+            val jsonObject = JSONObject(obj)
+            val id = jsonObject.getString("ID")
+            val name = jsonObject.getString("Phone")
+            val date = jsonObject.getString("Data")
+            val content = jsonObject.getString("Content")
+//            instance?.write(id)
+
             val goockrApplication = application as GoockrApplication
             val contentBeanDao = goockrApplication.mDaoSession?.contentBeanDao
             val msmBeanDao = goockrApplication.mDaoSession?.msmBeanDao
@@ -264,18 +277,20 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                 val list = contentBeanDao?.queryBuilder()?.where(ContentBeanDao.Properties.Date.eq(date))?.build()?.list()
                 //根据时间过滤相同
                 if (list!!.isEmpty()) {
-                    val contentBean = ContentBean(null, date, content, true, true, true, same?.id)
+                    val contentBean = ContentBean(null, date, content, true, true, 1, "", same?.id)
                     contentBean.setIsShowDate(stringEqDate(same?.contentBeans?.get((same.contentBeans?.size)!! - 1)?.date!!, date))
                     same.contentBeans?.add(contentBean)
-                    val insert = contentBeanDao.insert(contentBean)
-                    val insert1 = msmBeanDao.update(same)
+                    contentBeanDao.insert(contentBean)
+                    same.smsStr = content
+                    same.isShow = true
+                    msmBeanDao.update(same)
                 }
             } else {
                 //添加数据
-                val msmBean = MsmBean(null, name, date, true, false)
-                val insert1 = msmBeanDao?.insert(msmBean)
-                val contentBean = ContentBean(null, date, content, true, true, true, msmBean.id)
-                val insert = contentBeanDao?.insert(contentBean)
+                val msmBean = MsmBean(null, name, date, content, true, false)
+                msmBeanDao?.insert(msmBean)
+                val contentBean = ContentBean(null, date, content, true, true, 1, "", msmBean.id)
+                contentBeanDao?.insert(contentBean)
             }
 
             //添加连接按钮到列表
@@ -293,6 +308,10 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         if (NotNull.isNotNull(btReceiver)) {
             unregisterReceiver(btReceiver)
             mBluetoothAdapter?.cancelDiscovery()
+        }
+        //停止音频
+        if (NotNull.isNotNull(mediaPlayer)) {
+            mediaPlayer?.stop()
         }
     }
 
@@ -372,6 +391,14 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         if (connect) {
             instance?.setUiHandler(myHandler)
             instance?.write(MAC)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //结束音频
+        if (NotNull.isNotNull(mediaPlayer)) {
+            mediaPlayer?.stop()
         }
     }
 }

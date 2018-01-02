@@ -198,4 +198,10 @@
     <string name="deviceNoConnect">设备未连接</string>
     <string name="simNoInsert">SIM卡未插入</string>
     <string name="deviceHasAdd">该设备已添加</string>
+    <string name="pleaseConnect">请连接防丢器</string>
+    <string name="addAntiLostArea">添加防打扰区域</string>
+    <string name="connectedAlert">重连提醒</string>
+    <string name="deleteAntititle">是否删除该区域</string>
+    <string name="comfir">确认</string>
+    <string name="aeraRadius">请设置区域半径</string>
 </resources>

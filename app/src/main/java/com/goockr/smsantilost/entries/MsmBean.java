@@ -22,6 +22,8 @@ public class MsmBean implements Serializable{
     private String smsTitle = "";
     @Property(nameInDb = "smsTime")
     private String smsTime = "";
+    @Property(nameInDb = "smsStr")
+    private String smsStr = "";
     @Property(nameInDb = "isShow")
     private boolean isShow = false;
     @Property(nameInDb = "isCheck")
@@ -35,12 +37,13 @@ public class MsmBean implements Serializable{
     /** Used for active entity operations. */
     @Generated(hash = 1597336777)
     private transient MsmBeanDao myDao;
-    @Generated(hash = 1990798273)
-    public MsmBean(Long id, String smsTitle, String smsTime, boolean isShow,
+    @Generated(hash = 515286209)
+    public MsmBean(Long id, String smsTitle, String smsTime, String smsStr, boolean isShow,
             boolean isCheck) {
         this.id = id;
         this.smsTitle = smsTitle;
         this.smsTime = smsTime;
+        this.smsStr = smsStr;
         this.isShow = isShow;
         this.isCheck = isCheck;
     }
@@ -136,6 +139,12 @@ public class MsmBean implements Serializable{
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+    public String getSmsStr() {
+        return this.smsStr;
+    }
+    public void setSmsStr(String smsStr) {
+        this.smsStr = smsStr;
     }
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 364814425)

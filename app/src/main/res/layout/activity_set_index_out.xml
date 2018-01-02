@@ -74,7 +74,7 @@
         style="@style/setting_ll_style">
 
         <TextView
-            android:text="@string/disconnectedTime"
+            android:text="@string/connectedAlert"
             style="@style/index_out_text_style"/>
 
         <View

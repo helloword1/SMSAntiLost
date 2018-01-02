@@ -1,14 +1,16 @@
 package com.goockr.smsantilost.utils
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import java.io.IOException
 
 /**
  * Created by tanzhihao on 2017/11/21.
  */
 
-class CalculateUtils (context: Context?) {
+class CalculateUtils(context: Context?) {
     var mContext: Context? = null
     var mWn: WindowManager? = null
     var mDm: DisplayMetrics? = null
@@ -23,4 +25,6 @@ class CalculateUtils (context: Context?) {
     fun dp2px(dp: Int): Int {
         return ((dp * mDm!!.density + 0.5f).toInt())
     }
+
+
 }

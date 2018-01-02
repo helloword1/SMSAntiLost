@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="短信"
+                android:text="@string/sms"
                 android:textColor="@color/textColor"
                 android:textSize="15sp" />
 
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="通讯录"
+                android:text="@string/comtactList"
                 android:textColor="@color/msmTextColorGray"
                 android:textSize="15sp" />
 

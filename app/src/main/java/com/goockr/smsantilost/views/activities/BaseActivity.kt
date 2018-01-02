@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.*
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -17,6 +18,7 @@ import android.widget.TextView
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.graphics.LoadingDialog
+import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.views.blueteeth.ClientThread
 import com.jude.swipbackhelper.SwipeBackHelper
 import cxx.utils.NotNull
@@ -44,6 +46,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var status_bar: View? = null
     protected var goockrApplication: GoockrApplication? = null
     protected var instance: ClientThread? = null
+    protected var mediaPlayer: MediaPlayer? = null
     //蓝牙通信
     protected val myHandler = @SuppressLint("HandlerLeak")
     object : Handler() {
@@ -252,5 +255,20 @@ abstract class BaseActivity : AppCompatActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             receive(intent)
         }
+    }
+    //越界提醒
+    protected fun overAlert() {
+        if (NotNull.isNotNull(mediaPlayer)){
+            mediaPlayer?.stop()
+            mediaPlayer?.reset()
+        }else{
+            mediaPlayer = MediaPlayer()
+        }
+        val value = preferences?.getStringValue(Constant.SELECT_PHONE_SOUND)
+        val descriptor = resources.assets
+                .openFd("alert.mp3")
+        mediaPlayer?.setDataSource(descriptor.fileDescriptor, descriptor.startOffset, descriptor.length)
+        mediaPlayer?.prepare()
+        mediaPlayer?.start()
     }
 }

@@ -45,11 +45,11 @@ object LocaleUtil {
 
         val myLocale: Locale
         // 0 简体中文 1 繁体中文 2 English
-        when (currentLanguage) {
-            0 -> myLocale = Locale.SIMPLIFIED_CHINESE
-            1 -> myLocale = Locale.TRADITIONAL_CHINESE
-            2 -> myLocale = Locale.ENGLISH
-            else -> myLocale = appContext.resources.configuration.locale
+        myLocale = when (currentLanguage) {
+            0 -> Locale.SIMPLIFIED_CHINESE
+            1 -> Locale.TRADITIONAL_CHINESE
+            2 -> Locale.ENGLISH
+            else -> appContext.resources.configuration.locale
         }
         // 本地语言设置
         if (needUpdateLocale(appContext, myLocale)) {
@@ -89,7 +89,7 @@ object LocaleUtil {
      *
      * @param context
      */
-    fun restartApp(context: Context) {
+    private fun restartApp(context: Context) {
         val intent = Intent(context, HomeActivity::class.java)
         intent.action = Intent.ACTION_MAIN
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
@@ -103,14 +103,12 @@ object LocaleUtil {
      * @param context Context
      * @return Locale
      */
-    fun getCurrentLocale(context: Context): Locale {
-        val locale: Locale
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //7.0有多语言设置获取顶部的语言
-            locale = context.resources.configuration.locales.get(0)
+    private fun getCurrentLocale(context: Context): Locale {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { //7.0有多语言设置获取顶部的语言
+            context.resources.configuration.locales.get(0)
         } else {
-            locale = context.resources.configuration.locale
+            context.resources.configuration.locale
         }
-        return locale
     }
 
     /**
@@ -119,7 +117,7 @@ object LocaleUtil {
      * @param context Context
      * @param locale  New User Locale
      */
-    fun updateLocale(context: Context, locale: Locale) {
+    private fun updateLocale(context: Context, locale: Locale) {
         if (needUpdateLocale(context, locale)) {
             val configuration = context.resources.configuration
             if (Build.VERSION.SDK_INT >= 19) {
@@ -139,7 +137,7 @@ object LocaleUtil {
      * @param locale  New User Locale
      * @return true / false
      */
-    fun needUpdateLocale(context: Context, locale: Locale?): Boolean {
+    private fun needUpdateLocale(context: Context, locale: Locale?): Boolean {
         return locale != null && getCurrentLocale(context) != locale
     }
 
@@ -161,11 +159,11 @@ object LocaleUtil {
         }
         val locale: Locale?
         // 0 简体中文 1 繁体中文 2 English
-        when (currentLanguage) {
-            0 -> locale = Locale.SIMPLIFIED_CHINESE
-            1 -> locale = Locale.TRADITIONAL_CHINESE
-            2 -> locale = Locale.ENGLISH
-            else -> locale = appContext.resources.configuration.locale
+        locale = when (currentLanguage) {
+            0 -> Locale.SIMPLIFIED_CHINESE
+            1 -> Locale.TRADITIONAL_CHINESE
+            2 -> Locale.ENGLISH
+            else -> appContext.resources.configuration.locale
         }
         // 系统语言改变了应用保持之前设置的语言
         if (locale != null) {

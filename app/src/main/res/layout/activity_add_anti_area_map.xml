@@ -16,7 +16,7 @@
         android:background="@color/backgroundGray">
 
         <AutoCompleteTextView
-            android:id="@+id/et_Search"
+            android:id="@+id/etAddSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/shape_white_corners"
@@ -74,7 +74,7 @@
     </RelativeLayout>
 
     <com.amap.api.maps.MapView
-        android:id="@+id/map"
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
@@ -100,8 +100,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/x10"
             android:paddingBottom="@dimen/x8"
+            android:paddingLeft="@dimen/x10"
             android:paddingRight="@dimen/x10">
 
             <TextView

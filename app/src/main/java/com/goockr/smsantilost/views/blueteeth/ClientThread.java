@@ -75,7 +75,6 @@ public class ClientThread implements Runnable {
                         message.what = Constant.INSTANCE.getMSG_CONNECT_SUCCEED();
                         message.obj = device;
                         uiHandler.sendMessage(message);
-                        Toast.makeText(activity, "连接成功", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

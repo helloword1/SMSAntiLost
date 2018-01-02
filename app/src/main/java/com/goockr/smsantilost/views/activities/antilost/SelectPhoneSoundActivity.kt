@@ -1,12 +1,14 @@
 package com.goockr.smsantilost.views.activities.antilost
 
 import android.content.Intent
-import android.os.Bundle
+import android.media.MediaPlayer
 import android.view.KeyEvent
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.PhoneSoundBean
+import com.goockr.smsantilost.utils.Constant.SELECT_PHONE_SOUND
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.adapters.PhoneSoundAdapter
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_select_phone_sound.*
 
 
@@ -19,11 +21,6 @@ class SelectPhoneSoundActivity(override val contentView: Int = R.layout.activity
     private var mAdapter: PhoneSoundAdapter? = null
     private var mCurrentPosition = 0
     private val PHONE_SOUND_RESULT_CODE = 2
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onResume() {
         super.onResume()
         initMView()
@@ -48,16 +45,23 @@ class SelectPhoneSoundActivity(override val contentView: Int = R.layout.activity
      */
     private fun initMData() {
         mDataList = ArrayList()
-        var bean1 = PhoneSoundBean(getString(R.string.defaultSound))
-        var bean2 = PhoneSoundBean(getString(R.string.sweetSound))
-        var bean3 = PhoneSoundBean(getString(R.string.sharpSound))
-        var bean4 = PhoneSoundBean(getString(R.string.alarmSound))
+        val bean1 = PhoneSoundBean(getString(R.string.defaultSound))
+        val bean2 = PhoneSoundBean(getString(R.string.sweetSound))
+        val bean3 = PhoneSoundBean(getString(R.string.sharpSound))
+        val bean4 = PhoneSoundBean(getString(R.string.alarmSound))
         mDataList?.add(bean1)
         mDataList?.add(bean2)
         mDataList?.add(bean3)
         mDataList?.add(bean4)
         mAdapter = PhoneSoundAdapter(this, mDataList)
         lv_PhoneSound.adapter = mAdapter
+
+        val value = preferences?.getStringValue(SELECT_PHONE_SOUND)
+        if (NotNull.isNotNull(value)) {
+            val position = value?.toInt()
+            mAdapter?.setCurrentPosition(position!!)
+            mAdapter?.notifyDataSetChanged()
+        }
     }
 
 
@@ -66,10 +70,12 @@ class SelectPhoneSoundActivity(override val contentView: Int = R.layout.activity
      */
     private fun initClickEvent() {
         // listView的
-        lv_PhoneSound.setOnItemClickListener { parent, view, position, id ->
+        lv_PhoneSound.setOnItemClickListener { _, _, position, _ ->
             mAdapter?.setCurrentPosition(position)
             mAdapter?.notifyDataSetChanged()
             mCurrentPosition = position
+            preferences?.putValue(SELECT_PHONE_SOUND, position.toString())
+            mOverAlert(position)
         }
         // 返回键的
         titleBack?.setOnClickListener {
@@ -92,8 +98,40 @@ class SelectPhoneSoundActivity(override val contentView: Int = R.layout.activity
      * 返回选择的提醒声
      */
     private fun sendResult() {
-        var intent = Intent()
+        val intent = Intent()
         intent.putExtra("phoneSound", mDataList?.get(mCurrentPosition)?.name)
         setResult(PHONE_SOUND_RESULT_CODE, intent)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //结束音频
+        if (NotNull.isNotNull(mediaPlayer)) {
+            mediaPlayer?.stop()
+        }
+    }
+
+    //越界提醒
+    private fun mOverAlert(position: Int) {
+        if (!NotNull.isNotNull(mediaPlayer)){
+            mediaPlayer = MediaPlayer()
+        }else{
+            mediaPlayer?.stop()
+            mediaPlayer?.reset()
+        }
+        val descriptor = when (position) {
+            0 -> resources.assets
+                    .openFd("alert.mp3")
+            1 -> resources.assets
+                    .openFd("alert.mp3")
+            2 -> resources.assets
+                    .openFd("alert.mp3")
+            else -> resources.assets
+                    .openFd("alert.mp3")
+        }
+        mediaPlayer?.setDataSource(descriptor.fileDescriptor, descriptor.startOffset, descriptor.length)
+        mediaPlayer?.prepare()
+        mediaPlayer?.start()
+    }
+
 }

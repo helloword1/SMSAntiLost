@@ -3,10 +3,12 @@ package com.goockr.smsantilost.views.activities.msm
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Message
+import android.os.SystemClock
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.*
+import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.ERROR
 import com.goockr.smsantilost.utils.Constant.MSM_NAME
@@ -34,9 +36,10 @@ class MSMControlActivity(override val contentView: Int = R.layout.activity_msm_c
     private var msmName = ""
     private var content = ""
     private var mDate = ""
-    private var canSend = false
-    private var currentInt = 0
+    private var sum = 12
+    private var myThread: Thread? = null
     private val mDatas = ArrayList<ContentBean>()
+    private val sendLists = ArrayList<ContentBean>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //设置右滑不finsh界面
@@ -58,27 +61,34 @@ class MSMControlActivity(override val contentView: Int = R.layout.activity_msm_c
 
     private fun getBlueMsg(potion: Int, obj: String) {
         if (obj.contains(SM_OK)) {
-            setDates(true)
+            setDates(1, obj)
         } else if (obj.contains(ERROR)) {
-            setDates(false)
+            setDates(0, obj)
         }
     }
 
-    private fun setDates(isSucceed: Boolean) {
-        ivSend.isEnabled = true
-        same = msmBeanDao?.queryBuilder()?.where(MsmBeanDao.Properties.SmsTitle.eq(msmName))?.build()?.unique()
-        val unique = contentBeanDao?.queryBuilder()?.where(ContentBeanDao.Properties.Date.eq(mDate))?.build()?.unique()
+    private fun setDates(isSucceed: Int, obj: String) {
+        if (!obj.contains("||"))return
+        val split = obj.split("||")
+        val tDate = split[1]
+        if (!NotNull.isNotNull(tDate)) return
+        val unique = contentBeanDao?.queryBuilder()?.where(ContentBeanDao.Properties.TimeIndex.eq(tDate))?.build()?.unique()
         if (NotNull.isNotNull(unique)) {
             unique?.isSucceed = isSucceed
             contentBeanDao?.update(unique)
-            same?.smsTime = mDate
-            same?.smsTitle = content
-            msmBeanDao?.update(same)
-            if (!mDatas.isEmpty()) {
-                mDatas[currentInt].isSucceed = isSucceed
-                mDatas[currentInt].isSending = false
-                sendMsmAdapter?.notifyDataSetChanged()
-                recycleView.smoothScrollToPosition(mDatas.size - 1)
+            //刷新界面
+            for (bean in mDatas) {
+                if (TextUtils.equals(bean.timeIndex, tDate)) {
+                    if (sendLists.contains(bean))
+                        sendLists.remove(bean)
+                    bean.isSucceed = isSucceed
+                    sendMsmAdapter?.notifyDataSetChanged()
+                    if (!sendLists.isEmpty()) {
+                        val contentBean = sendLists[0]
+                        //发送短信
+                        instance?.write("$SMS,${contentBean.date},$msmName,${contentBean.msmStr}")
+                    }
+                }
             }
         }
     }
@@ -87,6 +97,7 @@ class MSMControlActivity(override val contentView: Int = R.layout.activity_msm_c
     override fun initView() {
         val extras = intent.extras
         msmName = extras.getString(MSM_NAME)
+        //初始化数据库
         val name = "antilost-db" // 数据库名称
         val helper = DaoMaster.DevOpenHelper(this, name) // helper
         val db = helper.writableDb
@@ -105,45 +116,120 @@ class MSMControlActivity(override val contentView: Int = R.layout.activity_msm_c
         recycleView.adapter = sendMsmAdapter
         recycleView.smoothScrollToPosition(mDatas.size - 1)
         sendMsmAdapter?.setOnGetAdapterListener {
-            currentInt = it
-            val content = mDatas[it].msmStr
-            mDate = mDatas[it].date
-            instance?.setUiHandler(myHandler)
-            instance?.write("$SMS,$msmName,$content")
-            showProgressDialog()
+            val contentBean = mDatas[it]
+            contentBean.isSucceed=-1
+            contentBean.sumTime=sum
+            if (!sendLists.contains(contentBean)) {
+                sendLists.add(contentBean)
+            }
+            val content = contentBean.msmStr
+            val date = contentBean.timeIndex
+            if (sendLists.indexOf(contentBean) == 0 || sendLists[sendLists.indexOf(contentBean) - 1].isSucceed == 0) {
+                //发送短信
+                instance?.write("$SMS,$date,$msmName,$content")
+                instance?.setUiHandler(myHandler)
+                initThread()
+            }
+            sendMsmAdapter?.notifyDataSetChanged()
         }
         ivSend.setOnClickListener {
-            ivSend.isEnabled = false
-            content = smsSend.text.toString()
-            if (TextUtils.equals(content, "")) return@setOnClickListener
-            //发送短信
-            instance?.write("$SMS,$msmName,$content")
-            instance?.setUiHandler(myHandler)
-            element = ContentBean()
-            val nowDate = DateUtils.getDate("yyyy-MM-dd_HH-mm-ss")
-            val nowLong = DateUtils.stringToLong(nowDate, "yyyy-MM-dd_HH-mm-ss")
-            val mDateLong = if (mDate.contains("-")) {
-                DateUtils.stringToLong(mDate, "yyyy-MM-dd_HH-mm-ss")
-            } else {
-                0
-            }
-            element?.isShowDate = nowLong - mDateLong > 60000 * 5
-            mDate = nowDate
-            element?.isLeft = false
-            element?.msmStr = content
-            element?.date = mDate
-            element?.isSending = true
-            element?.mid = same?.id
-            contentBeanDao?.insert(element)
-            currentInt = mDatas.size - 1
-            element?.isSucceed = true
-            mDatas.add(element!!)
-            sendMsmAdapter?.notifyDataSetChanged()
-            if (!mDatas.isEmpty()) {
-                recycleView.smoothScrollToPosition(mDatas.size - 1)
-            }
+            sendSms()
+        }
+    }
 
-            smsSend.setText("")
+    //发送短信
+    private fun sendSms() {
+        same = msmBeanDao?.queryBuilder()?.where(MsmBeanDao.Properties.SmsTitle.eq(msmName))?.build()?.unique()
+        content = smsSend.text.toString()
+        if (TextUtils.equals(content, "") || !instance!!.isConnect) {
+            MyToast.showToastCustomerStyleText(this, getString(R.string.pleaseConnect))
+            return
+        }
+        val currentTime = System.currentTimeMillis()
+        val date = DateUtils.getDiveceDate("HHmmss", currentTime)
+        element = ContentBean()
+        val nowDate = DateUtils.getDiveceDate("yyyy-MM-dd_HH-mm-ss", currentTime)
+        val nowLong = DateUtils.stringToLong(nowDate, "yyyy-MM-dd_HH-mm-ss")
+        val mDateLong = if (mDate.contains("-")) {
+            DateUtils.stringToLong(mDate, "yyyy-MM-dd_HH-mm-ss")
+        } else {
+            0
+        }
+        element?.isShowDate = nowLong - mDateLong > 60000 * 5
+        //插入数据库
+        mDate = nowDate
+        element?.isLeft = false
+        element?.msmStr = content
+        element?.date = mDate
+        element?.isSucceed = 0
+        element?.timeIndex = date
+        element?.mid = same?.id
+        element?.sumTime = sum
+        contentBeanDao?.insert(element)
+        //添加队列
+        sendLists.add(element!!)
+        if (sendLists.indexOf(element!!) == 0 || sendLists[sendLists.indexOf(element!!) - 1].isSucceed == 0) {
+            //发送短信
+            instance?.write("$SMS,$date,$msmName,$content")
+            instance?.setUiHandler(myHandler)
+        }
+
+        //保存更新same
+        same?.smsTime = mDate
+        same?.smsStr = content
+        msmBeanDao?.update(same)
+        //更新页面
+        element?.isSucceed = -1
+        mDatas.add(element!!)
+        sendMsmAdapter?.notifyDataSetChanged()
+        //设置超时
+        initThread()
+
+        //移动至底部
+        if (!mDatas.isEmpty()) {
+            recycleView.smoothScrollToPosition(mDatas.size - 1)
+        }
+        smsSend.setText("")
+    }
+
+    private fun initThread() {
+        if (!NotNull.isNotNull(myThread)) {
+            myThread = Thread({
+                while (true) {
+                    runOnUiThread {
+                        val iterator = sendLists.iterator()
+                        while (iterator.hasNext()){
+                            val c = iterator.next()
+                            if (c.isSucceed == -1) {
+                                val sumTime = c.sumTime
+                                if (c.sumTime > 1) {
+                                    c.sumTime = sumTime - 1
+                                } else if (c.sumTime <= 1) {
+                                    iterator.remove()
+                                    for (bean in mDatas) {
+                                        if (bean == c) {
+                                            bean.isSucceed = 0
+                                            sendMsmAdapter?.notifyDataSetChanged()
+                                            contentBeanDao?.update(bean)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    SystemClock.sleep(1000)
+                }
+            })
+            myThread?.start()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (NotNull.isNotNull(myThread)) {
+            myThread?.interrupt()
+            myThread = null
         }
     }
 }

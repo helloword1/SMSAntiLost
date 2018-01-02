@@ -71,7 +71,11 @@ object DateUtils {
         val timeMillis = System.currentTimeMillis()
         return format.format(timeMillis)
     }
-
+    @SuppressLint("SimpleDateFormat")
+    fun getDiveceDate(str: String, timeMillis: Long): String{
+        val format = SimpleDateFormat(str)
+        return format.format(timeMillis)
+    }
     /**
      * 获取过去的天数
      * @param date

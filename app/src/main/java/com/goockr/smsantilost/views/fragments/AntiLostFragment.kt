@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.AntilostBean
+import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.DateUtils
 import com.goockr.smsantilost.views.activities.antilost.KeyActivity
 import com.goockr.smsantilost.views.adapters.AntilostAdapter
@@ -29,6 +30,7 @@ class AntiLostFragment : BaseFragment() {
     private var listsAdapter: AntilostAdapter? = null
     private var device: BluetoothDevice? = null
     private var isConnect = false
+    private var type = 0
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         //占位置用
@@ -67,12 +69,19 @@ class AntiLostFragment : BaseFragment() {
                 val distance = c.distance
                 val date = c.date
                 val deviceName = c.name
+                /*when (key) {
+                    getString(R.string.key) -> id = R.mipmap.icon_key_device_details
+                    getString(R.string.wallet) -> id = R.mipmap.icon_wallet_device_details
+                    getString(R.string.computor) -> id = R.mipmap.icon_portable_computer_device_details
+                    getString(R.string.secondCard) -> id = R.mipmap.icon_vice_card_phone_divice_details
+                    getString(R.string.other) -> id = R.mipmap.icon_other_device_details
+                }*/
                 when (key) {
-                    getString(R.string.key) -> id = R.mipmap.icon_key
-                    getString(R.string.wallet) -> id = R.mipmap.icon_wallet
-                    getString(R.string.computor) -> id = R.mipmap.icon_portable_computer
-                    getString(R.string.secondCard) -> id = R.mipmap.icon_vice_card_phone
-                    getString(R.string.other) -> id = R.mipmap.icon_other
+                    getString(R.string.key) -> id = 0
+                    getString(R.string.wallet) -> id = 1
+                    getString(R.string.computor) -> id = 2
+                    getString(R.string.secondCard) -> id = 3
+                    getString(R.string.other) -> id = 4
                 }
                 if (TextUtils.equals(DateUtils.getDate(DateUtils.parsePatterns[2]), date)) {
                     now = "刚刚"
@@ -111,13 +120,16 @@ class AntiLostFragment : BaseFragment() {
      */
     private fun initClickEvent() {
         antilost_list_view.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            //icon_vice_card_phone_divice_details
             val bundle = Bundle()
-            bundle.putInt("icon", R.mipmap.icon_vice_card_phone_divice_details)
-            bundle.putSerializable("device", lists!![position])
+            val antilostBean = lists!![position]
+            bundle.putSerializable("device", antilostBean)
+            bundle.putInt(Constant.ADDRESS_TYPE, antilostBean.drawableId)
             showActivity(KeyActivity::class.java, bundle)
-
         }
     }
+
+
 
     fun setDevice(device: BluetoothDevice?) {
         this.device = device

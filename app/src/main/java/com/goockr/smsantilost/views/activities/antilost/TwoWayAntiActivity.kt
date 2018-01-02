@@ -1,12 +1,17 @@
 package com.goockr.smsantilost.views.activities.antilost
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Vibrator
 import android.view.View
 import com.bigkoo.pickerview.OptionsPickerView
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.Constant.VIBRATE
 import com.goockr.smsantilost.views.activities.BaseActivity
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_two_way_anti.*
 
 class TwoWayAntiActivity(override val contentView: Int = R.layout.activity_two_way_anti) : BaseActivity(), View.OnClickListener {
@@ -14,7 +19,7 @@ class TwoWayAntiActivity(override val contentView: Int = R.layout.activity_two_w
     private val PHONE_SOUND_REQUEST_CODE = 1
     private val PHONE_SOUND_RESULT_CODE = 2
     private var mPvOptions: OptionsPickerView<*>? = null
-
+    private var vibrator: Vibrator? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initMView()
@@ -33,6 +38,13 @@ class TwoWayAntiActivity(override val contentView: Int = R.layout.activity_two_w
         title?.text = getString(R.string.Bi_directionalAntiLoss)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
+        val value = preferences!!.getStringValue(Constant.VIBRATE)
+        if (NotNull.isNotNull(value)){
+            btn_OpenVibration.isChecked = value.toBoolean()
+        }else{
+            btn_OpenVibration.isChecked =false
+        }
+
     }
 
     private fun initLoopView() {
@@ -59,20 +71,31 @@ class TwoWayAntiActivity(override val contentView: Int = R.layout.activity_two_w
         ll_PhoneSound1.setOnClickListener(this)
         ll_SoundTotal1.setOnClickListener(this)
         // 双向防丢滑块按钮监听
-        btn_OpenAnti.setOnCheckedChangeListener { view, isChecked ->
+        btn_OpenAnti.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
 
             }
         }
         // 震动滑块按钮监听
-        btn_OpenVibration.setOnCheckedChangeListener { view, isChecked ->
+        btn_OpenVibration.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-
+                preferences?.putValue(VIBRATE,"true")
+                vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibrator!!.vibrate(200)
+            }else{
+                preferences?.putValue(VIBRATE,"false")
+                if (NotNull.isNotNull(vibrator) && vibrator!!.hasVibrator()) {
+                    vibrator?.cancel()
+                }
             }
         }
     }
-
-
+    override fun onDestroy() {
+        super.onDestroy()
+        if (NotNull.isNotNull(vibrator) && vibrator!!.hasVibrator()) {
+            vibrator?.cancel()
+        }
+    }
     /**
      * 点击事件具体实现
      */

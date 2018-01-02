@@ -69,9 +69,19 @@ object Constant {
     //主机响铃
     val BUZZER = "Buzzer"
     //蓝牙保存标志
-    val BLUETEETH_INDEX="blueteeth_index"
+    val BLUETEETH_INDEX = "blueteeth_index"
 
-    val SM_OK="SM_OK!"
-    val ERROR="Error!"
-    val ADDRESS ="address"
+    val SM_OK = "SM_OK"
+    val ERROR = "Error"
+    val ADDRESS = "address"
+    val ADDRESS_TYPE = "address_type"
+
+    //越界提醒
+    val OVERSTEP = "overstep"
+    //开启振动
+    val VIBRATE = "vibrate"
+    //重连提醒
+    val RECONNECT = "reconnect"
+    //选择断开提醒声音
+    val SELECT_PHONE_SOUND = "select_phone_sound"
 }

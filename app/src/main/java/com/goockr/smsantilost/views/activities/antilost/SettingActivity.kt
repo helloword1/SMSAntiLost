@@ -1,7 +1,6 @@
 package com.goockr.smsantilost.views.activities.antilost
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.Window
@@ -58,27 +57,26 @@ class SettingActivity(override val contentView: Int = R.layout.activity_setting)
     }
 
     override fun onClick(v: View?) {
-        var intent = Intent()
         when (v?.id) {
             R.id.ll_SetIndexOut -> {
-                intent.setClass(this, SetIndexOutActivity::class.java)
-                startActivity(intent)
+                //越界提醒
+                showActivity(SetIndexOutActivity::class.java)
             }
             R.id.ll_SetAntiLost -> {
-                intent.setClass(this, TwoWayAntiActivity::class.java)
-                startActivity(intent)
+                //双向防丢
+                showActivity(TwoWayAntiActivity::class.java)
             }
             R.id.ll_SetSim -> {
-                intent.setClass(this, SetSimActivity::class.java)
-                startActivity(intent)
+                //SIM设置
+                showActivity(SetSimActivity::class.java)
             }
             R.id.ll_SetName -> {
-                intent.setClass(this, SetNameActivity::class.java)
-                startActivity(intent)
+                //修改名称
+                showActivity(SetNameActivity::class.java)
             }
             R.id.ll_SetPermission -> {
-                intent.setClass(this, SetPermissionActivity::class.java)
-                startActivity(intent)
+                //转移权限
+                showActivity(SetPermissionActivity::class.java)
             }
             R.id.ll_Unbundling -> {
                 dialog?.show()
@@ -94,8 +92,8 @@ class SettingActivity(override val contentView: Int = R.layout.activity_setting)
     }
 
     private fun initDialog() {
-        var builder = AlertDialog.Builder(this)
-        var customView = layoutInflater.inflate(R.layout.dialog_permission, null)
+        val builder = AlertDialog.Builder(this)
+        val customView = layoutInflater.inflate(R.layout.dialog_permission, null)
         builder.setView(customView)
         builder.setIcon(R.mipmap.ic_launcher)
         dialog = builder.create()

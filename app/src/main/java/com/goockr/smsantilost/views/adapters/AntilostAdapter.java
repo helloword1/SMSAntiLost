@@ -1,6 +1,7 @@
 package com.goockr.smsantilost.views.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class AntilostAdapter extends BaseAdapter {
             holder = (AntilostHolder) convertView.getTag();
         }
         AntilostBean antilostBean = mList.get(position);
-        holder.mImageView.setImageDrawable(mContext.getResources().getDrawable(antilostBean.getDrawableId()));
+        holder.mImageView.setImageDrawable(ContextCompat.getDrawable(mContext, getDeviceID(antilostBean.getDrawableId())));
         holder.mName.setText(antilostBean.getName());
         holder.mLastDate.setText(antilostBean.getLastDate());
         if (antilostBean.isConnectState()) {
@@ -91,5 +92,29 @@ public class AntilostAdapter extends BaseAdapter {
             mConnnect = view.findViewById(R.id.antilost_item_connect);
             tvDistance = view.findViewById(R.id.tvDistance);
         }
+    }
+
+    private int getDeviceID(int type) {
+        int mType = 0;
+        switch (type) {
+            case 0:
+                mType = R.mipmap.icon_key;
+                break;
+            case 1:
+                mType = R.mipmap.icon_wallet;
+                break;
+            case 2:
+                mType = R.mipmap.icon_portable_computer;
+                break;
+            case 3:
+                mType = R.mipmap.icon_vice_card_phone;
+                break;
+            case 4:
+                mType = R.mipmap.icon_other;
+                break;
+            default:
+                break;
+        }
+        return mType;
     }
 }

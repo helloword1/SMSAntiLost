@@ -16,6 +16,7 @@ import android.widget.AbsListView
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.ContentBeanDao
+import com.goockr.smsantilost.entries.DaoMaster
 import com.goockr.smsantilost.entries.MsmBean
 import com.goockr.smsantilost.entries.MsmBeanDao
 import com.goockr.smsantilost.graphics.SwipeMenuLayout
@@ -38,10 +39,11 @@ import kotlin.concurrent.thread
  */
 
 class MSMFragment : BaseFragment() {
-    var mDatas: ArrayList<MsmBean> = ArrayList()
-    var manager: LinearLayoutManager? = null
-    var isSearch: Boolean = false
-    var ischeck: Boolean = false
+    private var mDatas: ArrayList<MsmBean> = ArrayList()
+    private var manager: LinearLayoutManager? = null
+    private var isSearch: Boolean = false
+    private var ischeck: Boolean = false
+
     private var msmBeanDao: MsmBeanDao? = null
     private var contentBeanDao: ContentBeanDao? = null
 
@@ -56,6 +58,7 @@ class MSMFragment : BaseFragment() {
         initView()
     }
 
+
     private fun initView() {
         manager = LinearLayoutManager(activity)
         recycleView.layoutManager = manager
@@ -64,24 +67,8 @@ class MSMFragment : BaseFragment() {
         emptyView.tvEmptyView.text = getString(R.string.emptySms)
         recycleView.adapter = msmSwipeDelMenuAdapter
 
-
         initRefresh()
-        val goockrApplication = activity.application as GoockrApplication
-        msmBeanDao = goockrApplication.mDaoSession?.msmBeanDao
-        contentBeanDao = goockrApplication.mDaoSession?.contentBeanDao
-        val list = msmBeanDao?.queryBuilder()?.build()?.list()
-        if (list != null) {
-            //排序
-            Collections.sort(list) { arg0, arg1 ->
-                DateUtils.stringToLong(arg0.smsTime, "yyyy-MM-dd_HH-mm-ss")
-                        .compareTo(DateUtils.stringToLong(arg1.smsTime, "yyyy-MM-dd_HH-mm-ss"))
-            }
-            // 倒序排列
-            Collections.reverse(list)
-            mDatas.addAll(list)
-            setEmptyView()
-            msmSwipeDelMenuAdapter?.notifyDataSetChanged()
-        }
+        notifyDatas()
         recycleView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -110,6 +97,32 @@ class MSMFragment : BaseFragment() {
             showActivityForResult(MSMManagerActivity::class.java, extras, MSM_MANAGER_RESULT_ID)
         }
 
+    }
+
+    private fun notifyDatas() {
+        mDatas.clear()
+        if (isSearch) {
+            mDatas.add(MsmBean())
+        }
+        val name = "antilost-db" // 数据库名称
+        val helper = DaoMaster.DevOpenHelper(activity, name) // helper
+        val db = helper.writableDb
+        val mDaoSession = DaoMaster(db).newSession()
+        msmBeanDao = mDaoSession?.msmBeanDao
+        contentBeanDao = mDaoSession.contentBeanDao
+        val list = msmBeanDao?.queryBuilder()?.build()?.list()
+        if (list != null) {
+            //排序
+            Collections.sort(list) { arg0, arg1 ->
+                DateUtils.stringToLong(arg0.smsTime, "yyyy-MM-dd_HH-mm-ss")
+                        .compareTo(DateUtils.stringToLong(arg1.smsTime, "yyyy-MM-dd_HH-mm-ss"))
+            }
+            // 倒序排列
+            Collections.reverse(list)
+            mDatas.addAll(list)
+            setEmptyView()
+            msmSwipeDelMenuAdapter?.notifyDataSetChanged()
+        }
     }
 
     private inner class MsmSwipeDelMenuAdapter(mContext: Context, mDatas: ArrayList<MsmBean>) : MsmSwipeAdapter(mContext, this, mDatas) {
@@ -196,6 +209,8 @@ class MSMFragment : BaseFragment() {
             }
             mDatas.addAll(arrayList)
             msmSwipeDelMenuAdapter?.notifyDataSetChanged()
+        } else if (requestCode == Constant.MSM_RESULT_ID) {
+            notifyDatas()
         }
     }
 

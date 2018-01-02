@@ -35,6 +35,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <!-- 手机振动-->
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".GoockrApplication"
@@ -101,6 +103,7 @@
             android:theme="@style/baseTheme" />
         <activity
             android:name=".views.activities.antilost.DeviceMapActivity"
+            android:launchMode="singleTask"
             android:theme="@style/baseTheme" />
         <activity
             android:name=".views.activities.antilost.SettingActivity"
@@ -184,6 +187,10 @@
             android:theme="@style/baseTheme" />
         <activity
             android:name=".views.activities.more.AreaMapActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.AddAntiAreaMapActivity"
             android:launchMode="singleTask"
             android:theme="@style/baseTheme" />
         <activity

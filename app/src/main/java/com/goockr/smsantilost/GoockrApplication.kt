@@ -30,6 +30,7 @@ class GoockrApplication : Application() {
      * 声明AMapLocationClient类对象
      */
     var mLocationClient: AMapLocationClient? = null
+
     /**
      * 全局debug
      */
@@ -86,12 +87,17 @@ class GoockrApplication : Application() {
             }
         }
     }
+
     fun getContext(): Context {
         return this
     }
 
     companion object {
         var isDebug = true//全局log 关闭或打开
+    }
+
+    fun getActivityLists(): LinkedList<Activity> {
+        return activityList
     }
 
     //用于当系统设置语言变化时进行语言设置

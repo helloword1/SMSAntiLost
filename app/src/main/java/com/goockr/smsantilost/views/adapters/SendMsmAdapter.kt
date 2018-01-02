@@ -61,19 +61,21 @@ open class SendMsmAdapter(mContext: Context, private val mDatas: ArrayList<Conte
                     rightViewHolder.tvRightDate.visibility = View.GONE
                     rightViewHolder.tvRightDate.text = ""
                 }
-                if (contentBean.isSucceed) {
+                //成功
+                if (contentBean.isSucceed == 1) {
                     rightViewHolder.ivRightSendIcon.visibility = View.GONE
-
-                } else {
+                    rightViewHolder.ivRightProgress.visibility = View.GONE
+                    //失败
+                } else if (contentBean.isSucceed == 0) {
                     rightViewHolder.ivRightSendIcon.visibility = View.VISIBLE
+                    rightViewHolder.ivRightProgress.visibility = View.GONE
                     rightViewHolder.ivRightSendIcon.setOnClickListener {
                         OnGetAdapterListener.invoke(position)
                     }
-                }
-                if (contentBean.isSending){
-                    rightViewHolder.ivRightProgress.visibility= View.VISIBLE
+                    //默认
                 }else{
-                    rightViewHolder.ivRightProgress.visibility= View.GONE
+                    rightViewHolder.ivRightSendIcon.visibility = View.GONE
+                    rightViewHolder.ivRightProgress.visibility = View.VISIBLE
                 }
 
             }
@@ -93,6 +95,7 @@ open class SendMsmAdapter(mContext: Context, private val mDatas: ArrayList<Conte
         var ivRightSendIcon = itemView.ivRightSendIcon
         var ivRightProgress = itemView.ivRightProgress
     }
+
     private lateinit var OnGetAdapterListener: (Int) -> Unit
 
     fun setOnGetAdapterListener(listener: (Int) -> Unit) {

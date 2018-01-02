@@ -63,7 +63,7 @@ open class MsmSwipeAdapter(protected var mContext: Context, private var fragment
             holder.tvTime.text = dealWithForSms(msmBean.smsTime)
             holder.tvTitle.text = msmBean.smsTitle
             if (msmBean.contentBeans.size>0){
-                holder.tvContent.text = msmBean.contentBeans[msmBean.contentBeans.size-1].msmStr
+                holder.tvContent.text = msmBean.smsStr
             }
             if (msmBean.isShow) {
                 holder.ivAvatar.visibility = View.VISIBLE
