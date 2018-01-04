@@ -21,7 +21,6 @@ class AddActivity(override val contentView: Int = R.layout.activity_add) : BaseA
     override fun onResume() {
         super.onResume()
         initMView()
-        initMData()
         initClickEvent()
     }
 
@@ -41,14 +40,6 @@ class AddActivity(override val contentView: Int = R.layout.activity_add) : BaseA
 
         ll?.addView(titleLayout)
     }
-
-    /**
-     * 初始化搜索到的设备
-     */
-    private fun initMData() {
-
-    }
-
     /**
      * 点击事件
      */

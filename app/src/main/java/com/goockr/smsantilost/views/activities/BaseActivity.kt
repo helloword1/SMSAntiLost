@@ -1,9 +1,12 @@
 package com.goockr.smsantilost.views.activities
 
 import android.annotation.SuppressLint
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.MediaPlayer
 import android.os.*
 import android.support.v4.content.ContextCompat
@@ -41,12 +44,14 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var titleRight: ImageView? = null
     protected var titleAdd: ImageView? = null
     protected var titleRight1: TextView? = null
-    var preferences: SharedPreferencesUtils? = null// 配置文件
+    protected var preferences: SharedPreferencesUtils? = null// 配置文件
     protected var baseLine: View? = null
     protected var status_bar: View? = null
     protected var goockrApplication: GoockrApplication? = null
     protected var instance: ClientThread? = null
     protected var mediaPlayer: MediaPlayer? = null
+    protected var btReceiver: MyBtReceiver? = null
+
     //蓝牙通信
     protected val myHandler = @SuppressLint("HandlerLeak")
     object : Handler() {
@@ -89,6 +94,19 @@ abstract class BaseActivity : AppCompatActivity() {
                 .setSwipeSensitivity(0.5f)
                 .setSwipeRelateEnable(true)
                 .setSwipeRelateOffset(300)
+        //蓝牙
+        if (!NotNull.isNotNull(btReceiver)){
+            val turnOnBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(turnOnBtIntent, Constant.REQUEST_ENABLE_BT)
+            val intentFilter = IntentFilter()
+            btReceiver = MyBtReceiver()
+//            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
+//            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
+            intentFilter.addAction(BluetoothDevice.ACTION_FOUND)
+            intentFilter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST)
+            intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
+            registerReceiver(btReceiver, intentFilter)
+        }
         initTitleView()
         initContentView()
         initView()
@@ -247,7 +265,12 @@ abstract class BaseActivity : AppCompatActivity() {
         progressDialog!!.show()
     }
 
-    protected open fun receive(intent: Intent) {}
+    protected open fun receive(intent: Intent) {
+        //toast("搜索结束")
+        if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == intent.action && NotNull.isNotNull(instance) && !instance!!.isConnect) {
+
+        }
+    }
     /**
      * 广播接受器
      */

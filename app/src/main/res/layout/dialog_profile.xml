@@ -16,15 +16,17 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/x50"
-            android:text="拍照"
+            android:text="@string/takePhotos"
+            android:id="@+id/takePhoto"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:gravity="center"/>
-
+        <include layout="@layout/line_gray_margin" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/x50"
-            android:text="从手机相册选择"
+            android:text="@string/pictures"
+            android:id="@+id/fromPic"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:gravity="center"/>
@@ -41,7 +43,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/x50"
-            android:text="取消"
+            android:text="@string/cancel"
+            android:id="@+id/photoCancel"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"

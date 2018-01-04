@@ -32,7 +32,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="@dimen/x10"
                 style="@style/setting_icon_sytle"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/icon_msg"/>
 
             <EditText
                 android:id="@+id/et_VerificationCode1"
@@ -54,7 +54,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/x10"
                 style="@style/setting_icon_sytle"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/btn_del" />
         </RelativeLayout>
 
         <TextView

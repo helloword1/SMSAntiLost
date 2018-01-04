@@ -6,12 +6,14 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.utils.ToastUtils
+import com.goockr.smsantilost.entries.DeviceBeanDao
+import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.views.activities.BaseActivity
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_set_name.*
 
 class SetNameActivity(override val contentView: Int = R.layout.activity_set_name) : BaseActivity() {
-
+    private var name = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initMView()
@@ -36,6 +38,10 @@ class SetNameActivity(override val contentView: Int = R.layout.activity_set_name
         title?.text = getString(R.string.ModifyName)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
+
+        val extras = intent.extras
+        name = extras.getString("DEVICE_NAME")
+        et_InputName.setText(name)
     }
 
     /**
@@ -44,10 +50,19 @@ class SetNameActivity(override val contentView: Int = R.layout.activity_set_name
     private fun initClickEvent() {
         // 保存SIM卡号码的逻辑
         titleOk?.setOnClickListener {
-            ToastUtils.showShort(this,getString(R.string.CanSave))
+            if (et_InputName.text.isNotEmpty()) {
+                val deviceBeanDao = goockrApplication?.mDaoSession?.deviceBeanDao
+                val unique = deviceBeanDao?.queryBuilder()?.where(DeviceBeanDao.Properties.Name.eq(name))?.unique()
+                if (NotNull.isNotNull(unique)){
+                    unique?.name=et_InputName.text.toString()
+                    deviceBeanDao?.update(unique)
+                    MyToast.showToastCustomerStyleText(this,getString(R.string.changeSucceed))
+                    finish()
+                }
+            }
         }
         // editText监听
-        et_InputName.addTextChangedListener(object : TextWatcher{
+        et_InputName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 
             }
@@ -58,11 +73,9 @@ class SetNameActivity(override val contentView: Int = R.layout.activity_set_name
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!TextUtils.isEmpty(s)) {
-                    iv_CleanText.visibility = View.VISIBLE
                     titleOk?.setTextColor(resources.getColor(R.color.colorPrimary))
                     titleOk?.isClickable = true
-                }else {
-                    iv_CleanText.visibility = View.GONE
+                } else {
                     titleOk?.setTextColor(resources.getColor(R.color.appGray))
                     titleOk?.isClickable = false
                 }
@@ -70,9 +83,5 @@ class SetNameActivity(override val contentView: Int = R.layout.activity_set_name
 
         })
 
-        // 清除文字按钮
-        iv_CleanText.setOnClickListener {
-            et_InputName.text = null
-        }
     }
 }

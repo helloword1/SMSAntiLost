@@ -30,7 +30,6 @@ class GoockrApplication : Application() {
      * 声明AMapLocationClient类对象
      */
     var mLocationClient: AMapLocationClient? = null
-
     /**
      * 全局debug
      */
@@ -45,7 +44,6 @@ class GoockrApplication : Application() {
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
                 .build()
-
         OkHttpUtils.initClient(okHttpClient)
         //数据库
         initDao()
@@ -87,7 +85,15 @@ class GoockrApplication : Application() {
             }
         }
     }
+    fun exitToHomeNo() {
+        for (activity in activityList) {
+            if (activity is HomeActivity) {
 
+            } else {
+                activity.finish()
+            }
+        }
+    }
     fun getContext(): Context {
         return this
     }

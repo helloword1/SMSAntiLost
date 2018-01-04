@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
@@ -24,7 +23,7 @@ class BlueTeethSearchActivity(override val contentView: Int = R.layout.activity_
     private var mDatas: MutableList<BluetoothDevice> = ArrayList()
     var bluetoothAdapter: BlueTeethListAdapter? = null
     var mBluetoothAdapter: BluetoothAdapter? = null
-    private var btReceiver: MyBtReceiver? = null
+//    private var btReceiver: MyBtReceiver? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //设置右滑不finsh界面
@@ -34,14 +33,14 @@ class BlueTeethSearchActivity(override val contentView: Int = R.layout.activity_
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         // 蓝牙已开启
         if (mBluetoothAdapter?.isEnabled!!) {
-            val turnOnBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            /*val turnOnBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(turnOnBtIntent, Constant.REQUEST_ENABLE_BT)
             var intentFilter = IntentFilter()
             btReceiver = MyBtReceiver()
             intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
             intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
             intentFilter.addAction(BluetoothDevice.ACTION_FOUND)
-            registerReceiver(btReceiver, intentFilter)
+            registerReceiver(btReceiver, intentFilter)*/
             showBondDevice()
             // 默认开启服务线程监听
 //            if (serverThread != null) {
@@ -134,7 +133,7 @@ class BlueTeethSearchActivity(override val contentView: Int = R.layout.activity_
      */
     private fun showBondDevice() {
         mDatas.clear()
-        val tmp = mBluetoothAdapter?.getBondedDevices()
+        val tmp = mBluetoothAdapter?.bondedDevices
         for (d in tmp!!) {
             mDatas.add(d)
         }
@@ -147,12 +146,7 @@ class BlueTeethSearchActivity(override val contentView: Int = R.layout.activity_
      * @return
      */
     private fun isNewDevice(device: BluetoothDevice): Boolean {
-        var repeatFlag = false
-        for (d in mDatas) {
-            if (d.getAddress() == device.address) {
-                repeatFlag = true
-            }
-        }
+        val repeatFlag = mDatas.any { it.address == device.address }
         //不是已绑定状态，且列表中不重复
         return device.bondState != BluetoothDevice.BOND_BONDED && !repeatFlag
     }

@@ -35,15 +35,15 @@ class MergeContactActivity(override val contentView: Int = R.layout.activity_mer
         }
         //完全重复
         tvMergeContact.setOnClickListener {
-            MyToast.showToastCustomerStyleText(this, "功能开发中")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.deviceDeveloping))
         }
         //姓名重复
         tvMergeName.setOnClickListener {
-            MyToast.showToastCustomerStyleText(this, "功能开发中")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.deviceDeveloping))
         }
         //号码重复
         tvMergeNumber.setOnClickListener {
-            MyToast.showToastCustomerStyleText(this, "功能开发中")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.deviceDeveloping))
         }
     }
 

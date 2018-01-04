@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +22,7 @@ import com.goockr.smsantilost.utils.ContactUtils.getSystemContactInfos
 import com.goockr.smsantilost.views.activities.msm.CreateContactActivity
 import com.goockr.smsantilost.views.activities.msm.SettingContactActivity
 import com.goockr.smsantilost.views.adapters.CityAdapter
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.fragment_contact.*
 import kotlin.concurrent.thread
 
@@ -30,6 +34,7 @@ class ContactFragment : BaseFragment() {
     private var mAdapter: CityAdapter? = null
     private var mManager: LinearLayoutManager? = null
     private var mDatas: MutableList<PhoneBean> = ArrayList()
+    private var bDatas: MutableList<PhoneBean> = ArrayList()
     private var mDecoration: SuspensionDecoration? = null
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -45,7 +50,7 @@ class ContactFragment : BaseFragment() {
     private fun initView() {
         mManager = LinearLayoutManager(activity)
         rv.layoutManager = mManager
-        mAdapter = CityAdapter(this,activity, mDatas as ArrayList<PhoneBean>)
+        mAdapter = CityAdapter(this, activity, mDatas as ArrayList<PhoneBean>)
         rv.setEmptyView(layoutInflater.inflate(R.layout.empty_view, null))
         rv.adapter = mAdapter
         mDecoration = SuspensionDecoration(activity, mDatas)
@@ -76,12 +81,42 @@ class ContactFragment : BaseFragment() {
         })
         //新建联系人
         floatSetting.setOnClickListener {
-            showActivityForResult(SettingContactActivity::class.java,CONTACT_RESULT_ID)
+            showActivityForResult(SettingContactActivity::class.java, CONTACT_RESULT_ID)
         }
         //设置
         floatSend.setOnClickListener {
-            showActivityForResult(CreateContactActivity::class.java,CONTACT_RESULT_ID)
+            showActivityForResult(CreateContactActivity::class.java, CONTACT_RESULT_ID)
         }
+        smsSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(tv: Editable?) {
+                formatPhoneState(tv)
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+        })
+    }
+
+    private fun formatPhoneState(tv: Editable?) {
+        mDatas.clear()
+        if (NotNull.isNotNull(tv)&&!TextUtils.equals("",tv)) {
+            for (mData in bDatas) {
+                if (mData.getMPhone()!!.contains(tv!!.toString()) && !mDatas.contains(mData)) {
+                    mDatas.add(mData)
+                } else if (mData.phone.contains(tv.toString()) && !mDatas.contains(mData)) {
+                    mDatas.add(mData)
+                }
+            }
+            mDecoration?.setIsChoice(3,mDatas.size)
+        } else {
+            mDatas.addAll(bDatas)
+            mDecoration?.setIsChoice(0,mDatas.size)
+        }
+        mAdapter?.notifyDataSetChanged()
     }
 
     private fun initDatas(data: List<ContactsBean>) {
@@ -95,6 +130,8 @@ class ContactFragment : BaseFragment() {
                 cityBean.id = (data[i].id)//设置id
                 mDatas.add(cityBean)
             }
+            bDatas.clear()
+            bDatas.addAll(mDatas)
             mAdapter?.notifyDataSetChanged()
             indexBar.setmPressedShowTextView(tvSideBarHint)//设置HintTextView
                     .setNeedRealIndex(true)//设置需要真实的索引
@@ -107,7 +144,7 @@ class ContactFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode== Constant.CONTACT_RESULT_ID){
+        if (requestCode == Constant.CONTACT_RESULT_ID) {
             thread {
                 kotlin.run {
                     val systemContactInfos = getSystemContactInfos(activity)

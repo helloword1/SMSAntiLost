@@ -39,7 +39,7 @@ class NewMSMActivity(override val contentView: Int = R.layout.activity_new_msm) 
 
     @SuppressLint("SimpleDateFormat")
     override fun initView() {
-        title?.text = "新信息"
+        title?.text = getString(R.string.newSms)
         recycleView.layoutManager = LinearLayoutManager(this)
         val mDatas = ArrayList<ContentBean>()
         val data = SimpleDateFormat("yyyy年MM月dd日 HH时mm分").format(System.currentTimeMillis())

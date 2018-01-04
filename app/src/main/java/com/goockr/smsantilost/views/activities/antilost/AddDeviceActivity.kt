@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Message
 import android.view.KeyEvent
 import android.view.View
@@ -48,7 +47,7 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
     private var address = ""
     //蓝牙
     var mBluetoothAdapter: BluetoothAdapter? = null
-    private var btReceiver: MyBtReceiver? = null
+//    private var btReceiver: MyBtReceiver? = null
     // 动画
     var mRotationAnimation: RotateAnimation? = null
     private var adapter: DeviceAdapter? = null
@@ -140,7 +139,7 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         // 蓝牙已开启
         if (mBluetoothAdapter?.isEnabled!!) {
-            val turnOnBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            /*val turnOnBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(turnOnBtIntent, Constant.REQUEST_ENABLE_BT)
             val intentFilter = IntentFilter()
             btReceiver = MyBtReceiver()
@@ -149,7 +148,7 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
             intentFilter.addAction(BluetoothDevice.ACTION_FOUND)
             intentFilter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST)
             intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
-            registerReceiver(btReceiver, intentFilter)
+            registerReceiver(btReceiver, intentFilter)*/
             mBluetoothAdapter?.startDiscovery()
         }
     }
@@ -309,6 +308,7 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
     }
 
     override fun receive(intent: Intent) {
+        super.receive(intent)
         val action = intent.action
         if (BluetoothAdapter.ACTION_DISCOVERY_STARTED == action) {
             //开始搜索

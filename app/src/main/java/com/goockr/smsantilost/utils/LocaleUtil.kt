@@ -11,6 +11,8 @@ import cxx.utils.NotNull
 import cxx.utils.SharedPreferencesUtils
 import java.util.*
 
+
+
 object LocaleUtil {
     /**
      * 获取用户设置的Locale
@@ -196,5 +198,22 @@ object LocaleUtil {
                     "/${date0.split("-")[2]}"
         }
         return ""
+    }
+
+    //验证各种导航地图是否安装
+    fun isAvilible(context: Context, packageName: String): Boolean {
+        //获取所有已安装程序的包信息
+        val packageInfos = context.packageManager.getInstalledPackages(0)
+        //用于存储所有已安装程序的包名
+        val packageNames = ArrayList<String>()
+        //从pinfo中将包名字逐一取出，压入pName list中
+        if (packageInfos != null) {
+            for (i in packageInfos.indices) {
+                val packName = packageInfos[i].packageName
+                packageNames.add(packName)
+            }
+        }
+        //判断packageNames中是否有目标程序的包名，有TRUE，没有FALSE
+        return packageNames.contains(packageName)
     }
 }

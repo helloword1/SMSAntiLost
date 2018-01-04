@@ -204,4 +204,24 @@
     <string name="deleteAntititle">是否删除该区域</string>
     <string name="comfir">确认</string>
     <string name="aeraRadius">请设置区域半径</string>
+    <string name="locationRecord">位置记录</string>
+    <string name="locationGuide">导航</string>
+    <string name="antiArea">勿扰区域</string>
+    <string name="deviceDeveloping">功能开发中...</string>
+    <string name="newSms">新短信</string>
+    <string name="simHadInsert">已插入</string>
+    <string name="pleaseChangeInputName">请输入修改的名称</string>
+    <string name="unbindSucceed">解除绑定成功</string>
+    <string name="farAway">距离近</string>
+    <string name="moveManager">确定转移管理员吗？</string>
+    <string name="moveManagerDetails">转移管理员后，您将成为普通用户，失</string>
+    <string name="moveManagerDetails2">转移管理员后，您将成为普通用户，失去该设备的管理员权限</string>
+    <string name="takePhotos">拍照</string>
+    <string name="pictures">从手机相册选择</string>
+    <string name="systemMap">系统自带地图导航</string>
+    <string name="aMaps">高德地图导航</string>
+    <string name="baiduMap">百度地图导航</string>
+    <string name="pleaseChoiceDevice">请选择设备</string>
+    <string name="aMapIsNotVail">您尚未安装高德地图或地图版本过低</string>
+    <string name="baiduMapIsNotVail">您尚未安装高德地图或地图版本过低</string>
 </resources>

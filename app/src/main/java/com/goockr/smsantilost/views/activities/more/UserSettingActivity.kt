@@ -1,20 +1,15 @@
 package com.goockr.smsantilost.views.activities.more
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
-import android.widget.TextView
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.graphics.MyAlertDialog
+import com.goockr.smsantilost.graphics.PhotoAlertDialog
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_user_setting.*
-import kotlinx.android.synthetic.main.dialog_permission.view.*
 
 
 /**
@@ -22,13 +17,8 @@ import kotlinx.android.synthetic.main.dialog_permission.view.*
  */
 class UserSettingActivity(override val contentView: Int = R.layout.activity_user_setting) : BaseActivity(), View.OnClickListener {
 
-    private var bottomDialog: Dialog? = null
-    private var dialog: AlertDialog? = null
-    private var tv_Cancel: TextView? = null
-    private var tv_Ensure: TextView? = null
-    private var tv_Text1: TextView? = null
-    private var tv_Text2: TextView? = null
-    private var tv_Text3: TextView? = null
+    private var bottomDialog: PhotoAlertDialog? = null
+    private var myAlertDialog: MyAlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +54,7 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
     }
 
     override fun onClick(v: View?) {
-        var intent = Intent()
+        val intent = Intent()
         when (v?.id) {
             R.id.ll_ChangeProfile -> {
                 bottomDialog?.show()
@@ -85,52 +75,45 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
                 startActivity(intent)
             }
             R.id.tv_SignUp -> {
-                dialog?.show()
+                myAlertDialog?.show()
             }
         }
     }
 
     private fun initBottomDialog() {
-        bottomDialog = Dialog(this, R.style.BottomDialog)
-        val contentView = LayoutInflater.from(this).inflate(R.layout.dialog_profile, null)
-        bottomDialog?.setContentView(contentView)
-        val layoutParams = contentView.layoutParams
-        layoutParams.width = resources.displayMetrics.widthPixels
-        contentView.layoutParams = layoutParams
-        bottomDialog?.window?.setGravity(Gravity.BOTTOM)
-        bottomDialog?.window?.setWindowAnimations(R.style.BottomDialog_Animation)
-        bottomDialog?.setCancelable(true)
-        bottomDialog?.setCanceledOnTouchOutside(true)
+        bottomDialog = PhotoAlertDialog(this)
+        bottomDialog?.setOnDialogListener(object :PhotoAlertDialog.OnDialogListener{
+            override fun onTakePhotoListener() {
+                //拍照
+
+            }
+
+            override fun onFromPicListener() {
+                //照片
+
+            }
+
+            override fun onPhotoCancelListener() {
+                bottomDialog?.hide()
+            }
+
+        })
     }
 
     private fun initDialog() {
-        val builder = AlertDialog.Builder(this)
-        val customView = layoutInflater.inflate(R.layout.dialog_permission, null)
-        builder.setView(customView)
-        builder.setIcon(R.mipmap.ic_launcher)
-        dialog = builder.create()
-        dialog?.setCancelable(true)
-        dialog?.setCanceledOnTouchOutside(true)
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        tv_Cancel = customView.tv_Cancel
-        tv_Ensure = customView.tv_Ensure
-        tv_Text1 = customView.tv_Text1
-        tv_Text2 = customView.tv_Text2
-        tv_Text3 = customView.tv_Text3
-        tv_Text1?.text = getString(R.string.exitLogin)
-        tv_Text2?.visibility = View.GONE
-        tv_Text3?.visibility = View.GONE
-        tv_Cancel?.text = getString(R.string.cancel)
-        tv_Ensure?.text = getString(R.string.concert)
-        tv_Cancel?.setOnClickListener {
-            dialog?.dismiss()
-        }
-        //退出
-        tv_Ensure?.setOnClickListener {
-            preferences?.clearPreferences()
-            val goockrApplication = application as GoockrApplication
-            goockrApplication.exit()//清空preference
-            showActivity(LoginActivity::class.java)
-        }
+        myAlertDialog = MyAlertDialog(this).setTitle(getString(R.string.exitLogin)).setContent("")
+        myAlertDialog?.setOnDialogListener(object :MyAlertDialog.OnDialogListener{
+            override fun onConfirmListener() {
+                preferences?.clearPreferences()
+                val goockrApplication = application as GoockrApplication
+                goockrApplication.exit()//清空preference
+                showActivity(LoginActivity::class.java)
+
+            }
+            override fun onCancelListener() {
+                myAlertDialog?.hide()
+            }
+
+        })
     }
 }

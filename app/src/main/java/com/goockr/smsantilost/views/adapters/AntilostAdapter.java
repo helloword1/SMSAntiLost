@@ -66,9 +66,9 @@ public class AntilostAdapter extends BaseAdapter {
         }
         String distance = antilostBean.getDistance();
         if (Double.valueOf(distance) > -70) {
-            distance = "距离近";
+            distance = mContext.getString(R.string.farAway);
         } else {
-            distance = "距离远";
+            distance = mContext.getString(R.string.nearBy);
         }
         holder.tvDistance.setText(distance);
         return convertView;
@@ -85,7 +85,7 @@ public class AntilostAdapter extends BaseAdapter {
         TextView mConnnect;
         TextView tvDistance;
 
-        public AntilostHolder(View view) {
+        AntilostHolder(View view) {
             mImageView = view.findViewById(R.id.antilost_item_icon);
             mName = view.findViewById(R.id.antilost_item_name);
             mLastDate = view.findViewById(R.id.antilost_item_lastDate);

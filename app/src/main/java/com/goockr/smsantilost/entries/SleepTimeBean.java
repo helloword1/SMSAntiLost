@@ -1,7 +1,6 @@
 package com.goockr.smsantilost.entries;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.io.Serializable;
 
@@ -13,6 +12,7 @@ public class SleepTimeBean implements Serializable {
     private String sleepTimeName;
     private String sleepTimeDuration;
     private String sleepTimeRepeat;
+
 
     public SleepTimeBean(String sleepTimeName, String sleepTimeDuration, String sleepTimeRepeat) {
         this.sleepTimeName = sleepTimeName;

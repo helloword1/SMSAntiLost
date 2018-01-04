@@ -36,6 +36,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
     private var longitude = ""
     private var address = ""
     private var type = 0
+    private var isInsert=false
     private var deviceBean: DeviceBean? = null
     private var deviceBeanDao: DeviceBeanDao? = null
 
@@ -71,6 +72,11 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
 
     @SuppressLint("SetTextI18n")
     private fun initMView() {
+        val deviceBeanDao = goockrApplication?.mDaoSession?.deviceBeanDao
+        val bean = deviceBeanDao?.queryBuilder()?.where(DeviceBeanDao.Properties.Mac.eq(name?.mac))?.build()?.unique()
+        if (NotNull.isNotNull(bean)){
+            title?.text = bean?.name
+        }
         if (mLocationClient!!.isStarted) {
             mLocationClient?.stopLocation()
         }
@@ -216,9 +222,11 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
             tvNotify.visibility = View.VISIBLE
             tvNotify.text = getString(R.string.simNoInsert)
             SimPhone.text = getString(R.string.notInsert)
+            isInsert=false
         } else if (s.toInt() == 1) {
             tvNotify.visibility = View.GONE
             SimPhone.text = s
+            isInsert=true
         }
     }
 
@@ -278,7 +286,10 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
         }
         // 设置按钮点击跳转
         titleRight?.setOnClickListener {
-            showActivity(SettingActivity::class.java)
+            val extras=Bundle()
+            extras.putBoolean("IS_INSERT",isInsert)
+            extras.putSerializable("device",name!!)
+            showActivity(SettingActivity::class.java,extras)
         }
     }
 

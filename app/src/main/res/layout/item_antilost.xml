@@ -58,6 +58,7 @@
                     android:gravity="center"
                     android:id="@+id/tvDistance"
                     android:text="@string/nearBy"
+                    android:layout_marginRight="@dimen/x5"
                     android:textSize="12sp" />
 
                 <TextView

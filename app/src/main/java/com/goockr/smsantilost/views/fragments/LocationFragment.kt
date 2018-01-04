@@ -1,24 +1,25 @@
 package com.goockr.smsantilost.views.fragments
 
 import android.os.Bundle
-import android.util.TypedValue
-import android.view.Gravity
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.amap.api.location.AMapLocation
 import com.amap.api.location.AMapLocationClientOption
 import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
-import com.amap.api.maps.model.MyLocationStyle
+import com.amap.api.maps.model.*
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.entries.DeviceBean
+import com.goockr.smsantilost.graphics.LocationDeviceInfoView
+import com.goockr.smsantilost.graphics.MyToast
+import com.goockr.smsantilost.graphics.ZoomControlsView
 import com.goockr.smsantilost.utils.LogUtils
 import com.goockr.smsantilost.utils.MyAMapLocationListener
+import com.goockr.smsantilost.views.activities.HomeActivity
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.fragment_location.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,9 +31,9 @@ import java.util.*
 class LocationFragment : BaseFragment() {
 
     private var aMap: AMap? = null
-    private var flBottom: FrameLayout? = null
-    private var goockrApplication:GoockrApplication?=null
-
+    private var currentZoom = 17
+    private var goockrApplication: GoockrApplication? = null
+    private var deviceBean: DeviceBean? = null
     /**
      * 声明AMapLocationClientOption对象
      */
@@ -80,10 +81,43 @@ class LocationFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         map.onCreate(savedInstanceState)
         initView()
-    }
-    private fun initView() {
         init()
         initMap()
+    }
+
+    private fun initView() {
+        locationDeviceInfoView.setOnLocationControlsListenerListener(object :
+                LocationDeviceInfoView.OnLocationControlsListener {
+            override fun locationRecord() {
+                MyToast.showToastCustomerStyleText(activity, getString(R.string.deviceDeveloping))
+            }
+
+            override fun locationGuide() {
+                if (NotNull.isNotNull(deviceBean)){
+                    val homeActivity = activity as HomeActivity
+                    homeActivity. showMapDialog(deviceBean!!)
+                }else{
+                    MyToast.showToastCustomerStyleText(activity, getString(R.string.pleaseChoiceDevice))
+                }
+//
+            }
+
+        })
+        zoomControlsView.setOnZoomControlsListener(object : ZoomControlsView.OnZoomControlsListener {
+            override fun zoomAdd() {
+                if (currentZoom <= 18) {
+                    ++currentZoom
+                    aMap?.moveCamera(CameraUpdateFactory.zoomTo((currentZoom).toFloat()))
+                }
+            }
+
+            override fun zoomMinus() {
+                if (currentZoom >= 4) {
+                    --currentZoom
+                    aMap?.moveCamera(CameraUpdateFactory.zoomTo((currentZoom).toFloat()))
+                }
+            }
+        })
 
     }
 
@@ -97,12 +131,13 @@ class LocationFragment : BaseFragment() {
         val myLocationStyle = MyLocationStyle()
         //初始化定位蓝点样式类
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE)//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
-        aMap!!.myLocationStyle = myLocationStyle//设置定位蓝点的Style
-        aMap!!.isMyLocationEnabled = true// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
-        aMap!!.moveCamera(CameraUpdateFactory.zoomTo((1 + 20).toFloat()))
+        aMap?.myLocationStyle = myLocationStyle//设置定位蓝点的Style
+        aMap?.isMyLocationEnabled = true// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+        aMap?.uiSettings?.isMyLocationButtonEnabled = true
+        aMap?.uiSettings?.isZoomControlsEnabled = false
+        aMap?.moveCamera(CameraUpdateFactory.zoomTo((currentZoom).toFloat()))
         //初始化定位
-
-        val mLocationListener= MyAMapLocationListener()
+        val mLocationListener = MyAMapLocationListener()
         mLocationListener.setLocationListener {
             if (it != null) {
                 if (it.errorCode == 0) {
@@ -116,47 +151,56 @@ class LocationFragment : BaseFragment() {
                 }
             }
         }
-        //设置定位回调监听
-        goockrApplication = activity.application as GoockrApplication
-        goockrApplication?.mLocationClient!!.setLocationListener(mLocationListener)
-        //初始化AMapLocationClientOption对象
-        mLocationOption = AMapLocationClientOption()
-        mLocationOption!!.isOnceLocation = true
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption!!.locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
-        //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
-        //        mLocationOption.setLocationMode(AMapLocationMode.Device_Sensors);
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption!!.isNeedAddress = true
-        //给定位客户端对象设置定位参数
-        goockrApplication?. mLocationClient!!.setLocationOption(mLocationOption)
-        //启动定位
-        goockrApplication?. mLocationClient!!.startLocation()
+        initDeviceState()
     }
 
-    private fun initbottom() {
-        val bar = LinearLayout(this.context)
-        bar.orientation = LinearLayout.VERTICAL
-        val blp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
-        bar.gravity = Gravity.CENTER
-        bar.setPadding(10, 16, 10, 16)
-        val image = ImageView(context)
-        val ilp = LinearLayout.LayoutParams(resources.getDimension(R.dimen.image_height).toInt(), resources.getDimension(R.dimen.image_height).toInt())
-        image.setImageResource(R.mipmap.ic_launcher)
-        bar.addView(image, ilp)
-        val text = TextView(context)
-        text.text = "12"
-        val tlp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
-        text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
-        bar.addView(text, tlp)
-        flBottom!!.addView(bar)
-        flBottom!!.visibility = View.INVISIBLE
+    private fun initDeviceState() {
+        val goockrApplication = activity.application as GoockrApplication
+        val deviceBeanDao = goockrApplication.mDaoSession?.deviceBeanDao
+        val list = deviceBeanDao?.queryBuilder()?.build()?.list()
+        if (NotNull.isNotNull(list) && !list!!.isEmpty()) {
+            locationDeviceInfoView.visibility = View.VISIBLE
+            val device = list[list.size - 1]
+            deviceBean = device
+            locationDeviceInfoView.setDeviceBean(device)
+            for (c in list) {
+                val latLng = LatLng(c.latitude, c.longitude)
+                val markerOptions = MarkerOptions()
+                markerOptions.anchor(0.5f, 0.5f).title(c.address)
+                        .icon(getBitmapDescriptor(c.deviceType)).position(latLng)
+                aMap?.addMarker(markerOptions)
+
+            }
+        } else {
+            locationDeviceInfoView.visibility = View.GONE
+        }
+        aMap?.setOnMarkerClickListener {
+            list!!.filter { c -> TextUtils.equals(c?.address, it.title) }
+                    .forEach {
+                        deviceBean = it
+                        locationDeviceInfoView.setDeviceBean(it)
+                        aMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), currentZoom.toFloat()))
+                    }
+
+            false
+        }
+
+    }
+
+    private fun getBitmapDescriptor(type: String): BitmapDescriptor {
+        return when (type) {
+            getString(R.string.key) -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_key_colation_normal)
+            getString(R.string.wallet) -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_wallet_colation_normal)
+            getString(R.string.computor) -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_portable_computer_colation_normal)
+            getString(R.string.secondCard) -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_vice_card_phone_colation_normal)
+            getString(R.string.more) -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_other_colation_normal)
+            else -> BitmapDescriptorFactory.fromResource(R.mipmap.defaultcluster)
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        goockrApplication?.mLocationClient?.stopLocation();
+        goockrApplication?.mLocationClient?.stopLocation()
     }
 
     override fun onResume() {

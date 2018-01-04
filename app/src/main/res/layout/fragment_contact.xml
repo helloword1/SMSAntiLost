@@ -21,11 +21,13 @@
             android:layout_marginRight="@dimen/x24"
             android:background="@drawable/msm_bg"
             android:drawableRight="@mipmap/login_delete"
-            android:gravity="center"
-            android:hint="搜索"
+            android:drawableLeft="@mipmap/icon_search"
+            android:hint="@string/search"
+            android:drawablePadding="@dimen/x5"
             android:paddingBottom="@dimen/x3"
             android:paddingRight="@dimen/x5"
             android:paddingTop="@dimen/x3"
+            android:paddingLeft="@dimen/x5"
             android:textSize="14sp" />
 
         <View

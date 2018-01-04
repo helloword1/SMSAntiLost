@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.views.activities.more.*
 import kotlinx.android.synthetic.main.fragment_more.*
 
@@ -46,26 +47,32 @@ class MoreFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.iv_ProfilePic -> {
+                //我的头像
                 showActivity(UserSettingActivity::class.java)
             }
             R.id.ll_MyFriends -> {
+                //我的好友
                 showActivity(MyFriendsActivity::class.java)
             }
             R.id.ll_AntiDisturb -> {
+                //防打扰区域
                 showActivity(AntiDisturbActivity::class.java)
             }
             R.id.ll_SleepTime -> {
+                //休眠时间
                 showActivity(SleepTimeActivity::class.java)
             }
-            //多国语言
             R.id.llMultilingualLanguage -> {
+                //多国语言
                 showActivity(MultilingualLanguageActivity::class.java)
             }
             R.id.ll_UserSetting -> {
-
+                //设置
+                MyToast.showToastCustomerStyleText(activity, getString(R.string.deviceDeveloping))
             }
             R.id.ll_AboutUs -> {
-
+                //关于我们
+                MyToast.showToastCustomerStyleText(activity, getString(R.string.deviceDeveloping))
             }
         }
     }

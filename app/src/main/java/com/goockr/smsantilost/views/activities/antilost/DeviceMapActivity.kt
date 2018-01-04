@@ -4,13 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.content.ContextCompat
-import android.text.TextUtils
 import android.view.View
 import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.*
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.ADDRESS
 import com.goockr.smsantilost.utils.Constant.ADDRESS_TYPE
@@ -92,7 +90,6 @@ class DeviceMapActivity(override val contentView: Int = R.layout.activity_device
             titleRight1?.visibility = View.VISIBLE
             titleRight1?.text = getString(R.string.edit)
             titleRight1?.setOnClickListener {
-
                 val bundle = Bundle()
                 bundle.putString(Constant.CURRENT_AREA_NAME, name)
                 bundle.putString(Constant.CURRENT_AREA_LONGITUDE, longitude)

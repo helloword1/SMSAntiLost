@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="@dimen/x5"
-    android:background="#fff">
+    android:padding="@dimen/x5">
 
     <!--钥匙-->
     <LinearLayout
@@ -20,36 +19,36 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_key"/>
+            android:src="@mipmap/icon_key" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/key"
             android:layout_marginLeft="@dimen/x10"
-            android:textSize="17sp"/>
+            android:text="@string/key"
+            android:textSize="17sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x3"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="0.8dp"
         android:layout_marginLeft="@dimen/x5"
         android:layout_marginRight="@dimen/x5"
-        android:background="#666666"/>
+        android:background="@color/linetColor" />
 
     <!--钱包-->
     <LinearLayout
@@ -63,37 +62,36 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_wallet"/>
+            android:src="@mipmap/icon_wallet" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/wallet"
             android:layout_marginLeft="@dimen/x10"
-            android:textSize="17sp"/>
+            android:text="@string/wallet"
+            android:textSize="17sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x3"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="0.8dp"
         android:layout_marginLeft="@dimen/x5"
         android:layout_marginRight="@dimen/x5"
-        android:background="#666666"/>
-
+        android:background="@color/linetColor" />
     <!--笔记本-->
     <LinearLayout
         android:id="@+id/ll_Pc"
@@ -106,36 +104,36 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_portable_computer"/>
+            android:src="@mipmap/icon_portable_computer" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/noteBook"
             android:layout_marginLeft="@dimen/x10"
-            android:textSize="17sp"/>
+            android:text="@string/noteBook"
+            android:textSize="17sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x3"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="0.8dp"
         android:layout_marginLeft="@dimen/x5"
         android:layout_marginRight="@dimen/x5"
-        android:background="#666666"/>
+        android:background="@color/linetColor" />
 
     <!--手机副卡-->
     <LinearLayout
@@ -149,36 +147,36 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_vice_card_phone"/>
+            android:src="@mipmap/icon_vice_card_phone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/secondCard"
             android:layout_marginLeft="@dimen/x10"
-            android:textSize="17sp"/>
+            android:text="@string/secondCard"
+            android:textSize="17sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x3"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="0.8dp"
         android:layout_marginLeft="@dimen/x5"
         android:layout_marginRight="@dimen/x5"
-        android:background="#666666"/>
+        android:background="@color/linetColor" />
     <!--其他-->
     <LinearLayout
         android:id="@+id/ll_Other"
@@ -191,35 +189,35 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_other"/>
+            android:src="@mipmap/icon_other" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/other"
             android:layout_marginLeft="@dimen/x10"
-            android:textSize="17sp"/>
+            android:text="@string/other"
+            android:textSize="17sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x3"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="0.8dp"
         android:layout_marginLeft="@dimen/x5"
         android:layout_marginRight="@dimen/x5"
-        android:background="#666666"/>
+        android:background="@color/linetColor" />
 
 </LinearLayout>

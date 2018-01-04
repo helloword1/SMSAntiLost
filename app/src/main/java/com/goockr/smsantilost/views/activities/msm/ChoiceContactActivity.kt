@@ -47,7 +47,7 @@ class ChoiceContactActivity(override val contentView: Int = R.layout.activity_ch
         mAdapter = ChoiceContactAdapter(this, mDatas)
         recycleView.adapter = mAdapter
         mDecoration = SuspensionDecoration(this, mDatas)
-        mDecoration?.setIsChoice(false, serializable.size)
+        mDecoration?.setIsChoice(1, serializable.size)
         recycleView.addItemDecoration(mDecoration)
 
         thread {
@@ -68,7 +68,7 @@ class ChoiceContactActivity(override val contentView: Int = R.layout.activity_ch
             finish()
         }
         mAdapter?.setoOnGetAdapterListener {
-            mDecoration?.setIsChoice(false, mAdapter?.getLists()?.size!!)
+            mDecoration?.setIsChoice(1, mAdapter?.getLists()?.size!!)
         }
         titleBack?.setOnClickListener {
             val intent = Intent()

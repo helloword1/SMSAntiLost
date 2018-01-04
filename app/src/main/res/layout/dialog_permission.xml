@@ -16,7 +16,7 @@
         android:id="@+id/tv_Text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="确定转移管理员吗？"
+        android:text="@string/moveManager"
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="#666"/>
@@ -26,7 +26,10 @@
         android:layout_marginTop="@dimen/x10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="转移管理员后，您将成为普通用户，失"/>
+        android:layout_marginLeft="@dimen/x18"
+        android:layout_marginRight="@dimen/x18"
+        android:gravity="center"
+        android:text="@string/moveManagerDetails"/>
 
     <TextView
         android:id="@+id/tv_Text3"

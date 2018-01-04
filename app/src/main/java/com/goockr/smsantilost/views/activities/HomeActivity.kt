@@ -4,8 +4,6 @@ import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
-import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Message
 import android.support.v4.app.Fragment
@@ -17,10 +15,14 @@ import android.widget.Toast
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.*
+import com.goockr.smsantilost.graphics.MapAlertDialog
+import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.MAC
 import com.goockr.smsantilost.utils.DateUtils.stringToLong
+import com.goockr.smsantilost.utils.LocaleUtil.isAvilible
 import com.goockr.smsantilost.utils.LogUtils
+import com.goockr.smsantilost.utils.ToastUtils
 import com.goockr.smsantilost.views.activities.antilost.AddActivity
 import com.goockr.smsantilost.views.fragments.*
 import com.jude.swipbackhelper.SwipeBackHelper
@@ -34,9 +36,10 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.msm_title_view.*
 import kotlinx.android.synthetic.main.msm_title_view.view.*
 import org.json.JSONObject
+import java.net.URISyntaxException
 import java.util.*
 
-class HomeActivity(override val contentView: Int = R.layout.activity_home) : BaseActivity()/*, BottomTabBar.OnSelectListener */ {
+class HomeActivity(override val contentView: Int = R.layout.activity_home) : BaseActivity() {
     private var homeFragment: MoreFragment? = null
     private var locationFragment: LocationFragment? = null
     private var antiLostFragment: AntiLostFragment? = null
@@ -51,37 +54,38 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
     private var mDevice: BluetoothDevice? = null
     //蓝牙
     var mBluetoothAdapter: BluetoothAdapter? = null
-    private var btReceiver: MyBtReceiver? = null
+    //    private var btReceiver: MyBtReceiver? = null
     var mDatas: ArrayList<MsmBean> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //设置右滑不finsh界面
         SwipeBackHelper.getCurrentPage(this)
                 .setSwipeBackEnable(false)
         SwipeBackHelper.getCurrentPage(this).setDisallowInterceptTouchEvent(true)
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            Dexter.withActivity(this)
-                    .withPermissions(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_CONTACTS,
-                            Manifest.permission.WRITE_CONTACTS,
-                            Manifest.permission.READ_PHONE_STATE
-                    ).withListener(object : MultiplePermissionsListener {
-                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
-                    initMView()
-                }
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_CONTACTS,
+                        Manifest.permission.WRITE_CONTACTS,
+                        Manifest.permission.READ_PHONE_STATE
+                ).withListener(object : MultiplePermissionsListener {
+            override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                initMView()
+            }
 
-                override fun onPermissionRationaleShouldBeShown(permissions: List<PermissionRequest>, token: PermissionToken) {
+            override fun onPermissionRationaleShouldBeShown(permissions: List<PermissionRequest>, token: PermissionToken) {
 
-                }
+            }
 
-            }).check()
-        } else {
-            initMView()
-        }
+        }).check()
+//        } else {
+//            initMView()
+//        }
 
     }
 
@@ -158,9 +162,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                     title?.text = getString(R.string.natilost)
                     switchContent(antiLostFragment!!)
                     titleAdd?.setOnClickListener {
-                        val intent = Intent()
-                        intent.setClass(this, AddActivity::class.java)
-                        startActivity(intent)
+                        showActivity(AddActivity::class.java)
                     }
                 }
                 2 -> {
@@ -366,15 +368,6 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         //蓝牙已开启
         if (mBluetoothAdapter?.isEnabled!!) {
-            val turnOnBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(turnOnBtIntent, Constant.REQUEST_ENABLE_BT)
-            val intentFilter = IntentFilter()
-            btReceiver = MyBtReceiver()
-            intentFilter.addAction(BluetoothDevice.ACTION_FOUND)
-
-            intentFilter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST)
-            intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
-            registerReceiver(btReceiver, intentFilter)
             mBluetoothAdapter?.startDiscovery()
         }
     }
@@ -400,5 +393,51 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         if (NotNull.isNotNull(mediaPlayer)) {
             mediaPlayer?.stop()
         }
+    }
+
+    fun showMapDialog(bean: DeviceBean) {
+        val mapAlertDialog = MapAlertDialog(this).show()
+        mapAlertDialog.setOnDialogListener(object : MapAlertDialog.OnDialogListener {
+            override fun onSystemMapListener() {
+                MyToast.showToastCustomerStyleText(this@HomeActivity, getString(R.string.deviceDeveloping))
+            }
+
+            override fun onAMapListener() {
+                if (isAvilible(this@HomeActivity, "com.autonavi.minimap")) {
+                    try {
+                        val intent = Intent.getIntent("androidamap://navi?sourceApplication=${bean.address}" +
+                                "&poiname=&lat=${bean.latitude}&lon=${bean.longitude}&dev=0")
+                        startActivity(intent)
+                        mapAlertDialog.hide()
+                    } catch (e: URISyntaxException) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    ToastUtils.show(this@HomeActivity, getString(R.string.aMapIsNotVail), 3000)
+                }
+            }
+
+            override fun onBaiduMapListener() {
+                if (isAvilible(this@HomeActivity, "com.baidu.BaiduMap")) {
+                    try {
+                        //百度地图
+                        val intent = Intent.getIntent("intent://map/marker?location=${bean.latitude}," +
+                                "${bean.longitude}&title=${bean.address}#Intent;scheme=bdapp;package=com." +
+                                "baidu.BaiduMap;end")
+                        startActivity(intent)
+                        mapAlertDialog.hide()
+                    } catch (e: URISyntaxException) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    ToastUtils.show(this@HomeActivity, getString(R.string.baiduMapIsNotVail), 3000)
+                }
+            }
+
+            override fun onMapCancelListener() {
+                mapAlertDialog.hide()
+            }
+
+        })
     }
 }

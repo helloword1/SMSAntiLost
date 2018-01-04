@@ -29,7 +29,7 @@ class SuspensionDecoration(private var context: Context, private var mDatas: Lis
     private var mTitleHeight: Int = 0
     private var mHeaderViewCount = 0
     private var choiceCount = 0
-    private var isNotChoice=true
+    private var isNotChoice=0
 
     init {
         this.mTitleHeight = TypedValue.applyDimension(1, 28.0f, context.resources.displayMetrics).toInt()
@@ -63,7 +63,7 @@ class SuspensionDecoration(private var context: Context, private var mDatas: Lis
         this.mDatas = mDatas
         return this
     }
-    fun setIsChoice(isChoice: Boolean, i: Int): SuspensionDecoration {
+    fun setIsChoice(isChoice: Int, i: Int): SuspensionDecoration {
         this.isNotChoice = isChoice
         this.choiceCount=i
         return this
@@ -130,11 +130,12 @@ class SuspensionDecoration(private var context: Context, private var mDatas: Lis
             this.mPaint.color = COLOR_TITLE_FONT
             this.mPaint.getTextBounds(tag, 0, tag!!.length, this.mBounds)
             c.drawText(tag, child.paddingLeft.toFloat() , (parent.paddingTop + this.mTitleHeight - (this.mTitleHeight / 2 - this.mBounds.height() / 2)).toFloat(), this.mPaint)
-            var s=""
-            if (isNotChoice){
-                s = "当前通讯录有${this.mDatas!!.size}人"
-            }else{
-                s = "已选中${choiceCount}人"
+            val s = when(isNotChoice){
+                0->"当前通讯录有${this.mDatas!!.size}人"
+                1-> "已选中${choiceCount}人"
+                else -> {
+                    ""
+                }
             }
             //右边字体
             this.textPaint.color = COLOR_RIGHT_TEXT_COLOR

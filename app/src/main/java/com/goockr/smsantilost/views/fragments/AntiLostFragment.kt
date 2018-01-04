@@ -21,16 +21,13 @@ import kotlinx.android.synthetic.main.fragment_antilost.*
 
 /**
  * Created by ning.wen on 2016/11/1.
- *
+ *防丢页面
  */
-
 class AntiLostFragment : BaseFragment() {
-
     private var lists: ArrayList<AntilostBean>? = ArrayList()
     private var listsAdapter: AntilostAdapter? = null
     private var device: BluetoothDevice? = null
     private var isConnect = false
-    private var type = 0
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         //占位置用
@@ -69,13 +66,6 @@ class AntiLostFragment : BaseFragment() {
                 val distance = c.distance
                 val date = c.date
                 val deviceName = c.name
-                /*when (key) {
-                    getString(R.string.key) -> id = R.mipmap.icon_key_device_details
-                    getString(R.string.wallet) -> id = R.mipmap.icon_wallet_device_details
-                    getString(R.string.computor) -> id = R.mipmap.icon_portable_computer_device_details
-                    getString(R.string.secondCard) -> id = R.mipmap.icon_vice_card_phone_divice_details
-                    getString(R.string.other) -> id = R.mipmap.icon_other_device_details
-                }*/
                 when (key) {
                     getString(R.string.key) -> id = 0
                     getString(R.string.wallet) -> id = 1

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/location_device_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/x5"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivLocationDevice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/x3"
+            android:src="@mipmap/icon_vice_card_phone" />
+
+        <TextView
+            android:id="@+id/ivLocationDeviceTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_marginTop="@dimen/x12"
+            android:paddingRight="@dimen/x8"
+            android:text="2018/01/02 11:30"
+            android:textColor="@color/msmTextColorGray"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/locationDeviceName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_marginTop="@dimen/x8"
+            android:layout_toLeftOf="@id/ivLocationDeviceTime"
+            android:layout_toRightOf="@id/ivLocationDevice"
+            android:singleLine="true"
+            android:text="name"
+            android:textColor="@color/textColor"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/locationDeviceName"
+            android:layout_below="@id/locationDeviceName"
+            android:text="address"
+            android:id="@+id/locationAddress"
+            android:textColor="@color/msmTextColorGray"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginLeft="@dimen/x12"
+        android:layout_marginRight="@dimen/x12"
+        android:background="@color/linetColor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x12"
+        android:layout_marginBottom="@dimen/x12"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/locationRecord"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/icon_location_record_small"
+                android:drawablePadding="@dimen/x6"
+                android:gravity="center"
+                android:text="@string/locationRecord"
+                android:textColor="@color/textColor"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="0.8dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/x3"
+            android:background="@color/linetColor"
+            android:paddingBottom="@dimen/x3" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/locationGuide"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/pop_icon_navigation_location"
+                android:drawablePadding="@dimen/x6"
+                android:gravity="center"
+                android:text="@string/locationGuide"
+                android:textColor="@color/textColor"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
