@@ -22,6 +22,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:src="@mipmap/img_head_portrait_3"
             android:layout_width="@dimen/x40"
+            android:id="@+id/userIcon"
             android:layout_height="@dimen/x40"/>
 
         <TextView

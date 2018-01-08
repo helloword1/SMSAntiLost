@@ -31,13 +31,14 @@ class CreateContactActivity(override val contentView: Int = R.layout.activity_cr
     }
 
     override fun initView() {
-        title?.text = "新建联系人"
+        title?.text = getString(R.string.createContact)
         titleRight1?.visibility = View.VISIBLE
-        titleRight1?.text = "完成"
+        titleRight1?.text = getString(R.string.complete)
         llAddPhone.visibility = View.VISIBLE
         tvSendMsm.visibility = View.GONE
+        lists.add("")
+        addAction(true)
         llAddPhone.setOnClickListener {
-
             lists.add("")
             addAction(true)
             if (lists.size >= 5) {

@@ -5,7 +5,8 @@
 
     <string name="notifyTitle">提示</string>
     <string name="gpsNotifyMsg">当前手机扫描蓝牙需要打开定位功能。</string>
-    <string name="setting">前往设置</string>
+    <string name="goSetting">前往设置</string>
+    <string name="setting">设置</string>
     <string name="cancel">取消</string>
     <string name="longin">登陆</string>
     <!--ZXing-->
@@ -208,7 +209,7 @@
     <string name="locationGuide">导航</string>
     <string name="antiArea">勿扰区域</string>
     <string name="deviceDeveloping">功能开发中...</string>
-    <string name="newSms">新短信</string>
+    <string name="newSms">新信息</string>
     <string name="simHadInsert">已插入</string>
     <string name="pleaseChangeInputName">请输入修改的名称</string>
     <string name="unbindSucceed">解除绑定成功</string>
@@ -224,4 +225,18 @@
     <string name="pleaseChoiceDevice">请选择设备</string>
     <string name="aMapIsNotVail">您尚未安装高德地图或地图版本过低</string>
     <string name="baiduMapIsNotVail">您尚未安装高德地图或地图版本过低</string>
+    <string name="otherPhoneNumber">请输入对方手机号码</string>
+    <string name="inviteFriends">邀请家人朋友下载</string>
+    <string name="shareApp">分享APP</string>
+    <string name="send">发送</string>
+    <string name="createContact">新建联系人</string>
+    <string name="servicePhone">客服电话</string>
+    <string name="ifCall">是否呼叫</string>
+    <string name="call">呼叫</string>
+    <string name="receiveNewSms">接收新消息提醒</string>
+    <string name="myLocation">我的定位</string>
+    <string name="pleaseInputUserName">请输入用户名</string>
+    <string name="mes">消息</string>
+    <string name="SystemAlert">系统通知</string>
+    <string name="receive">收件人:</string>
 </resources>

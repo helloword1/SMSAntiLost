@@ -45,10 +45,10 @@ open class MsmSwipeAdapter(protected var mContext: Context, private var fragment
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == SEARCH) {
-            return SearchViewHolder(mInflater.inflate(R.layout.item_msm_search, parent, false))
+        return if (viewType == SEARCH) {
+            SearchViewHolder(mInflater.inflate(R.layout.item_msm_search, parent, false))
         } else {
-            return ViewHolder(mInflater.inflate(R.layout.item_msm_swipe, parent, false))
+            ViewHolder(mInflater.inflate(R.layout.item_msm_swipe, parent, false))
         }
     }
 

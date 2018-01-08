@@ -172,7 +172,7 @@ class LocationFragment : BaseFragment() {
 
             }
         } else {
-            locationDeviceInfoView.visibility = View.GONE
+            locationDeviceInfoView.visibility = View.INVISIBLE
         }
         aMap?.setOnMarkerClickListener {
             list!!.filter { c -> TextUtils.equals(c?.address, it.title) }

@@ -10,7 +10,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x30"/>
+        android:layout_height="@dimen/x24"/>
 
     <TextView
         android:id="@+id/tv_Text1"

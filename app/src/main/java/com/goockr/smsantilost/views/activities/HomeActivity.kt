@@ -24,6 +24,7 @@ import com.goockr.smsantilost.utils.LocaleUtil.isAvilible
 import com.goockr.smsantilost.utils.LogUtils
 import com.goockr.smsantilost.utils.ToastUtils
 import com.goockr.smsantilost.views.activities.antilost.AddActivity
+import com.goockr.smsantilost.views.activities.more.MesActivity
 import com.goockr.smsantilost.views.fragments.*
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.karumi.dexter.Dexter
@@ -36,6 +37,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.msm_title_view.*
 import kotlinx.android.synthetic.main.msm_title_view.view.*
 import org.json.JSONObject
+import java.lang.Exception
 import java.net.URISyntaxException
 import java.util.*
 
@@ -67,11 +69,9 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         Dexter.withActivity(this)
                 .withPermissions(
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.WRITE_CONTACTS,
+                        Manifest.permission.CAMERA,
                         Manifest.permission.READ_PHONE_STATE
                 ).withListener(object : MultiplePermissionsListener {
             override fun onPermissionsChecked(report: MultiplePermissionsReport) {
@@ -121,7 +121,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         val beginTransaction = supportFragmentManager.beginTransaction()
         if (msmFragment == null) {
             msmFragment = MSMFragment()
-            beginTransaction.add(R.id.homeFrameLayout, msmFragment).commit()
+            beginTransaction.add(R.id.homeFrameLayout, msmFragment).commitAllowingStateLoss()
             current = msmFragment
             isMsmAndContact = false
         }
@@ -188,12 +188,14 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                     title?.text = getString(R.string.more)
                     titleRight?.visibility = View.VISIBLE
                     switchContent(homeFragment!!)
+                    titleRight?.setOnClickListener {
+                       showActivity(MesActivity::class.java)
+                    }
                 }
             }
         }
         startRecover()
     }
-
     override fun receive(intent: Intent) {
         val action = intent.action
         if (BluetoothDevice.ACTION_FOUND == action) {
@@ -308,8 +310,12 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
     override fun onStop() {
         super.onStop()
         if (NotNull.isNotNull(btReceiver)) {
-            unregisterReceiver(btReceiver)
-            mBluetoothAdapter?.cancelDiscovery()
+            try {
+                unregisterReceiver(btReceiver)
+                mBluetoothAdapter?.cancelDiscovery()
+            }catch (e:Exception){
+
+            }
         }
         //停止音频
         if (NotNull.isNotNull(mediaPlayer)) {

@@ -36,6 +36,7 @@ class EditFriendsActivity(override val contentView: Int = R.layout.activity_edit
         titleOk = titleLayout.findViewById(R.id.titleOk)
         title?.text = getString(R.string.editGoodsFriends)
         ll?.addView(titleLayout)
+        titleBack?.setOnClickListener { finish() }
         tv_FriendsName.text = mName
         tv_FriendsNum.text = mNum
     }

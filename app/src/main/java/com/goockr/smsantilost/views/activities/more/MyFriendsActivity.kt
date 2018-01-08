@@ -7,6 +7,7 @@ import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.FriendsListBean
 import com.goockr.smsantilost.utils.MyComparator
 import com.goockr.smsantilost.views.activities.BaseActivity
+import com.goockr.smsantilost.views.activities.antilost.AddFriendActivity
 import com.goockr.smsantilost.views.adapters.FriendsListAdapter
 import kotlinx.android.synthetic.main.activity_my_friends.*
 import java.util.*
@@ -60,14 +61,14 @@ class MyFriendsActivity(override val contentView: Int = R.layout.activity_my_fri
      */
     private fun initMData() {
         mDatas = ArrayList()
-        var bean1 = FriendsListBean(pic,"阿凡达","123")
-        var bean2 = FriendsListBean(pic,"布吉岛","123")
-        var bean3 = FriendsListBean(pic,"次元","123")
-        var bean4 = FriendsListBean(pic,"滴滴","123")
-        var bean5 = FriendsListBean(pic,"峨眉派","123")
-        var bean6 = FriendsListBean(pic,"佛跳墙","123")
-        var bean7 = FriendsListBean(pic,"狗剩","123")
-        var bean8 = FriendsListBean(pic,"核算","123")
+        val bean1 = FriendsListBean(pic,"阿凡达","123")
+        val bean2 = FriendsListBean(pic,"布吉岛","123")
+        val bean3 = FriendsListBean(pic,"次元","123")
+        val bean4 = FriendsListBean(pic,"滴滴","123")
+        val bean5 = FriendsListBean(pic,"峨眉派","123")
+        val bean6 = FriendsListBean(pic,"佛跳墙","123")
+        val bean7 = FriendsListBean(pic,"狗剩","123")
+        val bean8 = FriendsListBean(pic,"核算","123")
         mDatas?.add(bean1)
         mDatas?.add(bean2)
         mDatas?.add(bean3)
@@ -86,17 +87,20 @@ class MyFriendsActivity(override val contentView: Int = R.layout.activity_my_fri
     private fun initClickEvent() {
         // 新的好友
         ll_NewFriends.setOnClickListener {
-            var intent = Intent()
+            val intent = Intent()
             intent.setClass(this@MyFriendsActivity,NewFriendsActivity::class.java)
             startActivity(intent)
         }
         // listView
         lv_FriendsList.setOnItemClickListener { parent, view, position, id ->
-            var intent = Intent()
+            val intent = Intent()
             intent.setClass(this@MyFriendsActivity,EditFriendsActivity::class.java)
             intent.putExtra("friendsName", mDatas!!.get(position).name)
             intent.putExtra("friendsNum", mDatas!!.get(position).num)
             startActivity(intent)
+        }
+        titleOk?.setOnClickListener {
+            showActivity(AddFriendActivity::class.java)
         }
     }
 }

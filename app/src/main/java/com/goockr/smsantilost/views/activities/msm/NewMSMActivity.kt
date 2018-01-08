@@ -13,6 +13,7 @@ import android.view.View.VISIBLE
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.ContentBean
 import com.goockr.smsantilost.entries.PhoneBean
+import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.CHOICE_CONTACT_RESULT_ID
 import com.goockr.smsantilost.views.activities.BaseActivity
@@ -46,6 +47,8 @@ class NewMSMActivity(override val contentView: Int = R.layout.activity_new_msm) 
         val sendMsmAdapter = SendMsmAdapter(this, mDatas)
         recycleView.adapter = sendMsmAdapter
         ivSend.setOnClickListener {
+            MyToast.showToastCustomerStyleText(this@NewMSMActivity,getString(R.string.deviceDeveloping))
+            return@setOnClickListener
             val content = smsSend.text.toString()
             if (TextUtils.equals(content, "")) return@setOnClickListener
 //            mDatas.add(ContentBean(data, content, false))
@@ -74,6 +77,23 @@ class NewMSMActivity(override val contentView: Int = R.layout.activity_new_msm) 
                     ibReceiveAdd.visibility= VISIBLE
                 }else{
                     ibReceiveAdd.visibility= GONE
+                }
+            }
+
+        })
+        smsSend.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0?.toString()?.length == 0) {
+                    ivSend.setImageResource(R.mipmap.btn_sent_out_disabled)
+                }else{
+                    ivSend.setImageResource(R.mipmap.btn_sent_out_normal)
                 }
             }
 

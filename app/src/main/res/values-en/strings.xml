@@ -11,7 +11,7 @@
 
     <string name="gpsNotifyMsg"> current phone scan bluetooth needs to open location function. </string>
 
-    <string name="setting"> to set </string>
+    <string name="goSetting"> to set </string>
 
     <string name="cancel"> cancel </string>
 

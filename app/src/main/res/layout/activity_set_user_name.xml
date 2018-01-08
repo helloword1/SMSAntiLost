@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <com.goockr.smsantilost.graphics.CleanableEditText
             android:id="@+id/et_InputUserName"
             android:layout_width="match_parent"
             android:layout_height="@dimen/x40"
@@ -23,17 +23,8 @@
             android:paddingTop="@dimen/x5"
             android:paddingBottom="@dimen/x5"
             android:hint="请输入修改的名称"
+            android:drawableRight="@mipmap/btn_del"
             android:textSize="14sp"/>
-
-        <ImageView
-            android:id="@+id/iv_CleanUserName"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/x10"
-            style="@style/setting_icon_sytle"
-            android:src="@mipmap/ic_launcher"
-            android:visibility="gone"/>
-
     </RelativeLayout>
 
 </LinearLayout>

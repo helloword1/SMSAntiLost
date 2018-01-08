@@ -73,7 +73,17 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">17sp</item>
     </style>
-
+    <style name="shareAppStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:layout_marginLeft">@dimen/x22</item>
+        <item name="android:layout_marginRight">@dimen/x22</item>
+        <item name="android:background">@drawable/btn_corner</item>
+        <item name="android:layout_marginTop">@dimen/x12</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">15sp</item>
+    </style>
     <style name="baseTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="baseTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

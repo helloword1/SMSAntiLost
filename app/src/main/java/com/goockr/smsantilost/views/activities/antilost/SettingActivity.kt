@@ -34,7 +34,7 @@ class SettingActivity(override val contentView: Int = R.layout.activity_setting)
         val titleLayout = layoutInflater.inflate(R.layout.base_title_view, null)
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
-        title?.text = getString(R.string.setting)
+        title?.text = getString(R.string.goSetting)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
         val extras = intent.extras

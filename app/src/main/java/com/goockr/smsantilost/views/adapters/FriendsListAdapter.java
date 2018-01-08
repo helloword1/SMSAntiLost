@@ -67,7 +67,7 @@ public class FriendsListAdapter extends BaseAdapter implements StickyListHeaders
             holder = (FriendsHolder) convertView.getTag();
         }
         FriendsListBean friendsListBean = mLists.get(position);
-        Glide.with(mContext).load(friendsListBean.getIcon()).into(holder.icon);
+        Glide.with(mContext).load(friendsListBean.getIcon()).placeholder(R.mipmap.icon_head_portrait).into(holder.icon);
         holder.name.setText(friendsListBean.getName());
         holder.num.setText(friendsListBean.getNum());
         return convertView;

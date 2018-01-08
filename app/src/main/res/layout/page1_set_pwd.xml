@@ -32,9 +32,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="@dimen/x10"
                 style="@style/setting_icon_sytle"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/icon_phone"/>
 
-            <EditText
+            <com.goockr.smsantilost.graphics.CleanableEditText
                 android:id="@+id/et_VerificationCode1"
                 android:layout_toRightOf="@id/iv_CodeIcon"
                 android:layout_width="match_parent"
@@ -44,28 +44,24 @@
                 android:paddingTop="@dimen/x5"
                 android:paddingBottom="@dimen/x5"
                 android:hint="@string/msmCode"
+                android:drawableRight="@mipmap/btn_del"
+                android:layout_centerVertical="true"
                 android:background="@null"
                 android:textSize="14sp"
                 android:inputType="number"/>
 
-            <ImageView
-                android:id="@+id/iv_CleanVerificationCode1"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/x10"
-                style="@style/setting_icon_sytle"
-                android:src="@mipmap/ic_launcher" />
         </RelativeLayout>
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="@dimen/x25"
-            android:text="@string/reGetTime"
+            android:text="@string/getMsmCode"
             android:gravity="center"
             android:background="@drawable/shape_blue"
             android:textColor="#fff"
             android:textSize="12sp"
+            android:id="@+id/getPwdCode"
             android:layout_marginRight="@dimen/x10"/>
 
     </LinearLayout>

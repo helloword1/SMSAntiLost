@@ -9,8 +9,8 @@ import com.goockr.smsantilost.R
 import com.goockr.smsantilost.views.activities.HomeActivity
 import cxx.utils.NotNull
 import cxx.utils.SharedPreferencesUtils
+import net.sourceforge.pinyin4j.PinyinHelper
 import java.util.*
-
 
 
 object LocaleUtil {
@@ -21,12 +21,15 @@ object LocaleUtil {
      */
     fun getUserLocale(context: Context): Locale {
         val current = SharedPreferencesUtils.getInstance(context).getValue("currentLanguage", String::class.java, true) as String
-        val currentLanguage = Integer.valueOf(current)!!
+        var currentLanguage = 0
+        if (NotNull.isNotNull(current)) {
+            currentLanguage = Integer.valueOf(current)!!
+        }
         var myLocale = Locale.SIMPLIFIED_CHINESE
         when (currentLanguage) {
             0 -> myLocale = Locale.SIMPLIFIED_CHINESE
-            1 -> myLocale = Locale.ENGLISH
-            2 -> myLocale = Locale.TRADITIONAL_CHINESE
+            1 -> myLocale = Locale.TRADITIONAL_CHINESE
+            2 -> myLocale = Locale.ENGLISH
         }
         return myLocale
     }
@@ -40,11 +43,10 @@ object LocaleUtil {
         }
         val appContext = context.applicationContext
         val current = SharedPreferencesUtils.getInstance(appContext).getStringValue("currentLanguage")
-        var currentLanguage=0
-        if (NotNull.isNotNull(current)){
+        var currentLanguage = getCurrentLocale(getCurrentLocale(context))
+        if (NotNull.isNotNull(current)) {
             currentLanguage = current.toInt()
         }
-
         val myLocale: Locale
         // 0 简体中文 1 繁体中文 2 English
         myLocale = when (currentLanguage) {
@@ -56,6 +58,17 @@ object LocaleUtil {
         // 本地语言设置
         if (needUpdateLocale(appContext, myLocale)) {
             updateLocale(appContext, myLocale)
+        }
+    }
+
+    private fun getCurrentLocale(locale: Locale): Int {
+        return when (locale) {
+            Locale.SIMPLIFIED_CHINESE -> 0
+            Locale.TRADITIONAL_CHINESE -> 1
+            Locale.ENGLISH -> 2
+            else -> {
+                2
+            }
         }
     }
 
@@ -155,8 +168,8 @@ object LocaleUtil {
         }
         val appContext = context.applicationContext
         val current = SharedPreferencesUtils.getInstance(appContext).getStringValue("currentLanguage")
-        var currentLanguage=0
-        if (NotNull.isNotNull(current)){
+        var currentLanguage = 0
+        if (NotNull.isNotNull(current)) {
             currentLanguage = current.toInt()
         }
         val locale: Locale?
@@ -180,7 +193,7 @@ object LocaleUtil {
         }
     }
 
-     fun dealWith(date: String): String {
+    fun dealWith(date: String): String {
         if (date.contains("_")) {
             val dates = date.split("_")
             val date0 = dates[0]
@@ -190,6 +203,7 @@ object LocaleUtil {
         }
         return ""
     }
+
     fun dealWithForSms(date: String): String {
         if (date.contains("_")) {
             val dates = date.split("_")
@@ -215,5 +229,50 @@ object LocaleUtil {
         }
         //判断packageNames中是否有目标程序的包名，有TRUE，没有FALSE
         return packageNames.contains(packageName)
+    }
+
+    // 获得字符串的首字母 首字符 转汉语拼音
+    fun getFirstChar(value: String): String {
+        // 首字符
+        var firstChar = value[0]
+        // 首字母分类
+        var first: String? = null
+        // 是否是非汉字
+        val print = PinyinHelper.toHanyuPinyinStringArray(firstChar)
+
+        if (print == null) {
+            // 将小写字母改成大写
+            if (firstChar.toInt() in 97..122) {
+                firstChar -= 32
+            }
+            first = if (firstChar.toInt() in 65..90) {
+                firstChar.toString()
+            } else {
+                // 认为首字符为数字或者特殊字符
+                "#"
+            }
+        } else {
+            // 如果是中文 分类大写字母
+            // 这里对多音字“长”做一些处理
+            first = if ("" + firstChar == "长") {
+                (print[1][0].toInt() - 32).toChar().toString()
+            } else {
+                (print[0][0].toInt() - 32).toChar().toString()
+            }
+        }
+        if (first == null) {
+            first = "?"
+        }
+        return first
+    }
+
+    fun getPingYin(firstChar: String): String {
+        val builder = StringBuilder()
+        for (s in firstChar) {
+            val print = PinyinHelper.toHanyuPinyinStringArray(s)
+            builder.append(print)
+        }
+        val string = builder.toString()
+        return string.toUpperCase()
     }
 }

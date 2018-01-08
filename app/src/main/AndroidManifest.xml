@@ -169,6 +169,7 @@
             android:name=".views.activities.more.SetPwdActivity"
             android:launchMode="singleTask"
             android:theme="@style/baseTheme" />
+        <activity android:name=".views.activities.more.MoreSettingActivity" />
         <activity
             android:name=".views.activities.more.MyFriendsActivity"
             android:launchMode="singleTask"
@@ -181,6 +182,13 @@
             android:name=".views.activities.more.EditFriendsActivity"
             android:launchMode="singleTask"
             android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.AddFriendsActivity"
+            android:theme="@style/baseTheme" />
+        <activity
+            android:name=".views.activities.more.AboutUsActivity"
+            android:theme="@style/baseTheme" />
+        <activity android:name=".views.activities.more.MesActivity" />
         <activity
             android:name=".views.activities.more.AntiDisturbActivity"
             android:launchMode="singleTask"

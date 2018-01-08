@@ -20,7 +20,8 @@ object Constant {
 
     val REQUEST_ENABLE_VISIBILITY: Int = 22
 
-    val BASE_URL = "http://192.168.1.56:8088/antilost/api/"
+//    val BASE_URL = "http://192.168.1.56:8088/antilost/api/"
+    val BASE_URL = "http://120.24.5.252:8022/antilost/api/"
     val TOKEN = "token"
     val LOGIN_PHONE = "login_phone"
     val LOGIN_MSM_CODE = "login_msm_code"
@@ -84,4 +85,11 @@ object Constant {
     val RECONNECT = "reconnect"
     //选择断开提醒声音
     val SELECT_PHONE_SOUND = "select_phone_sound"
+    val ABOUT_US_PHONE="020-88886666"
+    val USER_NAME="user_name"
+
+    //拍照
+    var TAKE_PHOTO=1
+    var IMAGE_CHIOCE=2
+    val IMAGE_CROP=3
 }

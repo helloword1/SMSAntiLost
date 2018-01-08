@@ -5,15 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.ContactsBean
 import com.goockr.smsantilost.entries.PhoneBean
 import com.goockr.smsantilost.graphics.SuspensionDecoration
 import com.goockr.smsantilost.utils.ContactUtils
+import com.goockr.smsantilost.utils.LocaleUtil
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.adapters.ChoiceContactAdapter
 import com.jude.swipbackhelper.SwipeBackHelper
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_choice_contact.*
 import kotlin.concurrent.thread
 
@@ -27,6 +32,7 @@ class ChoiceContactActivity(override val contentView: Int = R.layout.activity_ch
     private var mAdapter: ChoiceContactAdapter? = null
     private var mDecoration: SuspensionDecoration? = null
     private var mManager: LinearLayoutManager? = null
+    private var bDatas: MutableList<PhoneBean> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //设置右滑不finsh界面
@@ -78,6 +84,41 @@ class ChoiceContactActivity(override val contentView: Int = R.layout.activity_ch
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
+
+        contactSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(tv: Editable?) {
+                formatPhoneState(tv)
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+        })
+    }
+
+    private fun formatPhoneState(tv: Editable?) {
+        mDatas.clear()
+        if (NotNull.isNotNull(tv) && !TextUtils.equals("", tv)) {
+            for (mData in bDatas) {
+                if (mData.getMPhone()!!.contains(tv!!.toString()) && !mDatas.contains(mData)) {
+                    mDatas.add(mData)
+                } else if (mData.phone.contains(tv.toString()) && !mDatas.contains(mData)) {
+                    mDatas.add(mData)
+                }else if (LocaleUtil.getFirstChar(mData.getMPhone()!!.toUpperCase()).contains(tv.toString().toUpperCase())){
+                    mDatas.add(mData)
+                }else if (LocaleUtil.getPingYin(mData.getMPhone()!!).contains(tv.toString().toUpperCase())){
+                    mDatas.add(mData)
+                }
+            }
+            mDecoration?.setIsChoice(3, mDatas.size)
+        } else {
+            mDatas.addAll(bDatas)
+            mDecoration?.setIsChoice(0, mDatas.size)
+        }
+        mAdapter?.notifyDataSetChanged()
     }
 
     private fun initDatas(data: List<ContactsBean>) {
@@ -94,6 +135,8 @@ class ChoiceContactActivity(override val contentView: Int = R.layout.activity_ch
                         .forEach { cityBean.isshowRight = true }
                 mDatas.add(cityBean)
             }
+            bDatas.clear()
+            bDatas.addAll(mDatas)
             mAdapter?.notifyDataSetChanged()
             indexBar.setNeedRealIndex(true)//设置需要真实的索引
                     .setmLayoutManager(mManager)//设置RecyclerView的LayoutManager

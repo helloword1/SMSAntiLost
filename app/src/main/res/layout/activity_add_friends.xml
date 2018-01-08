@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/logo_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x18"
+        android:layout_marginRight="@dimen/x18"
+        android:layout_marginTop="@dimen/x8"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:src="@mipmap/icon_phone" />
+
+        <com.goockr.smsantilost.graphics.CleanableEditText
+            android:id="@+id/etSharePhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_weight="1"
+            android:background="@null"
+            android:maxLength="12"
+            android:drawableRight="@mipmap/login_delete"
+            android:hint="@string/otherPhoneNumber"
+            android:paddingBottom="@dimen/x12"
+            android:paddingLeft="@dimen/x8"
+            android:paddingRight="@dimen/x12"
+            android:paddingTop="@dimen/x12"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <include layout="@layout/line_gray_margin" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/x18"
+        android:text="@string/inviteFriends"
+        android:textColor="@color/textColor"
+        android:textSize="14sp" />
+    <Button
+        android:id="@+id/shareApp"
+        style="@style/shareAppStyle"
+        android:text="@string/shareApp" />
+</LinearLayout>

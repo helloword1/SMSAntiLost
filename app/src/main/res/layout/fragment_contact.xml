@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/x5"
+            android:layout_marginTop="@dimen/x7"
             android:layout_marginLeft="@dimen/x24"
             android:layout_marginRight="@dimen/x24"
             android:background="@drawable/msm_bg"

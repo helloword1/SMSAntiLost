@@ -21,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:id="@+id/ivLoginIcon"
         android:layout_marginTop="@dimen/x80"
         android:src="@mipmap/login_logo" />
 </RelativeLayout>

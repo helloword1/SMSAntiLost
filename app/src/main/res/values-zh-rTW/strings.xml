@@ -4,7 +4,7 @@
     <string name="app_name">短信防丟器</string>
     <string name="notifyTitle">提示</string>
     <string name="gpsNotifyMsg">當前手機掃描藍牙需要打開定位功能。</string>
-    <string name="setting">前往設置</string>
+    <string name="goSetting">前往設置</string>
     <string name="cancel">取消</string>
     <string name="longin">登陸</string>
     <!--ZXing-->

@@ -183,7 +183,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         if (fromLiveScan) {
             beepManager.playBeepSoundAndVibrate();
 
-            Toast.makeText(this, R.string.scanningSucceed, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.scanningSucceed+ rawResult.getText(), Toast.LENGTH_SHORT).show();
 
             Intent intent = getIntent();
             intent.putExtra("codedContent", rawResult.getText());

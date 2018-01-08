@@ -19,6 +19,7 @@ import com.goockr.smsantilost.graphics.SuspensionDecoration
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.CONTACT_RESULT_ID
 import com.goockr.smsantilost.utils.ContactUtils.getSystemContactInfos
+import com.goockr.smsantilost.utils.LocaleUtil
 import com.goockr.smsantilost.views.activities.msm.CreateContactActivity
 import com.goockr.smsantilost.views.activities.msm.SettingContactActivity
 import com.goockr.smsantilost.views.adapters.CityAdapter
@@ -108,6 +109,10 @@ class ContactFragment : BaseFragment() {
                 if (mData.getMPhone()!!.contains(tv!!.toString()) && !mDatas.contains(mData)) {
                     mDatas.add(mData)
                 } else if (mData.phone.contains(tv.toString()) && !mDatas.contains(mData)) {
+                    mDatas.add(mData)
+                } else if (LocaleUtil.getFirstChar(mData.getMPhone()!!.toUpperCase()).contains(tv.toString().toUpperCase())){
+                    mDatas.add(mData)
+                }else if (LocaleUtil.getPingYin(mData.getMPhone()!!).contains(tv.toString().toUpperCase())){
                     mDatas.add(mData)
                 }
             }

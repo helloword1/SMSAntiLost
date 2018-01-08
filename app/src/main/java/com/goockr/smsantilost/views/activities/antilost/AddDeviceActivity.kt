@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_add_device.*
 import kotlinx.android.synthetic.main.page1_add_device.*
 import kotlinx.android.synthetic.main.page2_add_device.*
 import kotlinx.android.synthetic.main.page3_add_device.*
+import java.lang.Exception
 import java.util.*
 
 
@@ -221,9 +222,11 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
     override fun onDestroy() {
         super.onDestroy()
         mLocationClient?.stopLocation()
-        if (NotNull.isNotNull(btReceiver)) {
-            unregisterReceiver(btReceiver)
-            mBluetoothAdapter?.cancelDiscovery()
+        mBluetoothAdapter?.cancelDiscovery()
+        if (btReceiver!=null){
+            try {
+                unregisterReceiver(btReceiver)
+            }catch (e : Exception){}
         }
     }
 

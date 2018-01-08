@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.graphics.MyToast
+import com.goockr.smsantilost.utils.Constant.USER_NAME
+import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.more.*
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.fragment_more.*
 
 
@@ -35,18 +37,29 @@ class MoreFragment : BaseFragment(), View.OnClickListener {
      * 点击事件
      */
     private fun initClickEvent() {
-        iv_ProfilePic.setOnClickListener(this)
+        llUserIcon.setOnClickListener(this)
         ll_MyFriends.setOnClickListener(this)
         ll_AntiDisturb.setOnClickListener(this)
         ll_SleepTime.setOnClickListener(this)
         ll_UserSetting.setOnClickListener(this)
         ll_AboutUs.setOnClickListener(this)
         llMultilingualLanguage.setOnClickListener(this)
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val baseActivity = activity as BaseActivity
+        val name = baseActivity.preferences?.getStringValue(USER_NAME)
+        if (NotNull.isNotNull(name)) {
+            tv_UserName.text = name
+        }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.iv_ProfilePic -> {
+            R.id.llUserIcon -> {
                 //我的头像
                 showActivity(UserSettingActivity::class.java)
             }
@@ -68,11 +81,11 @@ class MoreFragment : BaseFragment(), View.OnClickListener {
             }
             R.id.ll_UserSetting -> {
                 //设置
-                MyToast.showToastCustomerStyleText(activity, getString(R.string.deviceDeveloping))
+                showActivity(MoreSettingActivity::class.java)
             }
             R.id.ll_AboutUs -> {
                 //关于我们
-                MyToast.showToastCustomerStyleText(activity, getString(R.string.deviceDeveloping))
+                showActivity(AboutUsActivity::class.java)
             }
         }
     }

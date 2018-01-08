@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/x38"
+        android:layout_marginTop="@dimen/x58"
         android:src="@mipmap/no_mail_list_figure" />
 
     <TextView
@@ -16,6 +16,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/x180"
+        android:layout_marginTop="@dimen/x208"
         android:text="暂无通讯录联系人" />
 </RelativeLayout>

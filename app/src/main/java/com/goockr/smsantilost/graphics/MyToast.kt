@@ -106,15 +106,14 @@ class MyToast private constructor() {
                 toast = Toast(context)
                 toast?.setGravity(Gravity.CENTER, 0, 0)
                 toast?.view = inflate
-                toast!!.duration = duration
+                toast?.duration = duration
             } else {
-                toast!!.setGravity(Gravity.CENTER, 0, 0)
-                toast!!.view = inflate
-                toast!!.duration = duration
+                toast?.setGravity(Gravity.CENTER, 0, 0)
+                toast?.view = inflate
+                toast?.duration = duration
             }
             if (isShow)
-                toast!!.show()
-
+                toast?.show()
         }
 
         /**
@@ -129,17 +128,16 @@ class MyToast private constructor() {
             text.text = message
             if (toast == null) {
                 toast = Toast(context)
-                toast!!.setGravity(Gravity.CENTER, 0, 0)
-                toast!!.view = view
-                toast!!.duration = Toast.LENGTH_SHORT
+                toast?.setGravity(Gravity.CENTER, 0, 0)
+                toast?.view = view
+                toast?.duration = Toast.LENGTH_SHORT
             } else {
-                toast!!.setGravity(Gravity.CENTER, 0, 0)
-                toast!!.view = view
-                toast!!.duration = Toast.LENGTH_SHORT
+                toast?.setGravity(Gravity.CENTER, 0, 0)
+                toast?.view = view
+                toast?.duration = Toast.LENGTH_SHORT
             }
             if (isShow)
-                toast!!.show()
-
+                toast?.show()
         }
 
 
@@ -154,17 +152,16 @@ class MyToast private constructor() {
             text.setText(messageId)
             if (toast == null) {
                 toast = Toast(context)
-                toast!!.setGravity(Gravity.CENTER, 0, 0)
-                toast!!.view = view
-                toast!!.duration = Toast.LENGTH_SHORT
+                toast?.setGravity(Gravity.CENTER, 0, 0)
+                toast?.view = view
+                toast?.duration = Toast.LENGTH_SHORT
             } else {
-                toast!!.setGravity(Gravity.CENTER, 0, 0)
-                toast!!.view = view
-                toast!!.duration = Toast.LENGTH_SHORT
+                toast?.setGravity(Gravity.CENTER, 0, 0)
+                toast?.view = view
+                toast?.duration = Toast.LENGTH_SHORT
             }
             if (isShow)
-                toast!!.show()
-
+                toast?.show()
         }
     }
 }

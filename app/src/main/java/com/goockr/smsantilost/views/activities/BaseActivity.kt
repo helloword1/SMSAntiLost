@@ -28,6 +28,7 @@ import cxx.utils.NotNull
 import cxx.utils.SharedPreferencesUtils
 import kotlinx.android.synthetic.main.base_title_view.view.*
 import java.io.Serializable
+import java.lang.Exception
 
 /**
  * Created by Administrator on 2017/9/26.
@@ -44,7 +45,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var titleRight: ImageView? = null
     protected var titleAdd: ImageView? = null
     protected var titleRight1: TextView? = null
-    protected var preferences: SharedPreferencesUtils? = null// 配置文件
+    var preferences: SharedPreferencesUtils? = null// 配置文件
     protected var baseLine: View? = null
     protected var status_bar: View? = null
     protected var goockrApplication: GoockrApplication? = null
@@ -242,6 +243,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        if (btReceiver!=null){
+            try {
+                unregisterReceiver(btReceiver)
+            }catch (e :Exception){}
+        }
         goockrApplication?.removeActivity(this)
         dismissDialog()
     }

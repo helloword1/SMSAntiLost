@@ -15,7 +15,7 @@
         android:layout_marginLeft="@dimen/x12"
         android:layout_marginRight="@dimen/x12"
         android:layout_marginBottom="@dimen/x8"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:layout_alignParentBottom="true" />
 
     <com.goockr.smsantilost.graphics.ZoomControlsView

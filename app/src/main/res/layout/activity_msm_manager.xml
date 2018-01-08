@@ -4,12 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/emptyView"
+        layout="@layout/empty_view"
+        android:visibility="gone" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
+        android:layout_weight="1" />
 
     <RelativeLayout
         android:id="@+id/msmBottom"
@@ -43,4 +47,5 @@
             android:textSize="14sp"
             android:textStyle="bold" />
     </RelativeLayout>
+
 </LinearLayout>

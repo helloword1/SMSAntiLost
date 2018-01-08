@@ -23,7 +23,6 @@ import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.Call
 import java.lang.Exception
-import kotlin.concurrent.thread
 
 class LoginActivity(override val contentView: Int = R.layout.activity_login) : BaseActivity(), View.OnClickListener {
     var isShowPed = true
@@ -64,12 +63,13 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
                 if (isVail()) {
                     showProgressDialog()
                     if (TextUtils.equals(tvLoginUser.text.toString(), "13666666666") && TextUtils.equals(tvLoginPassword.text.toString(), "123456")) {
-                        thread {
+                        kotlin.concurrent.thread {
                             SystemClock.sleep(4000)
                             runOnUiThread {
                                 dismissDialog()
                                 showActivity(HomeActivity::class.java)
                                 preferences?.putValue(Constant.HAD_LOGIN, "true")
+                                preferences?.putValue(Constant.LOGIN_PHONE, tvLoginUser.text.toString())
                                 finish()
                             }
                         }
@@ -90,6 +90,7 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
                                         showActivity(HomeActivity::class.java)
                                         preferences?.putValue(Constant.TOKEN, t.token)
                                         preferences?.putValue(Constant.HAD_LOGIN, "true")
+                                        preferences?.putValue(Constant.LOGIN_PHONE, tvLoginUser.text.toString())
                                         finish()
                                     }
                                     MyToast.showToastCustomerStyleText(this@LoginActivity, "${t.msg}")
@@ -97,6 +98,7 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
                                 }
 
                                 override fun onError(call: Call?, e: Exception?, id: Int) {
+                                    dismissDialog()
                                     MyToast.showToastCustomerStyleText(this@LoginActivity, getString(R.string.networkError))
                                 }
                             })

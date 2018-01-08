@@ -6,8 +6,10 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.utils.ToastUtils
+import com.goockr.smsantilost.graphics.MyToast
+import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.views.activities.BaseActivity
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_set_user_name.*
 
 class SetUserNameActivity(override val contentView: Int = R.layout.activity_set_user_name) : BaseActivity() {
@@ -33,6 +35,10 @@ class SetUserNameActivity(override val contentView: Int = R.layout.activity_set_
         title?.text = getString(R.string.editUserName)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
+        val name = preferences?.getStringValue(Constant.USER_NAME)
+        if (NotNull.isNotNull(name)){
+            et_InputUserName.setText(name)
+        }
     }
 
     /**
@@ -50,23 +56,24 @@ class SetUserNameActivity(override val contentView: Int = R.layout.activity_set_
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!TextUtils.isEmpty(s)) {
-                    iv_CleanUserName.visibility = View.VISIBLE
                     titleOk?.setTextColor(resources.getColor(R.color.colorPrimary))
                     titleOk?.isClickable = true
-                }else {
-                    iv_CleanUserName.visibility = View.GONE
+                } else {
                     titleOk?.setTextColor(resources.getColor(R.color.appGray))
                     titleOk?.isClickable = false
                 }
             }
         })
 
-        iv_CleanUserName.setOnClickListener {
-            et_InputUserName.text = null
-        }
-
         titleOk?.setOnClickListener {
-            ToastUtils.showShort(this,getString(R.string.saveSucceed))
+            val name = et_InputUserName.text.toString()
+            if (NotNull.isNotNull(name) || name.isNotEmpty()) {
+                preferences?.putValue(Constant.USER_NAME, name)
+                MyToast.showToastCustomerStyleText(this, getString(R.string.saveSucceed))
+                finish()
+            } else {
+                MyToast.showToastCustomerStyleText(this, getString(R.string.pleaseInputUserName))
+            }
         }
     }
 }

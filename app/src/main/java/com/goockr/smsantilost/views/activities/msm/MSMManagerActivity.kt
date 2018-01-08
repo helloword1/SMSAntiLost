@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.MsmBean
 import com.goockr.smsantilost.views.activities.BaseActivity
@@ -45,6 +46,11 @@ class MSMManagerActivity(override val contentView: Int = R.layout.activity_msm_m
             arrayList.removeAt(0)
         }
         mDatas.addAll(arrayList as ArrayList<MsmBean>)
+        if (mDatas.isEmpty()) {
+            emptyView.visibility = View.VISIBLE
+        } else {
+            emptyView.visibility = View.GONE
+        }
         val msmManagerAdapter = MsmManagerAdapter(this, mDatas)
         recycleView.adapter = msmManagerAdapter
         //删除
@@ -72,13 +78,13 @@ class MSMManagerActivity(override val contentView: Int = R.layout.activity_msm_m
             lists.clear()
             lists.addAll(it)
             if (!lists.isEmpty()) {
-                tvHadRead.text="已读"
+                tvHadRead.text = "已读"
                 tvHadRead.setTextColor(ContextCompat.getColor(this, R.color.blue))
                 tvHadRead.isEnabled = true
                 tvDelete.setTextColor(ContextCompat.getColor(this, R.color.blue))
                 tvDelete.isEnabled = true
             } else {
-                tvHadRead.text="标志为已读"
+                tvHadRead.text = "标志为已读"
                 tvHadRead.setTextColor(ContextCompat.getColor(this, R.color.some_black))
                 tvHadRead.isEnabled = false
                 tvDelete.setTextColor(ContextCompat.getColor(this, R.color.some_black))

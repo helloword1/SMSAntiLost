@@ -1,7 +1,10 @@
 package com.goockr.smsantilost.views.activities.more
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.AntiAddressBean
@@ -43,7 +46,7 @@ class SetAntiDisturbNameActivity(override val contentView: Int = R.layout.activi
         //完成
         titleOk?.setOnClickListener {
             if (isVail()) {
-                var addressBean:AntiAddressBean?=null
+                var addressBean: AntiAddressBean? = null
                 if (TextUtils.equals(currentId, "0")) {
                     addressBean = AntiAddressBean(null, longitude, latitude, currentRadius, etDisturbName.text.toString(), searchAddress)
                     antiAddressBeanDao?.insert(addressBean)
@@ -72,6 +75,22 @@ class SetAntiDisturbNameActivity(override val contentView: Int = R.layout.activi
                 finish()
             }
         }
+        etDisturbName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0!!.isEmpty()) {
+                    titleOk?.setTextColor(ContextCompat.getColor(this@SetAntiDisturbNameActivity, R.color.msmTextColorGray))
+                } else {
+                    titleOk?.setTextColor(ContextCompat.getColor(this@SetAntiDisturbNameActivity, R.color.blue))
+                }
+            }
+
+        })
     }
 
     private fun initIntent() {
@@ -85,7 +104,6 @@ class SetAntiDisturbNameActivity(override val contentView: Int = R.layout.activi
     }
 
     private fun isVail(): Boolean {
-
         if (!NotNull.isNotNull(etDisturbName.text.toString()) || TextUtils.equals(etDisturbName.text.toString(), "")) {
             MyToast.showToastCustomerStyleText(this, getString(R.string.pleaseInputName))
             return false

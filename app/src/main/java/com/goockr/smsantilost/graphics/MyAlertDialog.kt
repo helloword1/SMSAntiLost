@@ -46,12 +46,17 @@ class MyAlertDialog(private val context: Context) {
         return this
     }
 
+    fun setConfirm(title: String): MyAlertDialog {
+        customView?.findViewById<TextView>(R.id.tv_Ensure)?.text = title
+        return this
+    }
+
     fun setContent(content: String): MyAlertDialog {
         val textView = customView?.findViewById<TextView>(R.id.tv_Text2)
-        if (TextUtils.equals(content,"")||!NotNull.isNotNull(content)){
-            textView?.visibility=View.GONE
-        }else{
-            textView?.visibility=View.VISIBLE
+        if (TextUtils.equals(content, "") || !NotNull.isNotNull(content)) {
+            textView?.visibility = View.GONE
+        } else {
+            textView?.visibility = View.VISIBLE
             textView?.text = content
         }
         return this
@@ -69,11 +74,13 @@ class MyAlertDialog(private val context: Context) {
             dialog = null
         }
     }
+
     fun hide() {
         if (NotNull.isNotNull(dialog)) {
             dialog?.hide()
         }
     }
+
     interface OnDialogListener {
         fun onConfirmListener()
         fun onCancelListener()
