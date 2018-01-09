@@ -40,7 +40,7 @@ class AddSleepTimeActivity(override val contentView: Int = R.layout.activity_add
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
         title?.text = getString(R.string.addSleepTime)
-        titleOk?.text = getString(R.string.complete)
+        titleOk?.text = getString(R.string.Done)
         titleOk?.visibility = View.VISIBLE
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
@@ -76,9 +76,9 @@ class AddSleepTimeActivity(override val contentView: Int = R.layout.activity_add
                 // 保存在本地
 
                 // 返回数据
-                var bean = SleepTimeBean(tv_SleepTimeName.text.toString(),tv_SleepTimeStart.text.toString() + " - " + tv_SleepTimeStop.text.toString(),tv_SleepTimeRepeat.text.toString())
+                val bean = SleepTimeBean(tv_SleepTimeName.text.toString(),tv_SleepTimeStart.text.toString() + " - " + tv_SleepTimeStop.text.toString(),tv_SleepTimeRepeat.text.toString())
                 val i = Intent()
-                var bundle = Bundle()
+                val bundle = Bundle()
                 bundle.putSerializable("bean",bean)
                 i.putExtras(bundle)
                 setResult(RESULT_BEAN,i)
@@ -105,6 +105,8 @@ class AddSleepTimeActivity(override val contentView: Int = R.layout.activity_add
         })
                 .setDate(selectedDate)
                 .setTitleText(getString(R.string.beginTime))
+                .setSubmitText(getString(R.string.button_ok))
+                .setCancelText(getString(R.string.cancel))
                 .setTitleBgColor(resources.getColor(R.color.colorPrimary))
                 .setSubmitColor(Color.parseColor("#ffffff"))
                 .setCancelColor(Color.parseColor("#ffffff"))

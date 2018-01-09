@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="扫一扫"
+            android:text="@string/ScanQRCode"
             android:textColor="#ffffffff"
             android:textSize="20sp"/>
 

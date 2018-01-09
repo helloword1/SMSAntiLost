@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x10"
         android:layout_marginTop="@dimen/x14"
-        android:text="关闭后,将无法记录和定位你的设备"
+        android:text="@string/checkYourLocation"
         android:textColor="@color/msmTextColorGray"
         android:textSize="12sp" />
 </LinearLayout>

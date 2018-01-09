@@ -5,7 +5,7 @@
 
     <string name="SmsAntiLost"> SMS anti-loss device </string>
 
-    <string name="app_name"> SMS anti-loss device </string>
+    <string name="app_name"> SMS Anti-loss Device </string>
 
     <string name="notifyTitle"> prompt </string>
 
@@ -78,7 +78,7 @@
 
     <string name="searching"> Scanning </string>
 
-    <string name="binding"> Connecting... </string>
+    <string name="binding"> Connecting… </string>
 
     <string name="searchingM"> research </string>
 
@@ -94,7 +94,7 @@
 
     <string name="send"> send </string>
 
-    <string name="notRegist"> the phone number is not registered </string>
+    <string name="notRegist"> Number unregistered </string>
 
     <string name="notEffect"> invalid cell phone number </string>
 
@@ -103,9 +103,9 @@
     <string name="back"> returns </string>
 
 
-    <string name="inputOtherPhone"> please enter the phone number </string>
+    <string name="inputOtherPhone"> Invite family and friends to download </string>
 
-    <string name="inviteFriendsDownLoad"> invites family and friends to download </string>
+    <string name="inviteFriendsDownLoad"> Recommend APP </string>
 
     <string name="simInsert">No SIM card installed </string>
 
@@ -211,13 +211,13 @@
 
     <string name="enterSamePwd"> Please enter the same password twice </string>
 
-    <string name="name"> name </string>
+    <string name="name"> Name </string>
 
-    <string name="beginTime"> start time </string>
+    <string name="beginTime"> From </string>
 
-    <string name="endTime"> end time </string>
+    <string name="endTime"> To </string>
 
-    <string name="repeat"> repeat </string>
+    <string name="repeat"> Repeat </string>
 
     <string name="everyDay"> per day </string>
 
@@ -240,37 +240,37 @@
 
     <string name="end"> end </string>
 
-    <string name="antiDisturb"> anti-disturb zone </string>
+    <string name="antiDisturb"> Silent Region </string>
 
     <string name="simShowContact"> display SIM card contact </string>
 
-    <string name="openAnti"> will be turned off and all anti-loss reminders </string>
+    <string name="openAnti"> Anti-loss notifications will be disabled within the Slient Region. </string>
 
-    <string name="radiusSetting"> radius: current radius 1m</string>
+    <string name="radiusSetting"> Radius Setting：Radius 500m</string>
 
-    <string name="settingM"> radius: current radius </string>
+    <string name="settingM"> Radius: current radius </string>
 
     <string name="changePhone"> modifies the phone number </string>
 
     <string name="inputNewPhone"> input new phone number </string>
 
-    <string name="settingNotes"> setting remarks </string>
+    <string name="settingNotes"> Set Remarks </string>
 
     <string name="deleteFriends"> deleted friend </string>
 
     <string name="inputFriendsNotes"> please enter your friend comment </string>
 
-    <string name="editGoodsFriends"> edit friend </string>
+    <string name="editGoodsFriends"> Friend Profile </string>
 
     <string name="nickname"> nickname: </string>
 
-    <string name="myFiends"> my friend </string>
+    <string name="myFiends"> My Friends </string>
 
-    <string name="newFriends"> new friend </string>
+    <string name="newFriends"> My friends </string>
 
-    <string name="notNewsFriends"> has no new friends </string>
+    <string name="notNewsFriends"> Has no new friends </string>
 
-    <string name="sunDay"> </string>
+    <string name="sunDay"> Sunday </string>
 
     <string name="Monday"> Monday </string>
 
@@ -280,17 +280,17 @@
 
     <string name="Thursday"> Thursday </string>
 
-    <string name="Friday"> </string>
+    <string name="Friday"> Friday </string>
 
     <string name="Saturday"> Saturday </string>
 
     <string name="choiceRepeatDate"> please select duplicate date </string>
 
-    <string name="week"> weekend </string>
+    <string name="week"> Weekend </string>
 
     <string name="workDate"> working day </string>
 
-    <string name="changePwd"> change password </string>
+    <string name="changePwd"> Modify Password </string>
 
     <string name="changeSucceed"> changes success </string>
 
@@ -298,37 +298,37 @@
 
     <string name="inputNewPwd"> input new password </string>
 
-    <string name="msmCode"> text verification code </string>
+    <string name="msmCode"> Enter Code </string>
 
     <string name="reGetTime">42S is retrieved </string>
 
-    <string name="sleepTimeName"> sleep time name </string>
+    <string name="sleepTimeName"> Silent Period Name </string>
 
-    <string name="inputSleepTimeName"> please enter hibernation name </string>
+    <string name="inputSleepTimeName"> Enter silent period name </string>
 
-    <string name="save"> save </string>
+    <string name="save"> Save </string>
 
-    <string name="editUserName"> edit user name </string>
+    <string name="editUserName"> Name </string>
 
     <string name="saveSucceed"> saves success </string>
 
-    <string name="sleepTime"> sleep time </string>
+    <string name="sleepTime"> Silent Period </string>
 
-    <string name="accountSetting"> account setting </string>
+    <string name="accountSetting"> My Profile </string>
 
-    <string name="exitLogin"> is sure to quit login? </string>
+    <string name="exitLogin"> Sign out？ </string>
 
-    <string name="myIcon"> my head </string>
+    <string name="myIcon"> Profile Photo </string>
 
-    <string name="userName"> user name </string>
+    <string name="userName">User name </string>
 
-    <string name="binddingPhone"> phone binding </string>
+    <string name="binddingPhone"> Mobile </string>
 
-    <string name="phoneBinding"> phone binding </string>
+    <string name="phoneBinding"> Unbind </string>
 
-    <string name="wetchatBinding"> WeChat binding </string>
+    <string name="wetchatBinding"> WeChat </string>
 
-    <string name="exit"> Exits login </string>
+    <string name="exit"> Log out </string>
 
     <string name="hadConnect"> Connected </string>
 
@@ -358,7 +358,7 @@
 
     <string name="computor"> notebook </string>
 
-    <string name="aboutMe"> about us </string>
+    <string name="aboutMe"> About </string>
 
     <string name="emptySms"> No information </string>
 
@@ -366,16 +366,9 @@
 
     <string name="contactSum"> current address book has </string>
 
-    <string name="moreSetting"> setting </string>
+    <string name="moreSetting"> Setting </string>
 
-    <string name="MultilingualLanguage"> multinational language </string>
-
-    <string name="China"> simplified Chinese </string>
-
-    <string name="hk"> traditional Chinese </string>
-
-    <string name="English"> English </string>
-
+    <string name="MultilingualLanguage"> Language </string>
     <string name="settingSuscceed"> setting success </string>
 
     <string name="sms"> SMS </string>
@@ -402,9 +395,9 @@
     <string name="MergeDuplicateContacts">Merge Duplicate Contacts</string>
     <string name="DeleteSuccess">Delete success</string>
     <string name="ManualMerge">Manual merge</string>
-    <string name="Contactdataduplication"><![CDATA[组</font>Contact data duplication]]></string>
-    <string name="Nameduplication"><![CDATA[组</font>Name duplication]]></string>
-    <string name="Numberduplication"><![CDATA[组</font>Number duplication]]></string>
+    <string name="Contactdataduplication"><![CDATA[Group</font>Contact data duplication]]></string>
+    <string name="Nameduplication"><![CDATA[Group</font>Name duplication]]></string>
+    <string name="Numberduplication"><![CDATA[Group</font>Number duplication]]></string>
     <string name="SetupGuide">Setup Guide</string>
     <string name="JustNow">Just now</string>
     <string name="farAway">Far</string>
@@ -420,5 +413,35 @@
     <string name="moveManagerDetails2">After the transfer of the administrator, you will become an ordinary user and lose the administrator rights of the device.</string>
     <string name="setUnBind">Delete？</string>
     <string name="unbindSucceed">Unbinding success</string>
+    <string name="ScanQRCode">Scan QR Code</string>
+    <string name="pleaseChoiceDevice">Please select the device</string>
+    <string name="locationRecord">Footprint</string>
+    <string name="locationGuide">Navigate</string>
+    <string name="systemMap">Navigate by Apple Maps</string>
+    <string name="aMaps">Navigate by AutoNavi Maps</string>
+    <string name="baiduMap">Navigate by Baidu Maps</string>
+    <string name="takePhotos">Take Photo</string>
+    <string name="pictures">Choose from Album</string>
+    <string name="EnterName">Enter name</string>
+    <string name="SentAuth">Sent auth code to ：</string>
+    <string name="inputNewPed">Enter New Password</string>
+    <string name="ConfirmPassword">Confirm password</string>
+    <string name="EnterNewPassword">Enter New Password</string>
+    <string name="signOut">Sign Out</string>
+    <string name="Accept">Accept</string>
+    <string name="Accepted">Accepted</string>
+    <string name="antiArea">Silent Region</string>
+    <string name="InputKeyword">Please enter the keyword</string>
+    <string name="settingAntiAreaName">Silent Region Name</string>
+    <string name="pleaseInputName">Enter silent region name</string>
+    <string name="SilentPeriod">Silent Period</string>
+    <string name="AntiLossNotifications">Anti-loss notifications will be disabled during a Silent Period.</string>
+    <string name="AddSilentPeriod">Add Silent Period</string>
+    <string name="receiveNewSms">Notifications</string>
+    <string name="myLocation">My Location</string>
+    <string name="checkYourLocation">When disables,your friends will be unable to check your location.</string>
+    <string name="servicePhone">Help phone</string>
+    <string name="ifCall">Call?</string>
+    <string name="call">call</string>
 </resources>
 

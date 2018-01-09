@@ -58,7 +58,7 @@ class SetPwdActivity(override val contentView: Int = R.layout.activity_set_pwd) 
         val phone = preferences?.getStringValue(LOGIN_PHONE)
         if (NotNull.isNotNull(phone)){
             val replace = phone?.replace(phone.substring(3, 9), "***")
-            tv_CodeTips.text = "已发送验证码到：$replace"
+            tv_CodeTips.text = getString(R.string.SentAuth) + replace
         }
 
 
@@ -82,6 +82,8 @@ class SetPwdActivity(override val contentView: Int = R.layout.activity_set_pwd) 
                 if (TextUtils.isEmpty(et_VerificationCode1.text)) {
                     ToastUtils.showShort(this,getString(R.string.inputCode))
                 }else if (TextUtils.equals(code,et_VerificationCode1.text)){
+                    title?.text = getString(R.string.EnterNewPassword)
+                    titleOk?.text = getString(R.string.Done)
                     showPage2()
                 }else{
                     ToastUtils.showShort(this,getString(R.string.msmCodeError))
@@ -90,6 +92,7 @@ class SetPwdActivity(override val contentView: Int = R.layout.activity_set_pwd) 
                 // 检查两次新密码输入是否一致
                 if (et_InputNewPWD.text.equals(et_InputNewPWDAgain.text)) {
                     ToastUtils.showShort(this,getString(R.string.changeSucceed))
+                    titleOk?.text = getString(R.string.nextStep)
                     finish()
                 }else {
                     ToastUtils.showShort(this,getString(R.string.pwdNotSame))
@@ -101,6 +104,7 @@ class SetPwdActivity(override val contentView: Int = R.layout.activity_set_pwd) 
             if (mCurrent == 1) {
                 finish()
             }else if (mCurrent == 2) {
+                title?.text = getString(R.string.changePwd)
                 showPage1()
             }
         }

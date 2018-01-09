@@ -65,7 +65,7 @@ class SleepTimeActivity(override val contentView: Int = R.layout.activity_sleep_
      */
     private fun initClickEvent() {
         ll_AddSleepTime.setOnClickListener {
-            var i = Intent()
+            val i = Intent()
             i.setClass(this, AddSleepTimeActivity::class.java)
             startActivityForResult(i, REQUEST_SLEEP)
         }

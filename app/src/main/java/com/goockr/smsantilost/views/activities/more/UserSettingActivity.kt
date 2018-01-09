@@ -145,6 +145,7 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
 
     private fun initDialog() {
         myAlertDialog = MyAlertDialog(this).setTitle(getString(R.string.exitLogin)).setContent("")
+                .setConfirm(getString(R.string.signOut))
         myAlertDialog?.setOnDialogListener(object : MyAlertDialog.OnDialogListener {
             override fun onConfirmListener() {
                 preferences?.clearPreferences()

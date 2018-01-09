@@ -19,7 +19,7 @@
             android:paddingRight="@dimen/x10"
             android:paddingTop="@dimen/x5"
             android:paddingBottom="@dimen/x5"
-            android:hint="请输入新密码"
+            android:hint="@string/inputNewPed"
             android:background="#fff"
             android:textSize="14sp"
             android:inputType="textPassword" />
@@ -51,7 +51,7 @@
             android:paddingRight="@dimen/x10"
             android:paddingTop="@dimen/x5"
             android:paddingBottom="@dimen/x5"
-            android:hint="再次输入新密码"
+            android:hint="@string/ConfirmPassword"
             android:background="#fff"
             android:textSize="14sp"
             android:inputType="textPassword" />

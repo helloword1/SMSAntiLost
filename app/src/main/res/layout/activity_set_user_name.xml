@@ -22,7 +22,7 @@
             android:paddingRight="@dimen/x10"
             android:paddingTop="@dimen/x5"
             android:paddingBottom="@dimen/x5"
-            android:hint="请输入修改的名称"
+            android:hint="@string/EnterName"
             android:drawableRight="@mipmap/btn_del"
             android:textSize="14sp"/>
     </RelativeLayout>

@@ -31,7 +31,7 @@ class SetSleepTimeNameActivity(override val contentView: Int = R.layout.activity
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
         title?.text = getString(R.string.sleepTimeName)
-        titleOk?.text = getString(R.string.complete)
+        titleOk?.text = getString(R.string.Done)
         titleOk?.visibility = View.VISIBLE
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
         titleBack?.setOnClickListener { finish() }

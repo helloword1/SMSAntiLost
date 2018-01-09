@@ -44,7 +44,7 @@ class AddFriendActivity(override val contentView: Int = R.layout.activity_add_fr
         titleOk = titleLayout.findViewById(R.id.titleOk)
 
         title?.text = getString(R.string.addFriends)
-        titleOk?.text = getString(R.string.sending)
+        titleOk?.text = getString(R.string.send)
         titleOk?.visibility = View.VISIBLE
         titleOk?.setTextColor(resources.getColor(R.color.colorPrimary))
         titleBack?.setOnClickListener { finish() }
@@ -66,7 +66,7 @@ class AddFriendActivity(override val contentView: Int = R.layout.activity_add_fr
                 dialog?.show()
             } else {
                 tv_Text1?.text = getString(R.string.notEffect)
-                tv_Ensure?.text = getString(R.string.reInput)
+                tv_Ensure?.text = getString(R.string.trtAgain)
                 dialog?.show()
             }
 

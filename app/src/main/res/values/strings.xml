@@ -46,7 +46,6 @@
     <string name="noteBook">笔记本</string>
     <string name="secondCard">手机副卡</string>
     <string name="other">其他</string>
-    <string name="sending">发送</string>
     <string name="notRegist">该手机号码未注册</string>
     <string name="notEffect">无效手机号码</string>
     <string name="reInput">重新输入</string>
@@ -276,4 +275,18 @@
     <string name="Yes">已插入</string>
     <string name="EnterThePhoneNumberDevice">请输入该设备插入SIM卡的手机号码</string>
     <string name="binddingSucceed">请先绑定设备</string>
+    <string name="ScanQRCode">扫一扫</string>
+    <string name="EnterName">请输入修改的名称</string>
+    <string name="SentAuth">已发送验证码到：</string>
+    <string name="inputNewPed">请输入新密码</string>
+    <string name="ConfirmPassword">再次输入新密码</string>
+    <string name="EnterNewPassword">输入新密码</string>
+    <string name="signOut">确定</string>
+    <string name="Accept">接受</string>
+    <string name="Accepted">已接受</string>
+    <string name="InputKeyword">请输入关键字</string>
+    <string name="SilentPeriod">休眠时段</string>
+    <string name="AntiLossNotifications">开启后，休眠时段内，将关闭所有防丢提醒</string>
+    <string name="AddSilentPeriod">添加休眠时段</string>
+    <string name="checkYourLocation">关闭后,将无法记录和定位你的设备</string>
 </resources>

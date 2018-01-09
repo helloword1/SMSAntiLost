@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_blue"
-                android:text="接受"
+                android:text="@string/Accept"
                 android:gravity="center"
                 android:textColor="#fff"/>
 
@@ -65,7 +65,7 @@
                 android:id="@+id/tv_State"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="已接受"
+                android:text="@string/Accepted"
                 android:gravity="center"
                 android:textColor="@color/appGray"
                 android:visibility="gone"/>

@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="休眠时段"/>
+            android:text="@string/SilentPeriod"/>
 
         <View
             android:layout_width="0dp"
@@ -30,8 +30,8 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x45"
-        android:text="开启后，休眠时段内，将关闭所有防丢提醒"
+        android:layout_height="@dimen/x38"
+        android:text="@string/AntiLossNotifications"
         android:textSize="12sp"
         android:gravity="center_vertical"
         android:padding="@dimen/x10"/>
@@ -51,7 +51,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="添加休眠时段"/>
+            android:text="@string/AddSilentPeriod"/>
 
         <View
             android:layout_width="0dp"

@@ -39,7 +39,7 @@ class SetAntiDisturbNameActivity(override val contentView: Int = R.layout.activi
         title?.text = getString(R.string.settingAntiAreaName)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
-        titleOk?.text = getString(R.string.complete)
+        titleOk?.text = getString(R.string.Done)
         titleOk?.visibility = View.VISIBLE
         etDisturbName.setText(searchName)
         val antiAddressBeanDao = goockrApplication?.mDaoSession?.antiAddressBeanDao
