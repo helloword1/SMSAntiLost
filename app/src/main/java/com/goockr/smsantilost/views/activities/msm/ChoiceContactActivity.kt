@@ -109,8 +109,6 @@ class ChoiceContactActivity(override val contentView: Int = R.layout.activity_ch
                     mDatas.add(mData)
                 }else if (LocaleUtil.getFirstChar(mData.getMPhone()!!.toUpperCase()).contains(tv.toString().toUpperCase())){
                     mDatas.add(mData)
-                }else if (LocaleUtil.getPingYin(mData.getMPhone()!!).contains(tv.toString().toUpperCase())){
-                    mDatas.add(mData)
                 }
             }
             mDecoration?.setIsChoice(3, mDatas.size)

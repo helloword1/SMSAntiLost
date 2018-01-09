@@ -225,7 +225,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
             isInsert=false
         } else if (s.toInt() == 1) {
             tvNotify.visibility = View.GONE
-            SimPhone.text = s
+            SimPhone.text = getString(R.string.insert)
             isInsert=true
         }
     }
@@ -256,6 +256,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
     private fun initClickEvent() {
         llBell.setOnClickListener {
             if (instance!!.isConnect) {
+                beep.setText(R.string.StopTheBell)
                 mainBack.setImageDrawable(resources.getDrawable(R.drawable.animation_search))
                 val anim = mainBack.drawable as AnimationDrawable
                 if (!NotNull.isNotNull(mThread) || !mThread!!.isAlive) {
@@ -268,6 +269,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
                     mThread?.start()
                     anim.start()
                 } else {
+                    beep.setText(R.string.belling)
                     mThread?.interrupt()
                     mThread = null
                     anim.stop()

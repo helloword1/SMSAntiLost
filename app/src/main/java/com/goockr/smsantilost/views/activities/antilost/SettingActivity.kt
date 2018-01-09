@@ -34,7 +34,7 @@ class SettingActivity(override val contentView: Int = R.layout.activity_setting)
         val titleLayout = layoutInflater.inflate(R.layout.base_title_view, null)
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
-        title?.text = getString(R.string.goSetting)
+        title?.text = getString(R.string.setting)
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)
         val extras = intent.extras
@@ -88,8 +88,8 @@ class SettingActivity(override val contentView: Int = R.layout.activity_setting)
     }
 
     private fun initDialog() {
-        myAlertDialog = MyAlertDialog(this).setTitle(getString(R.string.moveManager))
-                .setContent(getString(R.string.moveManagerDetails2))
+        myAlertDialog = MyAlertDialog(this).setTitle(getString(R.string.setUnBind))
+                .setContent(getString(R.string.unbindContent))
         myAlertDialog?.setOnDialogListener(object : MyAlertDialog.OnDialogListener {
             override fun onConfirmListener() {
                 // 解绑逻辑
@@ -98,6 +98,8 @@ class SettingActivity(override val contentView: Int = R.layout.activity_setting)
                 if (NotNull.isNotNull(bean)) {
                     deviceBeanDao?.delete(bean)
                     goockrApplication?.exitToHomeNo()
+                }else{
+                    MyToast.showToastCustomerStyleText(this@SettingActivity,getString(R.string.binddingSucceed))
                 }
                 if (NotNull.isNotNull(instance)) {
                     instance?.disConnect()

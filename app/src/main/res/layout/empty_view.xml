@@ -17,5 +17,21 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/x208"
-        android:text="暂无通讯录联系人" />
+        android:text="@string/noRight" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_below="@id/tvEmptyView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/x5"
+        android:text="@string/openRight"
+        android:textSize="15sp"
+        android:visibility="gone"
+        android:id="@+id/btnOpenRight"
+        android:textColor="@color/white"
+        android:paddingLeft="@dimen/x16"
+        android:paddingRight="@dimen/x16"
+        android:paddingTop="@dimen/x5"
+        android:paddingBottom="@dimen/x5"
+        android:background="@drawable/blue_angle_bg"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

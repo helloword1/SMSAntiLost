@@ -35,8 +35,8 @@ class MSMManagerActivity(override val contentView: Int = R.layout.activity_msm_m
     override fun initView() {
         ll?.removeAllViews()
         ll?.addView(layoutInflater.inflate(R.layout.custom_title_view, null))
-        cTitle.text = "短信管理"
-        cTitleBack.text = "取消"
+        cTitle.text = getString(R.string.SMSManager)
+        cTitleBack.text = getString(R.string.cancel)
         val extras = intent.extras
         val boolean = extras.getBoolean("IS_SEARCH")
 

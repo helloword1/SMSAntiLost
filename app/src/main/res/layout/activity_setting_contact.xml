@@ -52,12 +52,12 @@
     <TextView
         android:id="@+id/tvDeleteContact"
         style="@style/setting_contact_style"
-        android:text="批量删除联系人" />
+        android:text="@string/BatchDeletingContacts" />
 
     <TextView
         android:id="@+id/tvUnionContact"
         style="@style/setting_contact_style"
-        android:text="合并重复联系人" />
+        android:text="@string/MergeDuplicateContacts" />
 
     <View
         android:layout_width="match_parent"

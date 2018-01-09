@@ -20,6 +20,7 @@ import com.google.gson.Gson
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
+import cxx.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.Call
 import java.lang.Exception
@@ -109,11 +110,15 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
 
     private fun isVail(): Boolean {
         if (!NotNull.isNotNull(tvLoginUser.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, getString(R.string.EnterNumber))
+            MyToast.showLikeAppDialogSingleIKnow(this, getString(R.string.EnterNumber))
             return false
         }
         if (!NotNull.isNotNull(tvLoginPassword.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, getString(R.string.enterPwd))
+            MyToast.showLikeAppDialogSingle(this, getString(R.string.enterPwd),getString(R.string.EnterNumber))
+            return false
+        }
+        if (!StringUtils.isPhone(tvLoginUser.text.toString())) {
+            MyToast.showLikeAppDialogSingleIKnow(this, getString(R.string.InvalidMobileNumber))
             return false
         }
         return true

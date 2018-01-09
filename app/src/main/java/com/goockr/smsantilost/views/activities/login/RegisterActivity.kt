@@ -101,12 +101,12 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
     private fun isValidPhone(): Boolean {
 
         if (!NotNull.isNotNull(tvLoginUser.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, getString(R.string.inputPhoneNumber))
+            MyToast.showLikeAppDialogSingleIKnow(this, getString(R.string.inputPhoneNumber))
             return false
         }
         var phone = StringUtils.isPhone(tvLoginUser.text.toString())
         if (!phone) {
-            MyToast.showToastCustomerStyleText(this,  getString(R.string.inputRightNumber))
+            MyToast.showLikeAppDialogSingleIKnow(this,  getString(R.string.inputRightNumber))
             return false
         }
 

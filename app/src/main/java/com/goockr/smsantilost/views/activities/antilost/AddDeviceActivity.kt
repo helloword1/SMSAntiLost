@@ -80,7 +80,7 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
         title = titleLayout.findViewById(R.id.title)
         titleRight = titleLayout.findViewById(R.id.titleRight)
         titleBack = titleLayout.findViewById(R.id.titleBack)
-        title?.text = getString(R.string.addDivece)
+        title?.text = getString(R.string.addDiveceTitle)
         ll?.addView(titleLayout)
 
         //定位

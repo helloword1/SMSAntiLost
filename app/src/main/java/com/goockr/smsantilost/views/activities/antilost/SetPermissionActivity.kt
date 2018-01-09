@@ -41,7 +41,7 @@ class SetPermissionActivity(override val contentView: Int = R.layout.activity_se
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
 
-        titleOk?.text = getString(R.string.concert)
+        titleOk?.text = getString(R.string.Done)
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
         titleOk?.isClickable = false
         titleOk?.visibility = View.VISIBLE
@@ -97,8 +97,8 @@ class SetPermissionActivity(override val contentView: Int = R.layout.activity_se
     }
 
     private fun initDialog() {
-        var builder = AlertDialog.Builder(this)
-        var customView = layoutInflater.inflate(R.layout.dialog_permission, null)
+        val builder = AlertDialog.Builder(this)
+        val customView = layoutInflater.inflate(R.layout.dialog_permission, null)
         builder.setView(customView)
         builder.setIcon(R.mipmap.ic_launcher)
         dialog = builder.create()

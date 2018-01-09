@@ -28,9 +28,9 @@ class SetSimActivity(override val contentView: Int = R.layout.activity_set_sim) 
         val extras = intent.extras
         isInsert = extras.getBoolean("IS_INSERT")
         tv_IsInsertSim.text=if (isInsert){
-            getString(R.string.simHadInsert)
+            getString(R.string.insert)
         }else{
-            getString(R.string.notInsert)
+            getString(R.string.No)
         }
     }
 

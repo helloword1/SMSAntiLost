@@ -21,16 +21,16 @@ class MergeContactActivity(override val contentView: Int = R.layout.activity_mer
     private val phoneList = ArrayList<ArrayList<ContactsBean>>()
 
     override fun initView() {
-        title?.text = "合并重复联系人"
+        title?.text = getString(R.string.MergeDuplicateContacts)
         thread {
             val systemContactInfos = ContactUtils.getSystemContactInfos(applicationContext)
             sameByNameAndPhone(systemContactInfos as ArrayList<ContactsBean>)
             sameByName(systemContactInfos)
             phoneList.addAll(sameByPhone(systemContactInfos))
             runOnUiThread {
-                tvMergeContact.text = Html.fromHtml("<font color='#4285f4'>${nameAndPhoneList.filterTo(ArrayList()) { it.size > 1 }.size} 组</font>联系人资料完全重复")
-                tvMergeName.text = Html.fromHtml("<font color='#4285f4'>${nameList.filterTo(ArrayList()) { it.size > 1 }.size} 组</font>联系人资料姓名重复")
-                tvMergeNumber.text = Html.fromHtml("<font color='#4285f4'>${ phoneList.filterTo(ArrayList()) { it.size > 1 }.size} 组</font>联系人资料号码重复")
+                tvMergeContact.text = Html.fromHtml("<font color='#4285f4'>" + nameAndPhoneList.filterTo(ArrayList()) { it.size > 1 }.size + getString(R.string.Contactdataduplication))
+                tvMergeName.text = Html.fromHtml("<font color='#4285f4'>" + nameList.filterTo(ArrayList()) { it.size > 1 }.size + getString(R.string.Nameduplication))
+                tvMergeNumber.text = Html.fromHtml("<font color='#4285f4'>" + phoneList.filterTo(ArrayList()) { it.size > 1 }.size + getString(R.string.Numberduplication))
             }
         }
         //完全重复

@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/x14"
-            android:text="标志为已读"
+            android:text="@string/ReadAll"
             android:textColor="@color/some_black"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -42,7 +42,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/x14"
-            android:text="删除"
+            android:text="@string/delete"
             android:textColor="@color/some_black"
             android:textSize="14sp"
             android:textStyle="bold" />

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.goockr.smsantilost.R
+
 /**
  *
  * @Description Toast统一管理类
@@ -140,6 +141,26 @@ class MyToast private constructor() {
                 toast?.show()
         }
 
+        fun showLikeAppDialogSingle(context: Context, title: String,confir:String) {
+            val likeAppleComfirDialog = LikeAppleComfirDialog(context, title, "", confir, 1)
+            likeAppleComfirDialog.show()
+            likeAppleComfirDialog.setDialogClicklistener(object : LikeAppleComfirDialog.DialogAppleClickListener {
+                override fun doConfirm() {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    likeAppleComfirDialog.dismiss()
+                }
+
+                override fun doCancel() {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    likeAppleComfirDialog.dismiss()
+                }
+
+            })
+
+        }
+        fun showLikeAppDialogSingleIKnow(context: Context, title: String) {
+            showLikeAppDialogSingle(context,title,context.getString(R.string.iknown))
+        }
 
         /**
          *

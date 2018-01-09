@@ -27,7 +27,7 @@
         android:paddingLeft="@dimen/x18"
         android:paddingRight="@dimen/x18"
         android:paddingTop="@dimen/x6"
-        android:text="绑定指南"
+        android:text="@string/SetupGuide"
         android:textColor="@color/white"
         android:textSize="15sp" />
 </RelativeLayout>

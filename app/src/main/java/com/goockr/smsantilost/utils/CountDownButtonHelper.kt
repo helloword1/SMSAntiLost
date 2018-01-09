@@ -38,8 +38,7 @@ class CountDownButtonHelper
 
             override fun onTick(time: Long) {
                 // 第一次调用会有1-10ms的误差，因此需要+15ms，防止第一个数不显示，第二个数显示2s
-                button.text = (tmpString + "(" + (time + 15) / 1000
-                        + ")")
+                button.text = ("(" + (time + 15) / 1000+ ")"+tmpString)
             }
 
             override fun onFinish() {

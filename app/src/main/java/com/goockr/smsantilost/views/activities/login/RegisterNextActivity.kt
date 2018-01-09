@@ -6,6 +6,7 @@ import android.view.View
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.CreateUserBean
 import com.goockr.smsantilost.entries.NetApi
+import com.goockr.smsantilost.graphics.MyAlertDialog
 import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
@@ -51,18 +52,32 @@ class RegisterNextActivity(override val contentView: Int = R.layout.activity_reg
                                 val t = Gson().fromJson(response, CreateUserBean::class.java)
                                 dismissDialog()
                                 if (t.result == 0) {
-                                    showActivity(HomeActivity::class.java)
-                                    preferences?.putValue(Constant.LOGIN_MSM_CODE, "")
-                                    preferences?.putValue(Constant.TOKEN, t.token)
-                                    preferences?.putValue(Constant.HAD_LOGIN, "true")
-                                    finish()
+                                    val myAlertDialog = MyAlertDialog(this@RegisterNextActivity)
+                                    myAlertDialog.setTitle(getString(R.string.RegistrationSuccess)).
+                                            setContent(getString(R.string.registNext)).setConfirm(getString(R.string.goLogin))
+                                    myAlertDialog.show()
+                                    myAlertDialog.setOnDialogListener(object :MyAlertDialog.OnDialogListener{
+                                        override fun onConfirmListener() {
+                                            showActivity(HomeActivity::class.java)
+                                            preferences?.putValue(Constant.LOGIN_MSM_CODE, "")
+                                            preferences?.putValue(Constant.TOKEN, t.token)
+                                            preferences?.putValue(Constant.HAD_LOGIN, "true")
+                                            finish()
+                                        }
+
+                                        override fun onCancelListener() {
+                                            myAlertDialog.dismiss()
+                                        }
+
+                                    })
+
                                 }
                                 MyToast.showToastCustomerStyleText(this@RegisterNextActivity, "${t.msg}")
                             }
 
                             override fun onError(call: Call?, e: Exception?, id: Int) {
                                 dismissDialog()
-                                MyToast.showToastCustomerStyleText(this@RegisterNextActivity, "网络错误")
+                                MyToast.showToastCustomerStyleText(this@RegisterNextActivity, getString(R.string.networkError))
                             }
                         })
             }
@@ -74,15 +89,15 @@ class RegisterNextActivity(override val contentView: Int = R.layout.activity_reg
 
     private fun isVail(): Boolean {
         if (!NotNull.isNotNull(tvPwd.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, getString(R.string.enterPwd))
+            MyToast.showLikeAppDialogSingle(this, getString(R.string.PleaseEnterPwd),getString(R.string.cancel))
             return false
         }
         if (!NotNull.isNotNull(tvPwdNext.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, getString(R.string.enterPwdNext))
+            MyToast.showLikeAppDialogSingle(this, getString(R.string.enterPwdNext),getString(R.string.cancel))
             return false
         }
         if (!TextUtils.equals(tvPwd.text.toString(), tvPwdNext.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, getString(R.string.enterSamePwd))
+            MyToast.showLikeAppDialogSingle(this, getString(R.string.enterSamePwd),getString(R.string.cancel))
             return false
         }
         return true

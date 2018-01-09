@@ -93,7 +93,7 @@
         android:layout_height="match_parent"
         android:background="#ec120a"
         android:clickable="true"
-        android:text="删除"
+        android:text="@string/delete"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 </com.goockr.smsantilost.graphics.SwipeMenuLayout>

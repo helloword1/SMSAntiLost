@@ -105,15 +105,15 @@ class CodeLoginActivity(override val contentView: Int = R.layout.activity_code_l
     private fun isValid(): Boolean {
 
         if (!StringUtils.isPhone(tvLoginUser.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, getString(R.string.inputRightNumber))
+            MyToast.showLikeAppDialogSingleIKnow(this, getString(R.string.inputRightNumber))
             return false
         }
         if (!NotNull.isNotNull(tvLoginPassword.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, getString(R.string.inputRightMsmCode))
+            MyToast.showLikeAppDialogSingle(this, getString(R.string.inputRightMsmCode),getString(R.string.enterAgain))
             return false
         }
         if (!TextUtils.equals(preferences?.getStringValue(Constant.LOGIN_MSM_CODE), tvLoginPassword.text.toString())) {
-            MyToast.showToastCustomerStyleText(this, getString(R.string.inputRightMsmCode))
+            MyToast.showLikeAppDialogSingleIKnow(this, getString(R.string.inputRightMsmCode))
             return false
         }
         return true

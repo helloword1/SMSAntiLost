@@ -39,7 +39,7 @@
         android:background="@color/white"
         android:paddingBottom="@dimen/x12"
         android:paddingTop="@dimen/x12"
-        android:text="手动合并"
+        android:text="@string/ManualMerge"
         android:textSize="15sp"
         android:textColor="@color/blue" />
 

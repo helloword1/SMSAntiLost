@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="取消"
+            android:text="@string/cancel"
             android:textColor="@color/colorPrimary"
             android:gravity="center"/>
 
@@ -67,7 +67,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="确定"
+            android:text="@string/concert"
             android:textColor="@color/colorPrimary"
             android:gravity="center"/>
 

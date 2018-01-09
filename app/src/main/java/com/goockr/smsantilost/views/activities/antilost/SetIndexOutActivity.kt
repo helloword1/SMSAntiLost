@@ -66,6 +66,8 @@ class SetIndexOutActivity(override val contentView: Int = R.layout.activity_set_
                 .setTitleBgColor(resources.getColor(R.color.colorPrimary))
                 .setSubmitColor(Color.parseColor("#ffffff"))
                 .setCancelColor(Color.parseColor("#ffffff"))
+                .setCancelText(getString(R.string.cancel))
+                .setSubmitText(getString(R.string.comfir))
                 .build()
         mPvOptions?.setPicker(lists)
     }

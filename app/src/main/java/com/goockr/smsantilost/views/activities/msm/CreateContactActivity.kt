@@ -33,7 +33,7 @@ class CreateContactActivity(override val contentView: Int = R.layout.activity_cr
     override fun initView() {
         title?.text = getString(R.string.createContact)
         titleRight1?.visibility = View.VISIBLE
-        titleRight1?.text = getString(R.string.complete)
+        titleRight1?.text = getString(R.string.Done)
         llAddPhone.visibility = View.VISIBLE
         tvSendMsm.visibility = View.GONE
         lists.add("")

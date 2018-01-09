@@ -1,8 +1,11 @@
 package com.goockr.smsantilost.views.fragments
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -24,6 +27,7 @@ import com.goockr.smsantilost.views.activities.msm.CreateContactActivity
 import com.goockr.smsantilost.views.activities.msm.SettingContactActivity
 import com.goockr.smsantilost.views.adapters.CityAdapter
 import cxx.utils.NotNull
+import kotlinx.android.synthetic.main.empty_view.*
 import kotlinx.android.synthetic.main.fragment_contact.*
 import kotlin.concurrent.thread
 
@@ -37,6 +41,7 @@ class ContactFragment : BaseFragment() {
     private var mDatas: MutableList<PhoneBean> = ArrayList()
     private var bDatas: MutableList<PhoneBean> = ArrayList()
     private var mDecoration: SuspensionDecoration? = null
+    private  val REQUEST_PERMISSION = 111
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return setContentView(R.layout.fragment_contact)
@@ -80,6 +85,19 @@ class ContactFragment : BaseFragment() {
                 }
             }
         })
+        //判断权限
+        val readContacts = activity.packageManager.checkPermission(
+                Manifest.permission.READ_CONTACTS, activity.packageName) == PackageManager.PERMISSION_GRANTED
+        if (!readContacts) {
+            tvEmptyView.text=getString(R.string.noContacts)
+            btnOpenRight.visibility = View.VISIBLE
+            btnOpenRight.setOnClickListener {
+                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_PERMISSION)
+            }
+        }else{
+            tvEmptyView.text=getString(R.string.noRight)
+            btnOpenRight.visibility = View.GONE
+        }
         //新建联系人
         floatSetting.setOnClickListener {
             showActivityForResult(SettingContactActivity::class.java, CONTACT_RESULT_ID)
@@ -102,24 +120,36 @@ class ContactFragment : BaseFragment() {
         })
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == REQUEST_PERMISSION) {
+            thread {
+                kotlin.run {
+                    val systemContactInfos = getSystemContactInfos(activity)
+                    activity.runOnUiThread { initDatas(systemContactInfos) }
+                }
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions,
+                    grantResults)
+        }
+    }
     private fun formatPhoneState(tv: Editable?) {
         mDatas.clear()
-        if (NotNull.isNotNull(tv)&&!TextUtils.equals("",tv)) {
+        if (NotNull.isNotNull(tv) && !TextUtils.equals("", tv)) {
             for (mData in bDatas) {
                 if (mData.getMPhone()!!.contains(tv!!.toString()) && !mDatas.contains(mData)) {
                     mDatas.add(mData)
                 } else if (mData.phone.contains(tv.toString()) && !mDatas.contains(mData)) {
                     mDatas.add(mData)
-                } else if (LocaleUtil.getFirstChar(mData.getMPhone()!!.toUpperCase()).contains(tv.toString().toUpperCase())){
-                    mDatas.add(mData)
-                }else if (LocaleUtil.getPingYin(mData.getMPhone()!!).contains(tv.toString().toUpperCase())){
+                } else if (LocaleUtil.getFirstChar(mData.getMPhone()!!.toUpperCase()).contains(tv.toString().toUpperCase())) {
                     mDatas.add(mData)
                 }
             }
-            mDecoration?.setIsChoice(3,mDatas.size)
+            mDecoration?.setIsChoice(3, mDatas.size)
         } else {
             mDatas.addAll(bDatas)
-            mDecoration?.setIsChoice(0,mDatas.size)
+            mDecoration?.setIsChoice(0, mDatas.size)
         }
         mAdapter?.notifyDataSetChanged()
     }

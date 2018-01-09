@@ -15,7 +15,7 @@
 
         <TextView
             style="@style/index_out_text_style"
-            android:text="SIM卡是否已插入"
+            android:text="@string/SIMCardIsInstalled"
             android:textSize="14sp"/>
 
         <View
@@ -27,7 +27,7 @@
             android:id="@+id/tv_IsInsertSim"
             style="@style/setting_text_small_style"
             android:layout_height="wrap_content"
-            android:text="已插入"
+            android:text="@string/Yes"
             android:textColor="@color/colorPrimary"/>
 
     </LinearLayout>
@@ -44,7 +44,7 @@
         android:paddingRight="@dimen/x10"
         android:paddingTop="@dimen/x5"
         android:paddingBottom="@dimen/x5"
-        android:hint="请输入该设备插入SIM卡的手机号码"
-        android:textSize="14sp"/>
+        android:hint="@string/EnterThePhoneNumberDevice"
+        android:textSize="13sp"/>
 
 </LinearLayout>

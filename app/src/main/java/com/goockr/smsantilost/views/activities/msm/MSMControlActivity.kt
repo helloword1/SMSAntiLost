@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.*
+import com.goockr.smsantilost.graphics.MyAlertDialog
 import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.ERROR
@@ -68,7 +69,7 @@ class MSMControlActivity(override val contentView: Int = R.layout.activity_msm_c
     }
 
     private fun setDates(isSucceed: Int, obj: String) {
-        if (!obj.contains("||"))return
+        if (!obj.contains("||")) return
         val split = obj.split("||")
         val tDate = split[1]
         if (!NotNull.isNotNull(tDate)) return
@@ -116,21 +117,33 @@ class MSMControlActivity(override val contentView: Int = R.layout.activity_msm_c
         recycleView.adapter = sendMsmAdapter
         recycleView.smoothScrollToPosition(mDatas.size - 1)
         sendMsmAdapter?.setOnGetAdapterListener {
-            val contentBean = mDatas[it]
-            contentBean.isSucceed=-1
-            contentBean.sumTime=sum
-            if (!sendLists.contains(contentBean)) {
-                sendLists.add(contentBean)
-            }
-            val content = contentBean.msmStr
-            val date = contentBean.timeIndex
-            if (sendLists.indexOf(contentBean) == 0 || sendLists[sendLists.indexOf(contentBean) - 1].isSucceed == 0) {
-                //发送短信
-                instance?.write("$SMS,$date,$msmName,$content")
-                instance?.setUiHandler(myHandler)
-                initThread()
-            }
-            sendMsmAdapter?.notifyDataSetChanged()
+            val dialog = MyAlertDialog(this).setTitle(getString(R.string.reSend)).setConfirm(getString(R.string.trtAgain))
+            dialog.show()
+            dialog.setOnDialogListener(object : MyAlertDialog.OnDialogListener {
+                override fun onConfirmListener() {
+                    val contentBean = mDatas[it]
+                    contentBean.isSucceed = -1
+                    contentBean.sumTime = sum
+                    if (!sendLists.contains(contentBean)) {
+                        sendLists.add(contentBean)
+                    }
+                    val content = contentBean.msmStr
+                    val date = contentBean.timeIndex
+                    if (sendLists.indexOf(contentBean) == 0 || sendLists[sendLists.indexOf(contentBean) - 1].isSucceed == 0) {
+                        //发送短信
+                        instance?.write("$SMS,$date,$msmName,$content")
+                        instance?.setUiHandler(myHandler)
+                        initThread()
+                    }
+                    sendMsmAdapter?.notifyDataSetChanged()
+                }
+
+                override fun onCancelListener() {
+                    dialog.dismiss()
+                }
+
+            })
+
         }
         ivSend.setOnClickListener {
             sendSms()
@@ -198,7 +211,7 @@ class MSMControlActivity(override val contentView: Int = R.layout.activity_msm_c
                 while (true) {
                     runOnUiThread {
                         val iterator = sendLists.iterator()
-                        while (iterator.hasNext()){
+                        while (iterator.hasNext()) {
                             val c = iterator.next()
                             if (c.isSucceed == -1) {
                                 val sumTime = c.sumTime

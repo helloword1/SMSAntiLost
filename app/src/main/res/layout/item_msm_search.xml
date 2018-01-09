@@ -17,7 +17,7 @@
         android:background="@drawable/msm_bg"
         android:drawableRight="@mipmap/login_delete"
         android:gravity="center"
-        android:hint="@string/inputSearchInfo"
+        android:hint="@string/search"
         android:paddingBottom="@dimen/x3"
         android:paddingTop="@dimen/x3"
         android:paddingRight="@dimen/x5"

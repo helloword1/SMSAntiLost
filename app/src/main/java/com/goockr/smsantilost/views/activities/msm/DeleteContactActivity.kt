@@ -40,10 +40,10 @@ class DeleteContactActivity(override val contentView: Int = R.layout.activity_de
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
-        title?.text = "批量删除联系人"
+        title?.text = getString(R.string.BatchDeletingContacts)
         titleRight1?.visibility = View.VISIBLE
         titleRight1?.setTextColor(ContextCompat.getColor(this, R.color.blue))
-        titleRight1?.text = "删除"
+        titleRight1?.text = getString(R.string.delete)
         mManager = LinearLayoutManager(this)
         recycleView.layoutManager = mManager
         mAdapter = DeleteContactAdapter(this, mDatas)
@@ -65,7 +65,7 @@ class DeleteContactActivity(override val contentView: Int = R.layout.activity_de
             ContactUtils.BatchDeleteContact(applicationContext,beans)
             mDatas.removeAll(beans)
             mAdapter?.notifyDataSetChanged()
-            MyToast.showToastCustomerStyleText(this,"删除成功")
+            MyToast.showToastCustomerStyleText(this,getString(R.string.DeleteSuccess))
             haveChoice.text = "已选中0人"
         }
         allChoice.setOnClickListener {

@@ -74,7 +74,7 @@ class AntiLostFragment : BaseFragment() {
                     getString(R.string.other) -> id = 4
                 }
                 if (TextUtils.equals(DateUtils.getDate(DateUtils.parsePatterns[2]), date)) {
-                    now = "刚刚"
+                    now = getString(R.string.JustNow)
                     isConnect = true
                 } else {
                     now = date

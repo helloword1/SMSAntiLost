@@ -30,7 +30,7 @@ class SetNameActivity(override val contentView: Int = R.layout.activity_set_name
         titleBack = titleLayout.findViewById(R.id.titleBack)
         titleOk = titleLayout.findViewById(R.id.titleOk)
 
-        titleOk?.text = getString(R.string.complete)
+        titleOk?.text = getString(R.string.Done)
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
         titleOk?.isClickable = false
         titleOk?.visibility = View.VISIBLE
