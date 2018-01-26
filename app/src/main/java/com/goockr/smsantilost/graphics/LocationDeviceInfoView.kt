@@ -71,12 +71,12 @@ class LocationDeviceInfoView : LinearLayout {
 
     private fun getBitmapInt(type: String): Int {
         return when (type) {
-            context.getString(R.string.key) -> R.mipmap.icon_key
-            context.getString(R.string.wallet) -> R.mipmap.icon_wallet
-            context.getString(R.string.computor) -> R.mipmap.icon_portable_computer
-            context.getString(R.string.secondCard) -> R.mipmap.icon_vice_card_phone
-            context.getString(R.string.more) -> R.mipmap.icon_other
-            else -> R.mipmap.defaultcluster
+            "钥匙" -> R.mipmap.icon_key
+            "钱包" -> R.mipmap.icon_wallet
+            "笔记本" -> R.mipmap.icon_portable_computer
+            "手机副卡" -> R.mipmap.icon_vice_card_phone
+            "更多" -> R.mipmap.icon_other
+            else -> R.mipmap.icon_key
         }
     }
 }

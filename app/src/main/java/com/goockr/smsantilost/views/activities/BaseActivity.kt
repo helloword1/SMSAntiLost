@@ -20,8 +20,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.entries.DeviceBean
+import com.goockr.smsantilost.graphics.ConnectDialogView
 import com.goockr.smsantilost.graphics.LoadingDialog
 import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.LogUtils
 import com.goockr.smsantilost.views.blueteeth.ClientThread
 import com.jude.swipbackhelper.SwipeBackHelper
 import cxx.utils.NotNull
@@ -52,7 +55,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var instance: ClientThread? = null
     protected var mediaPlayer: MediaPlayer? = null
     protected var btReceiver: MyBtReceiver? = null
-
+    protected var connectDialog: ConnectDialogView? = null
     //蓝牙通信
     protected val myHandler = @SuppressLint("HandlerLeak")
     object : Handler() {
@@ -63,7 +66,48 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     //处理蓝牙模块返回信息
-    protected open fun handleMyMessage(msg: Message?) {}
+    protected open fun handleMyMessage(msg: Message?) {
+        val size = goockrApplication?.getActivityLists()?.size
+        when (msg?.what) {
+            Constant.MSG_CONNECT_SUCCEED -> {
+                LogUtils.d("", "" + msg.what)
+                //重连提醒
+                val value = preferences?.getStringValue(Constant.RECONNECT)
+                if (NotNull.isNotNull(value)) {
+                    if (value?.toBoolean()!!) {
+                        overAlert()
+                    }
+                } else {
+                    overAlert()
+                }
+                instance?.write(Constant.MAC)
+                val homeActivity = goockrApplication?.getHomeActivity()
+                if (NotNull.isNotNull(homeActivity)) {
+                    for (c in 0 until size!!) {
+                        val activity = goockrApplication?.getActivityLists()!![c]
+                        if (activity == this) {
+                            showConnectDialog(goockrApplication?.getActivityLists()?.last!!, true, homeActivity?.getCurrentDevice())
+                        }
+                    }
+
+                }
+            }
+            Constant.MSG_CONNECT_DISCONNECT -> {
+                //提醒
+                overAlert()
+                val homeActivity = goockrApplication?.getHomeActivity()
+                if (NotNull.isNotNull(homeActivity)) {
+                    for (c in 0 until size!!) {
+                        val activity = goockrApplication?.getActivityLists()!![c]
+                        if (activity == this) {
+                            showConnectDialog(goockrApplication?.getActivityLists()?.last!!, false, homeActivity?.getCurrentDevice())
+                        }
+                    }
+
+                }
+            }
+        }
+    }
 
     abstract val contentView: Int
 
@@ -96,7 +140,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 .setSwipeRelateEnable(true)
                 .setSwipeRelateOffset(300)
         //蓝牙
-        if (!NotNull.isNotNull(btReceiver)){
+        if (!NotNull.isNotNull(btReceiver)) {
             val turnOnBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(turnOnBtIntent, Constant.REQUEST_ENABLE_BT)
             val intentFilter = IntentFilter()
@@ -152,6 +196,10 @@ abstract class BaseActivity : AppCompatActivity() {
         val intent = Intent(this, activityCls)
         intent.putExtra(key, obj)
         startActivity(intent)
+    }
+
+    fun getTitleParent(): View {
+        return this.ll!!
     }
 
     fun <T> showActivityByLoginFilter(activityCls: Class<T>,
@@ -232,21 +280,21 @@ abstract class BaseActivity : AppCompatActivity() {
      */
     fun dismissDialog() {
         if (NotNull.isNotNull(progressDialog) && progressDialog!!.isShowing) {
-            progressDialog!!.dismiss()
+            progressDialog!!.hide()
             if (thread != null) {
                 thread?.interrupt()
                 thread = null
             }
-            progressDialog = null
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (btReceiver!=null){
+        if (btReceiver != null) {
             try {
                 unregisterReceiver(btReceiver)
-            }catch (e :Exception){}
+            } catch (e: Exception) {
+            }
         }
         goockrApplication?.removeActivity(this)
         dismissDialog()
@@ -277,6 +325,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         }
     }
+
     /**
      * 广播接受器
      */
@@ -285,12 +334,13 @@ abstract class BaseActivity : AppCompatActivity() {
             receive(intent)
         }
     }
+
     //越界提醒
     protected fun overAlert() {
-        if (NotNull.isNotNull(mediaPlayer)){
+        if (NotNull.isNotNull(mediaPlayer)) {
             mediaPlayer?.stop()
             mediaPlayer?.reset()
-        }else{
+        } else {
             mediaPlayer = MediaPlayer()
         }
         val value = preferences?.getStringValue(Constant.SELECT_PHONE_SOUND)
@@ -300,4 +350,61 @@ abstract class BaseActivity : AppCompatActivity() {
         mediaPlayer?.prepare()
         mediaPlayer?.start()
     }
+
+    private fun showConnectDialog(context: Context, isConnect: Boolean, device: DeviceBean?) {
+        if (connectDialog == null || !connectDialog!!.isShowing()) {
+            when (device?.deviceType) {
+                "钥匙" -> {
+                    connectDialog = if (isConnect) {
+                        ConnectDialogView(context, R.mipmap.icon_connection_success_1).setTitle(getString(R.string.deviceHadConnect)).setContent(device.name + getString(R.string.hadConnect)).show()
+                    } else {
+                        ConnectDialogView(context, R.mipmap.icon_disconnect_1).setTitle(getString(R.string.deviceDisConnect)).setContent(device.name + getString(R.string.cutOffConnect1)).show()
+                    }
+
+                }
+                "钱包" -> {
+                    connectDialog = if (isConnect) {
+                        ConnectDialogView(context, R.mipmap.icon_connection_success_2).setTitle(getString(R.string.deviceHadConnect)).setContent(device.name + getString(R.string.hadConnect)).show()
+                    } else {
+                        ConnectDialogView(context, R.mipmap.icon_disconnect_2).setTitle(getString(R.string.deviceDisConnect)).setContent(device.name + getString(R.string.cutOffConnect1)).show()
+                    }
+
+                }
+                "笔记本" -> {
+                    connectDialog = if (isConnect) {
+                        ConnectDialogView(context, R.mipmap.icon_connection_success_3).setTitle(getString(R.string.deviceHadConnect)).setContent(device.name + getString(R.string.hadConnect)).show()
+                    } else {
+                        ConnectDialogView(context, R.mipmap.icon_disconnect_3).setTitle(getString(R.string.deviceDisConnect)).setContent(device.name + getString(R.string.cutOffConnect1)).show()
+                    }
+
+                }
+                "手机副卡" -> {
+                    connectDialog = if (isConnect) {
+                        ConnectDialogView(context, R.mipmap.icon_connection_success_4).setTitle(getString(R.string.deviceHadConnect)).setContent(device.name + getString(R.string.hadConnect)).show()
+                    } else {
+                        ConnectDialogView(context, R.mipmap.icon_disconnect_4).setTitle(getString(R.string.deviceDisConnect)).setContent(device.name + getString(R.string.cutOffConnect1)).show()
+                    }
+
+                }
+                else -> {
+                    connectDialog = if (isConnect) {
+                        ConnectDialogView(context, R.mipmap.icon_connection_success_5).setTitle(getString(R.string.deviceHadConnect)).setContent(device?.name + getString(R.string.hadConnect)).show()
+                    } else {
+                        ConnectDialogView(context, R.mipmap.icon_disconnect_5).setTitle(getString(R.string.deviceDisConnect)).setContent(device?.name + getString(R.string.cutOffConnect1)).show()
+                    }
+
+                }
+
+            }
+        } else {
+            if (isConnect) {
+                connectDialog?.setSrc(R.mipmap.icon_connection_success_5)?.setTitle(getString(R.string.deviceHadConnect))?.setContent(device?.name + getString(R.string.hadConnect))
+            } else {
+                connectDialog?.setSrc(R.mipmap.icon_disconnect_5)?.setTitle(getString(R.string.deviceDisConnect))?.setContent(device?.name + getString(R.string.cutOffConnect1))
+            }
+        }
+
+    }
+
+
 }

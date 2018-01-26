@@ -53,7 +53,15 @@ object LocaleUtil {
             0 -> Locale.SIMPLIFIED_CHINESE
             1 -> Locale.TRADITIONAL_CHINESE
             2 -> Locale.ENGLISH
-            else -> appContext.resources.configuration.locale
+            else -> {
+                Locale.ENGLISH
+            }
+        }
+        when (myLocale) {
+            Locale.SIMPLIFIED_CHINESE -> SharedPreferencesUtils.instance.putValue("currentLanguage", "0")
+            Locale.TRADITIONAL_CHINESE -> SharedPreferencesUtils.instance.putValue("currentLanguage", "1")
+            Locale.ENGLISH -> SharedPreferencesUtils.instance.putValue("currentLanguage", "2")
+            else->SharedPreferencesUtils.instance.putValue("currentLanguage", "2")
         }
         // 本地语言设置
         if (needUpdateLocale(appContext, myLocale)) {

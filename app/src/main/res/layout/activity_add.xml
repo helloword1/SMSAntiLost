@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:background="@drawable/select_ll_bg"
         android:padding="@dimen/x10">
 
         <ImageView
@@ -47,6 +48,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:background="@drawable/select_ll_bg"
         android:padding="@dimen/x10">
 
         <ImageView
@@ -80,6 +82,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:background="@drawable/select_ll_bg"
         android:padding="@dimen/x10">
 
         <ImageView

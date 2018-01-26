@@ -9,6 +9,7 @@ import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.*
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.graphics.ZoomControlsView
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.ADDRESS
 import com.goockr.smsantilost.utils.Constant.ADDRESS_TYPE
@@ -33,8 +34,10 @@ class DeviceMapActivity(override val contentView: Int = R.layout.activity_device
     private var currentRadius = "0"
     private var aMap: AMap? = null
     private var isResume = false
+    private var currentZoom = 17
     private var name = ""
-    private var addCircle :Circle?=null
+    private var addCircle: Circle? = null
+    private var addMarker: Marker? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         map.onCreate(savedInstanceState)
@@ -57,7 +60,6 @@ class DeviceMapActivity(override val contentView: Int = R.layout.activity_device
         type = extras.getInt(ADDRESS_TYPE)
         name = extras.getString(CURRENT_AREA_NAME)
         currentRadius = extras.getString(Constant.CURRENT_AREA_RADUIS)
-
     }
 
     private fun init() {
@@ -68,6 +70,23 @@ class DeviceMapActivity(override val contentView: Int = R.layout.activity_device
         aMap?.isMyLocationEnabled = true// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
         aMap?.uiSettings?.isMyLocationButtonEnabled = true
         aMap?.setMyLocationType(AMap.LOCATION_TYPE_LOCATE)
+        aMap?.uiSettings?.isZoomControlsEnabled = false
+        zoomControlsView.setOnZoomControlsListener(object : ZoomControlsView.OnZoomControlsListener {
+
+            override fun zoomAdd() {
+                if (currentZoom <= 18) {
+                    ++currentZoom
+                    aMap?.moveCamera(CameraUpdateFactory.zoomTo((currentZoom).toFloat()))
+                }
+            }
+
+            override fun zoomMinus() {
+                if (currentZoom >= 4) {
+                    --currentZoom
+                    aMap?.moveCamera(CameraUpdateFactory.zoomTo((currentZoom).toFloat()))
+                }
+            }
+        })
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -82,6 +101,7 @@ class DeviceMapActivity(override val contentView: Int = R.layout.activity_device
         initMap()
         isResume = false
     }
+
     private fun initMap() {
         if (type == 5) {
             val id = intent.extras.getString(CURRENT_AREA_ID)
@@ -117,8 +137,12 @@ class DeviceMapActivity(override val contentView: Int = R.layout.activity_device
             val markerOptions = MarkerOptions()
             markerOptions.anchor(0.5f, 0.5f).title(address)
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.defaultcluster)).position(latLng)
-            aMap?.addMarker(markerOptions)
-            if (NotNull.isNotNull(addCircle)){
+            if (NotNull.isNotNull(addMarker)) {
+                addMarker?.remove()
+            }
+            addMarker = aMap?.addMarker(markerOptions)
+
+            if (NotNull.isNotNull(addCircle)) {
                 addCircle?.remove()
             }
             addCircle = aMap?.addCircle(getCircleOptions(latLng))
@@ -128,10 +152,11 @@ class DeviceMapActivity(override val contentView: Int = R.layout.activity_device
                     .icon(getBitmapDescriptor()).position(latLng)
             aMap?.addMarker(markerOptions)
         }
+        if (latitude != 0.0 && longitude != 0.0) {
+            aMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0F))
+        }
         Handler().postDelayed({
-            if (latitude != 0.0 && longitude != 0.0) {
-                aMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0F))
-            }
+            aMap?.moveCamera(CameraUpdateFactory.zoomTo(16.0F))
         }, 1500)
     }
 
@@ -151,7 +176,7 @@ class DeviceMapActivity(override val contentView: Int = R.layout.activity_device
 
     private fun getBitmapDescriptor(): BitmapDescriptor {
         return when (type) {
-            0 -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_key_colation_normal)
+            0 -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_key_location_normal)
             1 -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_wallet_colation_normal)
             2 -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_portable_computer_colation_normal)
             3 -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_vice_card_phone_colation_normal)

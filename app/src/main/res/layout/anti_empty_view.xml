@@ -22,7 +22,7 @@
         android:layout_below="@id/ivAntiEmptyView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/x8"
-        android:background="@drawable/anti_empty_bg"
+        android:background="@drawable/select_btn_blue_bg"
         android:paddingBottom="@dimen/x6"
         android:paddingLeft="@dimen/x18"
         android:paddingRight="@dimen/x18"

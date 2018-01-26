@@ -9,7 +9,9 @@ import com.goockr.smsantilost.entries.DaoMaster
 import com.goockr.smsantilost.entries.DaoSession
 import com.goockr.smsantilost.utils.CrashUtil
 import com.goockr.smsantilost.utils.LocaleUtil
+import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.HomeActivity
+import com.goockr.smsantilost.views.activities.login.LoginActivity
 import com.goockr.smsantilost.views.blueteeth.ClientThread
 import com.zhy.http.okhttp.OkHttpUtils
 import okhttp3.OkHttpClient
@@ -30,6 +32,7 @@ class GoockrApplication : Application() {
      * 声明AMapLocationClient类对象
      */
     var mLocationClient: AMapLocationClient? = null
+
     /**
      * 全局debug
      */
@@ -85,6 +88,7 @@ class GoockrApplication : Application() {
             }
         }
     }
+
     fun exitToHomeNo() {
         for (activity in activityList) {
             if (activity is HomeActivity) {
@@ -94,6 +98,26 @@ class GoockrApplication : Application() {
             }
         }
     }
+
+    fun getHomeActivity(): HomeActivity? {
+        activityList
+                .filterIsInstance<HomeActivity>()
+                .forEach { return it }
+        return null
+    }
+
+    fun exitToLogin() {
+        for (activity in activityList) {
+            if (activity is LoginActivity) {
+                if (instance!!.isConnect) {
+                    instance!!.disConnect()
+                }
+            } else {
+                activity.finish()
+            }
+        }
+    }
+
     fun getContext(): Context {
         return this
     }

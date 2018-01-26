@@ -9,6 +9,7 @@ import android.provider.ContactsContract.RawContacts
 import android.provider.ContactsContract.RawContacts.Data
 import com.goockr.smsantilost.entries.ContactsBean
 import com.goockr.smsantilost.entries.PhoneBean
+import cxx.utils.NotNull
 import java.util.*
 
 
@@ -220,22 +221,25 @@ object ContactUtils {
             while (cursor.moveToNext()) {
                 var isAdded = true
                 val contactName = cursor.getString(0)
-                val phoneNumber = cursor.getString(1)
-                val id = cursor.getString(2)
-                for (mData in infos) {
-                    if (mData.name == contactName) {
-                        mData.phone += "," + phoneNumber
-                        isAdded = false
-                        LogUtils.i("12313123", mData.phone)
+                if (NotNull.isNotNull(contactName)) {
+                    val phoneNumber = cursor.getString(1)
+                    val id = cursor.getString(2)
+                    for (mData in infos) {
+                        if (mData.name == contactName) {
+                            mData.phone += "," + phoneNumber
+                            isAdded = false
+                            LogUtils.i("12313123", mData.phone)
+                        }
+                    }
+                    if (isAdded) {
+                        val info = ContactsBean()
+                        info.name = contactName
+                        info.phone = phoneNumber
+                        info.id = id
+                        infos.add(info)
                     }
                 }
-                if (isAdded) {
-                    val info = ContactsBean()
-                    info.name = contactName
-                    info.phone = phoneNumber
-                    info.id = id
-                    infos.add(info)
-                }
+
             }
             cursor.close()
         }

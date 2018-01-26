@@ -4,18 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+    <com.goockr.smsantilost.graphics.NingRecycleView
+        android:id="@+id/recycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/msmBottom">
+        android:background="@android:color/white" />
 
-        <com.goockr.smsantilost.graphics.NingRecycleView
-            android:id="@+id/recycleView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    <include layout="@layout/search_layout" />
 
     <ImageButton
         android:id="@+id/floatSetting"
@@ -34,7 +29,7 @@
 
     <include
         android:id="@+id/emptyView"
-        android:visibility="gone"
-        layout="@layout/empty_view" />
+        layout="@layout/empty_view"
+        android:visibility="gone" />
 
 </RelativeLayout>

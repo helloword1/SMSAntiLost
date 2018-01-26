@@ -27,11 +27,12 @@
                     android:id="@+id/llUserIcon"
                     android:layout_height="wrap_content">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_ProfilePic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/img_more_head_portrait" />
+                    <ImageView
+                        android:id="@+id/iv_ProfilePic1"
+                        android:layout_width="@dimen/x72"
+                        android:layout_height="@dimen/x72"
+                        android:src="@mipmap/icon_head_portrait" />
+
                 </LinearLayout>
 
 

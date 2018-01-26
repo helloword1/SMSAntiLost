@@ -17,6 +17,7 @@
     <color name="partTranslucent">#39000000</color>
     <color name="dddddd">#39918e8e</color>
     <color name="mapBg">#7d4287ff</color>
+    <color name="mapBg1">#e6024ed2</color>
 
     <color name="tipsBackGround">#FCF3E1</color>
     <color name="tipsText">#EC9E51</color>
@@ -40,4 +41,6 @@
     <color name="some_white">#f0f0f0</color>
     <color name="some_white_et">#f9f6f6</color>
     <color name="blue">#6892DA</color>
+    <color name="text_press_bg">#2a282828</color>
+    <color name="image_press_bg">#f7282828</color>
 </resources>

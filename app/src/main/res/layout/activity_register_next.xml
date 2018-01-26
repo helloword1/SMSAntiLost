@@ -122,6 +122,7 @@
             android:paddingBottom="@dimen/x5"
             android:paddingTop="@dimen/x12"
             android:text="@string/longin"
+            android:background="@drawable/select_text_bg"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
     </LinearLayout>

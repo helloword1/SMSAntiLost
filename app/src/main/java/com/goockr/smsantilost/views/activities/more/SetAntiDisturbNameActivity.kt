@@ -7,9 +7,9 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.entries.AntiAddressBean
-import com.goockr.smsantilost.entries.AntiAddressBeanDao
+import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.graphics.MyToast
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_ADDRESS
 import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_ID
@@ -17,10 +17,15 @@ import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_LATITUDE
 import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_LONGITUDE
 import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_NAME
 import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_RADUIS
+import com.goockr.smsantilost.utils.LogUtils
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.antilost.DeviceMapActivity
+import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_set_anti_disturb_name.*
+import okhttp3.Call
+import org.json.JSONObject
+import java.lang.Exception
 
 class SetAntiDisturbNameActivity(override val contentView: Int = R.layout.activity_set_anti_disturb_name) : BaseActivity() {
     private var currentId = ""
@@ -42,38 +47,61 @@ class SetAntiDisturbNameActivity(override val contentView: Int = R.layout.activi
         titleOk?.text = getString(R.string.Done)
         titleOk?.visibility = View.VISIBLE
         etDisturbName.setText(searchName)
-        val antiAddressBeanDao = goockrApplication?.mDaoSession?.antiAddressBeanDao
         //完成
         titleOk?.setOnClickListener {
             if (isVail()) {
-                var addressBean: AntiAddressBean? = null
+                var message = getString(R.string.changing)
                 if (TextUtils.equals(currentId, "0")) {
-                    addressBean = AntiAddressBean(null, longitude, latitude, currentRadius, etDisturbName.text.toString(), searchAddress)
-                    antiAddressBeanDao?.insert(addressBean)
-                } else {
-                    addressBean = antiAddressBeanDao?.queryBuilder()?.where(AntiAddressBeanDao.Properties.Id.eq(currentId))?.unique()
-                    addressBean?.name = etDisturbName.text.toString()
-                    addressBean?.radius = currentRadius
-                    addressBean?.longitude = longitude
-                    addressBean?.latitude = latitude
-                    addressBean?.remark = searchAddress
-                    antiAddressBeanDao?.update(addressBean)
+                    currentId=""
+                    message = getString(R.string.adding)
                 }
-                val bundle = Bundle()
-                bundle.putString(Constant.LONGITUDE, addressBean?.longitude)
-                bundle.putString(Constant.LATITUDE, addressBean?.latitude)
-                bundle.putString(Constant.ADDRESS, addressBean?.remark)
-                bundle.putInt(Constant.ADDRESS_TYPE, 5)
-                bundle.putString(Constant.CURRENT_AREA_ID, addressBean?.id!!.toString())
-                bundle.putString(Constant.CURRENT_AREA_RADUIS, addressBean.radius)
-                bundle.putString(Constant.CURRENT_AREA_NAME, addressBean.name)
-                showActivity(DeviceMapActivity::class.java, bundle)
-                val activityLists = goockrApplication?.getActivityLists()
-                activityLists!!
-                        .filterIsInstance<AddAntiAreaMapActivity>()
-                        .forEach { it.finish() }
-                finish()
+
+                showProgressDialog(message)
+                //添加/修改防打扰区域
+                OkHttpUtils
+                        .post()
+                        .url(Constant.BASE_URL + NetApi.AM_PREVENT_DISTURB)
+                        .addParams("token", preferences?.getStringValue(Constant.TOKEN))
+                        .addParams("antiname", etDisturbName.text.toString())
+                        .addParams("longitude", longitude)
+                        .addParams("latitude", latitude )
+                        .addParams("address", searchAddress )
+                        .addParams("radius", currentRadius )
+                        .addParams("id", currentId)
+                        .build()
+                        .execute(object : MyStringCallback(this) {
+                            override fun onResponse(response: String?, id: Int) {
+                                LogUtils.mi(response!!)
+                                val res = JSONObject(response)
+                                if (TextUtils.equals(res.getString("result"), "0")) {
+                                    val bundle = Bundle()
+                                    bundle.putString(Constant.LONGITUDE, longitude)
+                                    bundle.putString(Constant.LATITUDE, latitude)
+                                    bundle.putString(Constant.ADDRESS, searchAddress)
+                                    bundle.putInt(Constant.ADDRESS_TYPE, 5)
+                                    bundle.putString(Constant.CURRENT_AREA_ID, currentId)
+                                    bundle.putString(Constant.CURRENT_AREA_RADUIS, currentRadius)
+                                    bundle.putString(Constant.CURRENT_AREA_NAME, etDisturbName.text.toString())
+                                    showActivity(DeviceMapActivity::class.java, bundle)
+                                    val activityLists = goockrApplication?.getActivityLists()
+                                    activityLists!!
+                                            .filterIsInstance<AddAntiAreaMapActivity>()
+                                            .forEach { it.finish() }
+                                    finish()
+                                }
+
+                            }
+
+                            override fun onError(call: Call?, e: Exception?, id: Int) {
+                                dismissDialog()
+                                MyToast.showToastCustomerStyleText(this@SetAntiDisturbNameActivity, getString(R.string.networkError))
+                            }
+                        })
+
             }
+        }
+        if (!etDisturbName.text.toString().isEmpty()){
+            titleOk?.setTextColor(ContextCompat.getColor(this@SetAntiDisturbNameActivity, R.color.blue))
         }
         etDisturbName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {

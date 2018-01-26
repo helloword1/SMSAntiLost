@@ -12,6 +12,7 @@
         android:id="@+id/ll_Key"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x70"
+        android:background="@drawable/select_ll_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/x5">
@@ -55,6 +56,7 @@
         android:id="@+id/ll_Wallet"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x70"
+        android:background="@drawable/select_ll_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/x5">
@@ -97,6 +99,7 @@
         android:id="@+id/ll_Pc"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x70"
+        android:background="@drawable/select_ll_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/x5">
@@ -140,6 +143,7 @@
         android:id="@+id/ll_ViceCard"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x70"
+        android:background="@drawable/select_ll_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/x5">
@@ -182,6 +186,7 @@
         android:id="@+id/ll_Other"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x70"
+        android:background="@drawable/select_ll_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/x5">

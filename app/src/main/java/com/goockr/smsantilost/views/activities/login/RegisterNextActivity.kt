@@ -8,7 +8,7 @@ import com.goockr.smsantilost.entries.CreateUserBean
 import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.graphics.MyAlertDialog
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.https.MyStringCallback
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.HomeActivity
@@ -31,9 +31,13 @@ class RegisterNextActivity(override val contentView: Int = R.layout.activity_reg
     }
 
     override fun initView() {
-        var extras = intent.extras
-        var loginPhone = extras.getString(Constant.LOGIN_PHONE)
-        var loginMsmCode = extras.getString(Constant.LOGIN_MSM_CODE)
+        val extras = intent.extras
+        val loginPhone = extras.getString(Constant.LOGIN_PHONE)
+        val loginMsmCode = extras.getString(Constant.LOGIN_MSM_CODE)
+        var phoneType = extras.getString(Constant.PHONE_TYPE)
+        if (!NotNull.isNotNull(phoneType)){
+            phoneType="86"
+        }
 
         ll?.visibility = View.GONE
 
@@ -46,8 +50,9 @@ class RegisterNextActivity(override val contentView: Int = R.layout.activity_reg
                         .addParams("mobile", loginPhone)
                         .addParams("vcode", loginMsmCode)
                         .addParams("pwd", tvPwdNext.text.toString())
+                        .addParams("national", phoneType)
                         .build()
-                        .execute(object : MyStringCallback() {
+                        .execute(object : MyStringCallback(this) {
                             override fun onResponse(response: String?, id: Int) {
                                 val t = Gson().fromJson(response, CreateUserBean::class.java)
                                 dismissDialog()
@@ -60,8 +65,11 @@ class RegisterNextActivity(override val contentView: Int = R.layout.activity_reg
                                         override fun onConfirmListener() {
                                             showActivity(HomeActivity::class.java)
                                             preferences?.putValue(Constant.LOGIN_MSM_CODE, "")
+                                            preferences?.putValue(Constant.LOGIN_PHONE, loginPhone)
+                                            preferences?.putValue(Constant.PHONE_TYPE, phoneType)
                                             preferences?.putValue(Constant.TOKEN, t.token)
                                             preferences?.putValue(Constant.HAD_LOGIN, "true")
+                                            preferences?.putValue(Constant.USER_NAME, t.name)
                                             finish()
                                         }
 
@@ -89,15 +97,15 @@ class RegisterNextActivity(override val contentView: Int = R.layout.activity_reg
 
     private fun isVail(): Boolean {
         if (!NotNull.isNotNull(tvPwd.text.toString())) {
-            MyToast.showLikeAppDialogSingle(this, getString(R.string.PleaseEnterPwd),getString(R.string.cancel))
+            MyToast.showToastCustomerStyleText(this, getString(R.string.PleaseEnterPwd)/*,getString(R.string.cancel)*/)
             return false
         }
         if (!NotNull.isNotNull(tvPwdNext.text.toString())) {
-            MyToast.showLikeAppDialogSingle(this, getString(R.string.enterPwdNext),getString(R.string.cancel))
+            MyToast.showToastCustomerStyleText(this, getString(R.string.enterPwdNext)/*,getString(R.string.cancel)*/)
             return false
         }
         if (!TextUtils.equals(tvPwd.text.toString(), tvPwdNext.text.toString())) {
-            MyToast.showLikeAppDialogSingle(this, getString(R.string.enterSamePwd),getString(R.string.cancel))
+            MyToast.showToastCustomerStyleText(this, getString(R.string.enterSamePwd)/*,getString(R.string.cancel)*/)
             return false
         }
         return true

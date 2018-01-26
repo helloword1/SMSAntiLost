@@ -99,6 +99,7 @@
     <string name="inputRightMsmCode">请输入的短信验证码</string>
     <string name="msmCodeError">验证码错误</string>
     <string name="inputPhoneNumber">请输入手机号码</string>
+    <string name="inputPhoneNumber1">请输入新手机号码</string>
     <string name="nextStep">下一步</string>
     <string name="settingPwd">请设置密码</string>
     <string name="settingPwdNext">再次确认密码</string>
@@ -160,7 +161,7 @@
     <string name="myIcon">我的头像</string>
     <string name="userName">用户名称</string>
     <string name="binddingPhone">手机绑定</string>
-    <string name="phoneBinding">手机绑定</string>
+    <string name="phoneBinding">未绑定</string>
     <string name="wetchatBinding">微信绑定</string>
     <string name="exit">退出登录</string>
     <string name="hadConnect">已连接</string>
@@ -213,6 +214,8 @@
     <string name="simHadInsert">已插入</string>
     <string name="pleaseChangeInputName">请输入修改的名称</string>
     <string name="unbindSucceed">解除绑定成功</string>
+    <string name="hadBind">已绑定</string>
+    <string name="hadNotBind">未绑定</string>
     <string name="farAway">距离近</string>
     <string name="moveManager">确定转移管理员吗？</string>
     <string name="setUnBind">确定解除设备绑定吗？</string>
@@ -243,6 +246,7 @@
     <string name="receive">收件人:</string>
     <string name="known">知道了</string>
     <string name="cutOffConnect">断开连接</string>
+    <string name="cutOffConnect1">已断开连接</string>
     <string name="SignUp">注册账号</string>
     <string name="RegistrationSuccess">注册成功</string>
     <string name="registNext">正在跳转登录页...</string>
@@ -270,13 +274,14 @@
     <string name="SetupGuide">绑定指南</string>
     <string name="JustNow">刚刚</string>
     <string name="insert">已插入</string>
-    <string name="StopTheBell">Stop the bell</string>
+    <string name="StopTheBell">停止响铃</string>
     <string name="SIMCardIsInstalled">SIM卡是否已插入</string>
     <string name="Yes">已插入</string>
     <string name="EnterThePhoneNumberDevice">请输入该设备插入SIM卡的手机号码</string>
     <string name="binddingSucceed">请先绑定设备</string>
     <string name="ScanQRCode">扫一扫</string>
     <string name="EnterName">请输入修改的名称</string>
+    <string name="SentAuth1">请发送验证码到：</string>
     <string name="SentAuth">已发送验证码到：</string>
     <string name="inputNewPed">请输入新密码</string>
     <string name="ConfirmPassword">再次输入新密码</string>
@@ -289,4 +294,22 @@
     <string name="AntiLossNotifications">开启后，休眠时段内，将关闭所有防丢提醒</string>
     <string name="AddSilentPeriod">添加休眠时段</string>
     <string name="checkYourLocation">关闭后,将无法记录和定位你的设备</string>
+    <string name="NewSuccess">新建成功</string>
+    <string name="inputContactName">请输入名字</string>
+    <string name="inputContactPhone">请输入电话号码</string>
+    <string name="addDiveceTitle"> 绑定设备 </string>
+    <string name="uploadError">上传错误</string>
+    <string name="uploadSucceed">上传成功</string>
+    <string name="upLoading">正在上传…</string>
+    <string name="loginOutDate">登陆过期，请重新登陆</string>
+    <string name="deviceHadConnect">设备已连接</string>
+    <string name="deviceDisConnect">设备断开连接</string>
+    <string name="deleting">正在删除</string>
+    <string name="adding">正在添加</string>
+    <string name="changing">正在更改</string>
+    <string name="simCardNum">请前往设置手机号码</string>
+    <string name="choiceCountry">选择国家/地区</string>
+    <string name="positionRecord">位置记录</string>
+    <string name="locationSetting">定位设置</string>
+    <string name="lsettingc"><![CDATA[是否打开系统设置->定位服务页进行设置]]></string>
 </resources>

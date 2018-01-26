@@ -8,6 +8,7 @@ import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Message
 import android.os.SystemClock
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import com.amap.api.location.AMapLocation
@@ -20,6 +21,9 @@ import com.goockr.smsantilost.utils.*
 import com.goockr.smsantilost.utils.Constant.ADDRESS_TYPE
 import com.goockr.smsantilost.utils.Constant.BUZZER
 import com.goockr.smsantilost.utils.Constant.INIT
+import com.goockr.smsantilost.utils.Constant.INSERT_STR
+import com.goockr.smsantilost.utils.Constant.IS_INSERT
+import com.goockr.smsantilost.utils.Constant.SIM_CARD_NUM
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.jude.swipbackhelper.SwipeBackHelper
 import cxx.utils.NotNull
@@ -36,7 +40,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
     private var longitude = ""
     private var address = ""
     private var type = 0
-    private var isInsert=false
+    private var isInsert = false
     private var deviceBean: DeviceBean? = null
     private var deviceBeanDao: DeviceBeanDao? = null
 
@@ -74,7 +78,7 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
     private fun initMView() {
         val deviceBeanDao = goockrApplication?.mDaoSession?.deviceBeanDao
         val bean = deviceBeanDao?.queryBuilder()?.where(DeviceBeanDao.Properties.Mac.eq(name?.mac))?.build()?.unique()
-        if (NotNull.isNotNull(bean)){
+        if (NotNull.isNotNull(bean)) {
             title?.text = bean?.name
         }
         if (mLocationClient!!.isStarted) {
@@ -200,15 +204,17 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
         val msgStr = msg?.obj?.toString()
         if (!NotNull.isNotNull(msgStr)) return
         if (msgStr!!.startsWith("Init_")) {
-            //电量
-            val battery = msgStr.split(",")[0].split("_")[1]
-            dealWithBattery(battery)
-            //是否有SIM卡
-            val sim = msgStr.split(",")[1].split("_")[1]
-            dealWithSIM(sim)
-            //是否在充电中
-            val charge = msgStr.split(",")[2].split("_")[1]
-            dealWithCharge(charge)
+            try {
+                //电量
+                val battery = msgStr.split(",")[0].split("_")[1]
+                dealWithBattery(battery)
+                //是否有SIM卡
+                val sim = msgStr.split(",")[1].split("_")[1]
+                dealWithSIM(sim)
+                //是否在充电中
+                val charge = msgStr.split(",")[2].split("_")[1]
+                dealWithCharge(charge)
+            }catch (e:Exception){}
         }
 
     }
@@ -222,11 +228,34 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
             tvNotify.visibility = View.VISIBLE
             tvNotify.text = getString(R.string.simNoInsert)
             SimPhone.text = getString(R.string.notInsert)
-            isInsert=false
+            SIMCardName.setTextColor(ContextCompat.getColor(this, R.color.appGray))
+            SimPhone.setTextColor(ContextCompat.getColor(this, R.color.appGray))
+            SimPhone.isClickable = false
+            isInsert = false
         } else if (s.toInt() == 1) {
             tvNotify.visibility = View.GONE
-            SimPhone.text = getString(R.string.insert)
-            isInsert=true
+
+            SIMCardName.setTextColor(ContextCompat.getColor(this, R.color.blue))
+            SimPhone.setTextColor(ContextCompat.getColor(this, R.color.blue))
+            SimPhone.isClickable = true
+            val simCardNum = preferences?.getStringValue(SIM_CARD_NUM)
+            isInsert = true
+            var str=""
+            if (NotNull.isNotNull(simCardNum)) {
+                SimPhone.text = simCardNum
+                str=simCardNum!!
+            } else {
+                SimPhone.text = getString(R.string.simCardNum)
+                str=""
+            }
+            SimPhone.setOnClickListener {
+                val extras = Bundle()
+                extras.putBoolean(IS_INSERT, isInsert)
+                extras.putString(INSERT_STR, str)
+                //SIM设置
+                showActivity(SetSimActivity::class.java, extras)
+            }
+
         }
     }
 
@@ -288,10 +317,10 @@ class KeyActivity(override val contentView: Int = R.layout.activity_key) : BaseA
         }
         // 设置按钮点击跳转
         titleRight?.setOnClickListener {
-            val extras=Bundle()
-            extras.putBoolean("IS_INSERT",isInsert)
-            extras.putSerializable("device",name!!)
-            showActivity(SettingActivity::class.java,extras)
+            val extras = Bundle()
+            extras.putBoolean("IS_INSERT", isInsert)
+            extras.putSerializable("device", name!!)
+            showActivity(SettingActivity::class.java, extras)
         }
     }
 

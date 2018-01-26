@@ -5,26 +5,37 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.Parcelable
 import android.provider.MediaStore
 import android.view.View
+import com.bumptech.glide.Glide
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.entries.NetApi
+import com.goockr.smsantilost.graphics.GlideCircleTransform
 import com.goockr.smsantilost.graphics.MyAlertDialog
 import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.graphics.PhotoAlertDialog
+import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.IMAGE_CHIOCE
 import com.goockr.smsantilost.utils.Constant.IMAGE_CROP
 import com.goockr.smsantilost.utils.Constant.TAKE_PHOTO
+import com.goockr.smsantilost.utils.Constant.TOKEN
 import com.goockr.smsantilost.utils.LogUtils
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.login.LoginActivity
-import cxx.utils.FileUtils.isHaveSdcard
+import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_user_setting.*
+import okhttp3.Call
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
+import java.lang.Exception
 
 
 /**
@@ -53,8 +64,23 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
         title = titleLayout.findViewById(R.id.title)
         titleBack = titleLayout.findViewById(R.id.titleBack)
         title?.text = getString(R.string.accountSetting)
-        titleBack?.setOnClickListener { finish() }
+        titleBack?.setOnClickListener {
+            setResult(Activity.RESULT_OK,Intent().putExtra("imageUri",imageUri.toString()))
+            finish()
+        }
         ll?.addView(titleLayout)
+        val extras = intent.extras
+        val image = extras.getString("IMAGE_URL")
+        if (NotNull.isNotNull(image)) {
+            Glide.with(this).load(image).transform(GlideCircleTransform(this)).placeholder(R.mipmap.icon_head_portrait).into(userIcon)
+        }
+        val phone = preferences?.getStringValue(Constant.LOGIN_PHONE)
+        if (NotNull.isNotNull(phone)){
+            phoneBindText.text=getString(R.string.hadBind)
+        }else{
+            phoneBindText.text=getString(R.string.hadNotBind)
+        }
+
     }
 
     /**
@@ -70,7 +96,6 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
     }
 
     override fun onClick(v: View?) {
-        val intent = Intent()
         when (v?.id) {
             R.id.ll_ChangeProfile -> {
                 bottomDialog?.show()
@@ -82,7 +107,7 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
                 showActivity(BindPhoneNumActivity::class.java)
             }
             R.id.ll_WeChatBind -> {
-
+                MyToast.showToastCustomerStyleText(this, getString(R.string.deviceDeveloping))
             }
             R.id.ll_ChangePWD -> {
                 showActivity(SetPwdActivity::class.java)
@@ -151,6 +176,7 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
                 preferences?.clearPreferences()
                 val goockrApplication = application as GoockrApplication
                 goockrApplication.exit()//清空preference
+                goockrApplication.mDaoSession?.clear()
                 showActivity(LoginActivity::class.java)
             }
 
@@ -159,20 +185,6 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
             }
 
         })
-    }
-
-    private fun getCamaraPath(): String {
-        if (!isHaveSdcard()) {
-            return ""
-        }
-        var imageFilePath = Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera/"
-        val imageName = SystemClock.currentThreadTimeMillis().toString() + "$.jpg"
-        val out = File(imageFilePath)
-        if (!out.exists()) {
-            out.mkdirs()
-        }
-        imageFilePath += imageName
-        return imageFilePath
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -194,13 +206,39 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
             IMAGE_CROP -> {
                 //TODO 处理上传
                 if (NotNull.isNotNull(imageUri)) {
-                    val bitmap = BitmapFactory.decodeStream(contentResolver
-                            .openInputStream(imageUri))
-                    LogUtils.i("", "" + bitmap)
-                    runOnUiThread {
-                        userIcon.setImageBitmap(bitmap)
-                        bottomDialog?.hide()
-                    }
+                    val file = File(imageUri?.path)
+                    showProgressDialog(getString(R.string.upLoading))
+                    val token = preferences?.getStringValue(TOKEN)
+                    val url = Constant.BASE_URL + NetApi.UP_LOADHEAD_IMG
+                    val filename = file.name
+                    OkHttpUtils.post().addFile("file", filename, file)?.
+                            url(url)?.
+                            addParams("token", token)?.
+                            build()?.execute(object : MyStringCallback(this) {
+                        override fun onResponse(response: String?, id: Int) {
+                            dismissDialog()
+                            LogUtils.i("", "$response")
+                            val bitmap = BitmapFactory.decodeStream(contentResolver
+                                    .openInputStream(imageUri))
+                            LogUtils.i("", "" + bitmap)
+                            runOnUiThread {
+                                if (NotNull.isNotNull(bitmap)) {
+                                    userIcon.setImageBitmap(bitmap)
+                                    MyToast.showToastCustomerStyleText(this@UserSettingActivity, getString(R.string.uploadSucceed))
+                                }
+                                bottomDialog?.hide()
+                            }
+                        }
+
+                        override fun onError(call: Call?, e: Exception?, id: Int) {
+                            dismissDialog()
+                            LogUtils.i("", "$e")
+                            bottomDialog?.hide()
+                            MyToast.showToastCustomerStyleText(this@UserSettingActivity, getString(R.string.uploadError))
+                        }
+                    })
+
+
                 }
             }
         }
@@ -234,8 +272,7 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
         if (fileImagePath == null || "" == fileImagePath) {
             //再去获取图片
             val extras = data.extras
-            var isGetBitmap = false
-            isGetBitmap = if (null != extras) {
+            val isGetBitmap = if (null != extras) {
                 val bitmap = extras.getParcelable<Parcelable>("data")
                 if (null != bitmap) {
                     LogUtils.i("", "" + bitmap)
@@ -262,15 +299,9 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
                 return
             } else {
                 fileImagePath = getCorrectFilePath(fileImagePath)
-                //					size = new Size(170,170);
                 uri = Uri.fromFile(File(fileImagePath))
-                val bitmap = BitmapFactory.decodeStream(contentResolver
-                        .openInputStream(uri))
-                LogUtils.i("", "" + bitmap)
-                runOnUiThread {
-                    userIcon.setImageBitmap(bitmap)
-                    bottomDialog?.hide()
-                }
+                imageUri = uri
+                photoCrop(uri)
             }
 
         }

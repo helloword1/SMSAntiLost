@@ -46,7 +46,7 @@ class AddFriendActivity(override val contentView: Int = R.layout.activity_add_fr
         title?.text = getString(R.string.addFriends)
         titleOk?.text = getString(R.string.send)
         titleOk?.visibility = View.VISIBLE
-        titleOk?.setTextColor(resources.getColor(R.color.colorPrimary))
+        titleOk?.setTextColor(resources.getColor(R.color.selector_text_press_color))
         titleBack?.setOnClickListener { finish() }
 
         ll?.addView(titleLayout)
@@ -83,9 +83,9 @@ class AddFriendActivity(override val contentView: Int = R.layout.activity_add_fr
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0!!.isEmpty()){
-                    titleOk?.setTextColor(ContextCompat.getColor(this@AddFriendActivity,R.color.msmTextColorGray))
+                    titleOk?.setTextColor(ContextCompat.getColor(this@AddFriendActivity,R.color.selector_text_unpress_color))
                 }else{
-                    titleOk?.setTextColor(ContextCompat.getColor(this@AddFriendActivity,R.color.blue))
+                    titleOk?.setTextColor(ContextCompat.getColor(this@AddFriendActivity,R.color.selector_text_press_color))
                 }
             }
 

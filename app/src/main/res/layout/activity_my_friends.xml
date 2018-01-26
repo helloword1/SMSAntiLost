@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/x55"
         android:orientation="horizontal"
-        android:background="#fff"
+        android:background="@drawable/select_ll_bg"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/x10"
         android:paddingRight="@dimen/x10">

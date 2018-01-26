@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/tv_stroke_bottom"
+        android:background="@drawable/select_ll_bg_bottom_line"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingTop="@dimen/x5"

@@ -114,7 +114,7 @@ class AreaMapActivity(override val contentView: Int = R.layout.activity_area_map
         titleOk = titleLayout.findViewById(R.id.titleOk)
         title?.text = getString(R.string.antiDisturb)
         titleOk?.text = getString(R.string.nextStep)
-        titleOk?.setTextColor(resources.getColor(R.color.colorPrimary))
+        titleOk?.setTextColor(resources.getColor(R.color.selector_text_press_color))
         titleOk?.visibility = View.VISIBLE
         titleBack?.setOnClickListener { finish() }
         ll?.addView(titleLayout)

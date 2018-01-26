@@ -36,9 +36,12 @@ import com.amap.api.services.help.InputtipsQuery
 import com.amap.api.services.help.Tip
 import com.amap.api.services.poisearch.PoiResult
 import com.amap.api.services.poisearch.PoiSearch
+import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.LogUtils
+import com.goockr.smsantilost.utils.MyAMapLocationListener
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.jude.swipbackhelper.SwipeBackHelper
 import cxx.utils.NotNull
@@ -50,7 +53,6 @@ open class AddAntiAreaMapActivity(override val contentView: Int = R.layout.activ
     private var aMap: AMap? = null
     private var mListener: LocationSource.OnLocationChangedListener? = null
     private var mlocationClient: AMapLocationClient? = null
-    private var mLocationOption: AMapLocationClientOption? = null
     private var locationMarker: Marker? = null
     private var geocoderSearch: GeocodeSearch? = null
     private var currentPage = 0// 当前页面，从0开始计数
@@ -91,7 +93,7 @@ open class AddAntiAreaMapActivity(override val contentView: Int = R.layout.activ
         resultData = ArrayList()
         titleRight1?.visibility = View.VISIBLE
         titleRight1?.text = getString(R.string.nextStep)
-        etAddSearch?.setText("$searchAddress")
+        etAddSearch?.setText(searchAddress)
         etAddSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
@@ -114,8 +116,8 @@ open class AddAntiAreaMapActivity(override val contentView: Int = R.layout.activ
         })
         //下一步
         titleRight1?.setOnClickListener {
-            if (TextUtils.equals(currentRadius,"0")){
-                MyToast.showToastCustomerStyleText(this@AddAntiAreaMapActivity,getString(R.string.aeraRadius))
+            if (TextUtils.equals(currentRadius, "0")) {
+                MyToast.showToastCustomerStyleText(this@AddAntiAreaMapActivity, getString(R.string.aeraRadius))
                 return@setOnClickListener
             }
             searchAddress = etAddSearch.text.toString()
@@ -143,6 +145,7 @@ open class AddAntiAreaMapActivity(override val contentView: Int = R.layout.activ
 
         // 监听seekBar
         sb_Radius.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val string = "" + (progress + 1) + "m"
                 tv_LeftRadius.text = string
@@ -195,15 +198,12 @@ open class AddAntiAreaMapActivity(override val contentView: Int = R.layout.activ
         super.onResume()
         mapView?.onResume()
         if (isResume) return
-        isResume=true
+        isResume = true
+
         Thread({
             SystemClock.sleep(2000)
             runOnUiThread {
                 aMap?.moveCamera(CameraUpdateFactory.zoomTo((16).toFloat()))
-                if (!TextUtils.equals(latitude, "0") && !TextUtils.equals(longitude, "0")) {
-                    val latLng = LatLng(longitude.toDouble(), latitude.toDouble())
-                    aMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-                }
             }
         }).start()
     }
@@ -240,11 +240,22 @@ open class AddAntiAreaMapActivity(override val contentView: Int = R.layout.activ
      * 设置一些amap的属性
      */
     private fun setUpMap() {
+        val myLocationStyle = MyLocationStyle()
+        //初始化定位蓝点样式类
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE)//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
+        aMap?.myLocationStyle = myLocationStyle//设置定位蓝点的Style
+        aMap?.isMyLocationEnabled = true// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+        aMap?.uiSettings?.isMyLocationButtonEnabled = true
         aMap?.uiSettings?.isZoomControlsEnabled = false
-        aMap?.setLocationSource(this)// 设置定位监听
-        aMap?.uiSettings?.isMyLocationButtonEnabled = true// 设置默认定位按钮是否显示
-        aMap?.isMyLocationEnabled = true// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        aMap?.setMyLocationType(AMap.LOCATION_TYPE_LOCATE)
+
+        if (!TextUtils.equals(latitude, "0") && !TextUtils.equals(longitude, "0")) {
+            val latLng = LatLng(longitude.toDouble(), latitude.toDouble())
+            aMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+        }
+        mlocationClient = goockrApplication?.mLocationClient
+        mlocationClient?.setLocationListener(this)
+        //开始定位
+        mlocationClient?.startLocation()
     }
 
     /**
@@ -279,9 +290,11 @@ open class AddAntiAreaMapActivity(override val contentView: Int = R.layout.activ
      * 定位成功后回调函数
      */
     override fun onLocationChanged(amapLocation: AMapLocation?) {
-        if (mListener != null && amapLocation != null) {
+        if (amapLocation != null) {
             if (amapLocation.errorCode == 0) {
-                mListener?.onLocationChanged(amapLocation)
+                if (mListener != null) {
+                    mListener?.onLocationChanged(amapLocation)
+                }
 
                 val curLatlng = LatLng(amapLocation.latitude, amapLocation.longitude)
 
@@ -307,18 +320,8 @@ open class AddAntiAreaMapActivity(override val contentView: Int = R.layout.activ
         mListener = listener
         if (mlocationClient == null) {
             mlocationClient = goockrApplication?.mLocationClient
-            mLocationOption = AMapLocationClientOption()
-            //设置定位监听
             mlocationClient?.setLocationListener(this)
-            //设置为高精度定位模式
-            mLocationOption?.isOnceLocation = true
-            mLocationOption?.locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
-            //设置定位参数
-            mlocationClient?.setLocationOption(mLocationOption)
-            // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
-            // 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），并且在合适时间调用stopLocation()方法来取消定位请求
-            // 在定位结束后，在合适的生命周期调用onDestroy()方法
-            // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+            //开始定位
             mlocationClient?.startLocation()
         }
     }

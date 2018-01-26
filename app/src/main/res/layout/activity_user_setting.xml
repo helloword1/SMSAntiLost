@@ -1,162 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/backgroundGray"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context="com.goockr.smsantilost.views.activities.more.UserSettingActivity">
 
     <LinearLayout
         android:id="@+id/ll_ChangeProfile"
-        android:layout_marginTop="@dimen/x10"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x70"
+        android:layout_marginTop="@dimen/x10"
+        android:background="@drawable/select_ll_bg"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/x10"
-        android:paddingRight="@dimen/x10"
-        android:background="#fff">
+        android:paddingRight="@dimen/x10">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:src="@mipmap/img_head_portrait_3"
-            android:layout_width="@dimen/x40"
+        <ImageView
             android:id="@+id/userIcon"
-            android:layout_height="@dimen/x40"/>
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:src="@mipmap/icon_head_portrait" />
 
         <TextView
-            android:text="@string/myIcon"
-            style="@style/setting_text_style"/>
+            style="@style/setting_text_style"
+            android:text="@string/myIcon" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <ImageView
             style="@style/setting_icon_sytle"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/x15"
         android:id="@+id/ll_UserName"
-        style="@style/setting_ll_style">
+        style="@style/setting_ll_style"
+        android:layout_marginTop="@dimen/x15">
 
         <TextView
-            android:text="@string/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"/>
+            android:text="@string/userName"
+            android:textSize="15sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <ImageView
             style="@style/setting_icon_sytle"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
     </LinearLayout>
 
-    <include
-        layout="@layout/line_gray_margin"/>
+    <include layout="@layout/line_gray_margin" />
 
     <LinearLayout
         android:id="@+id/ll_PhoneBind"
         style="@style/setting_ll_style">
 
         <TextView
-            android:text="@string/binddingPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"/>
+            android:text="@string/binddingPhone"
+            android:textSize="15sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <TextView
-            android:text="@string/phoneBinding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
             android:layout_marginRight="@dimen/x10"
-            android:textColor="@color/appGray"/>
+            android:text="@string/phoneBinding"
+            android:id="@+id/phoneBindText"
+            android:textColor="@color/appGray"
+            android:textSize="15sp" />
 
         <ImageView
             style="@style/setting_icon_sytle"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
     </LinearLayout>
 
-    <include
-        layout="@layout/line_gray_margin"/>
+    <include layout="@layout/line_gray_margin" />
 
     <LinearLayout
         android:id="@+id/ll_WeChatBind"
         style="@style/setting_ll_style">
 
         <TextView
-            android:text="@string/wetchatBinding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"/>
+            android:text="@string/wetchatBinding"
+            android:textSize="15sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <TextView
-            android:text="@string/phoneBinding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
             android:layout_marginRight="@dimen/x10"
-            android:textColor="@color/appGray"/>
+            android:text="@string/phoneBinding"
+            android:textColor="@color/appGray"
+            android:textSize="15sp" />
 
         <ImageView
             style="@style/setting_icon_sytle"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/x15"
         android:id="@+id/ll_ChangePWD"
-        style="@style/setting_ll_style">
+        style="@style/setting_ll_style"
+        android:layout_marginTop="@dimen/x15">
 
         <TextView
-            android:text="@string/changePwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"/>
+            android:text="@string/changePwd"
+            android:textSize="15sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <ImageView
             style="@style/setting_icon_sytle"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_SignUp"
-        android:layout_marginTop="@dimen/x15"
         android:layout_width="@dimen/x250"
         android:layout_height="@dimen/x40"
-        android:text="@string/exit"
-        android:textColor="#fff"
+        android:layout_marginTop="@dimen/x15"
+        android:background="@drawable/select_btn_blue_bg"
         android:gravity="center"
-        android:background="@drawable/shape_blue"/>
+        android:text="@string/exit"
+        android:textColor="#fff" />
 
 </LinearLayout>

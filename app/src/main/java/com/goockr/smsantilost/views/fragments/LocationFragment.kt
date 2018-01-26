@@ -1,6 +1,7 @@
 package com.goockr.smsantilost.views.fragments
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import com.amap.api.location.AMapLocationClientOption
 import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.*
+import com.amap.api.maps.model.animation.ScaleAnimation
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.DeviceBean
@@ -19,10 +21,13 @@ import com.goockr.smsantilost.graphics.ZoomControlsView
 import com.goockr.smsantilost.utils.LogUtils
 import com.goockr.smsantilost.utils.MyAMapLocationListener
 import com.goockr.smsantilost.views.activities.HomeActivity
+import com.goockr.smsantilost.views.activities.antilost.PositionRecordMapActivity
 import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.fragment_location.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.thread
+
 
 /**
  * Created by zhihao.wen on 2016/11/1.
@@ -89,14 +94,15 @@ class LocationFragment : BaseFragment() {
         locationDeviceInfoView.setOnLocationControlsListenerListener(object :
                 LocationDeviceInfoView.OnLocationControlsListener {
             override fun locationRecord() {
-                MyToast.showToastCustomerStyleText(activity, getString(R.string.deviceDeveloping))
+                showActivity(PositionRecordMapActivity::class.java)
+//                MyToast.showToastCustomerStyleText(activity, getString(R.string.deviceDeveloping))
             }
 
             override fun locationGuide() {
-                if (NotNull.isNotNull(deviceBean)){
+                if (NotNull.isNotNull(deviceBean)) {
                     val homeActivity = activity as HomeActivity
-                    homeActivity. showMapDialog(deviceBean!!)
-                }else{
+                    homeActivity.showMapDialog(deviceBean!!)
+                } else {
                     MyToast.showToastCustomerStyleText(activity, getString(R.string.pleaseChoiceDevice))
                 }
 //
@@ -135,7 +141,7 @@ class LocationFragment : BaseFragment() {
         aMap?.isMyLocationEnabled = true// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
         aMap?.uiSettings?.isMyLocationButtonEnabled = true
         aMap?.uiSettings?.isZoomControlsEnabled = false
-        aMap?.moveCamera(CameraUpdateFactory.zoomTo((currentZoom).toFloat()))
+
         //初始化定位
         val mLocationListener = MyAMapLocationListener()
         mLocationListener.setLocationListener {
@@ -151,6 +157,12 @@ class LocationFragment : BaseFragment() {
                 }
             }
         }
+        thread {
+            activity.runOnUiThread {
+                SystemClock.sleep(2200)
+                aMap?.moveCamera(CameraUpdateFactory.zoomTo((currentZoom).toFloat()))
+            }
+        }
         initDeviceState()
     }
 
@@ -159,25 +171,27 @@ class LocationFragment : BaseFragment() {
         val deviceBeanDao = goockrApplication.mDaoSession?.deviceBeanDao
         val list = deviceBeanDao?.queryBuilder()?.build()?.list()
         if (NotNull.isNotNull(list) && !list!!.isEmpty()) {
-            locationDeviceInfoView.visibility = View.VISIBLE
             val device = list[list.size - 1]
             deviceBean = device
-            locationDeviceInfoView.setDeviceBean(device)
             for (c in list) {
                 val latLng = LatLng(c.latitude, c.longitude)
                 val markerOptions = MarkerOptions()
-                markerOptions.anchor(0.5f, 0.5f).title(c.address)
+                markerOptions.anchor(0.5f, 0.5f)/*.title(c.address)*/
                         .icon(getBitmapDescriptor(c.deviceType)).position(latLng)
                 aMap?.addMarker(markerOptions)
 
             }
-        } else {
-            locationDeviceInfoView.visibility = View.INVISIBLE
         }
         aMap?.setOnMarkerClickListener {
-            list!!.filter { c -> TextUtils.equals(c?.address, it.title) }
+            val scaleAnimation = ScaleAnimation(1f, 1.2f, 1f, 1.2f)
+            scaleAnimation.setDuration(100)
+            it.setAnimation(scaleAnimation)
+            it.startAnimation()
+
+            list!!.filter { c -> TextUtils.equals(c?.latitude.toString(), it.position.latitude.toString()) && TextUtils.equals(c?.longitude.toString(), it.position.longitude.toString()) }
                     .forEach {
                         deviceBean = it
+                        locationDeviceInfoView.visibility = View.VISIBLE
                         locationDeviceInfoView.setDeviceBean(it)
                         aMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), currentZoom.toFloat()))
                     }
@@ -189,12 +203,12 @@ class LocationFragment : BaseFragment() {
 
     private fun getBitmapDescriptor(type: String): BitmapDescriptor {
         return when (type) {
-            getString(R.string.key) -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_key_colation_normal)
-            getString(R.string.wallet) -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_wallet_colation_normal)
-            getString(R.string.computor) -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_portable_computer_colation_normal)
-            getString(R.string.secondCard) -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_vice_card_phone_colation_normal)
-            getString(R.string.more) -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_other_colation_normal)
-            else -> BitmapDescriptorFactory.fromResource(R.mipmap.defaultcluster)
+            "钥匙" -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_key_location_normal)
+            "钱包" -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_wallet_colation_normal)
+            "笔记本" -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_portable_computer_colation_normal)
+            "手机副卡" -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_vice_card_phone_colation_normal)
+            "更多" -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_other_colation_normal)
+            else -> BitmapDescriptorFactory.fromResource(R.mipmap.btn_key_location_normal)
         }
     }
 
@@ -205,6 +219,6 @@ class LocationFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        goockrApplication?.mLocationClient?.stopLocation();
+        goockrApplication?.mLocationClient?.stopLocation()
     }
 }

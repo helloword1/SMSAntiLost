@@ -19,6 +19,7 @@
             android:id="@+id/systemMap"
             android:text="@string/systemMap"
             android:visibility="gone"
+            android:background="@drawable/select_ll_bg"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp" />
 
@@ -31,6 +32,7 @@
             android:text="@string/aMaps"
             android:visibility="gone"
             android:id="@+id/aMap"
+            android:background="@drawable/select_ll_bg"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp" />
 
@@ -43,6 +45,7 @@
             android:text="@string/baiduMap"
             android:visibility="gone"
             android:id="@+id/baiduMap"
+            android:background="@drawable/select_ll_bg"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp" />
 
@@ -60,6 +63,7 @@
             android:layout_height="@dimen/x50"
             android:gravity="center"
             android:text="@string/cancel"
+            android:background="@drawable/select_ll_bg"
             android:id="@+id/tvMapCancel"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"

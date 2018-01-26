@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import com.goockr.smsantilost.R
-import kotlinx.android.synthetic.main.apple_confir_dialog.*
 
 /**
  * Created by ning on 2016/12/16
@@ -51,7 +50,7 @@ class LikeAppleComfirDialog : Dialog {
             }
             1 -> {
                 view = inflater.inflate(R.layout.apple_confir_dialog, null)
-                tvTitle1Line.text = "这是第一行"
+                view.findViewById<TextView>(R.id.tvTitle1Line).text = titleId
                 view.findViewById<TextView>(R.id.tvConfirm1Line).setOnClickListener(OnDialogClickListener())
             }
             3 -> {// 2行弹框
@@ -82,6 +81,7 @@ class LikeAppleComfirDialog : Dialog {
                 R.id.tvCancel -> clickListenerInterface.doCancel()
                 R.id.tvConfirm2Line -> clickListenerInterface.doCancel()
                 R.id.tvCancel2Line -> clickListenerInterface.doConfirm()
+                R.id.tvConfirm1Line -> clickListenerInterface.doCancel()
             }
         }
     }

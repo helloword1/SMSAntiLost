@@ -265,23 +265,23 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
         mCurrentPage = 3
         //钥匙
         ll_Key.setOnClickListener {
-            saveData(getString(R.string.key))
+            saveData("钥匙")
         }
         //钱包
         ll_Wallet.setOnClickListener {
-            saveData(getString(R.string.wallet))
+            saveData("钱包")
 
         }//笔记本
         ll_Pc.setOnClickListener {
-            saveData(getString(R.string.computor))
+            saveData("笔记本")
 
         }//ll_ViceCard
         ll_ViceCard.setOnClickListener {
-            saveData(getString(R.string.secondCard))
+            saveData("手机副卡")
 
         }//其他
         ll_Other.setOnClickListener {
-            saveData(getString(R.string.other))
+            saveData("其他")
         }
     }
 

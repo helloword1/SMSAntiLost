@@ -10,6 +10,7 @@ import com.goockr.smsantilost.utils.ContactUtils
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_create_contact.*
 import kotlinx.android.synthetic.main.adapter_create_name_item.view.*
 import kotlinx.android.synthetic.main.adapter_create_phone_item.view.*
@@ -50,14 +51,30 @@ class CreateContactActivity(override val contentView: Int = R.layout.activity_cr
             val Phone = ArrayList<String>()
             val types = ArrayList<Int>()
             for (i in lists.indices) {
-                Phone.add(llPhone.getChildAt(i).etPhoneName.text.toString())
-                types.add(getPhoneType("Mobile"))
+                val element = llPhone.getChildAt(i).etPhoneName.text.toString()
+                if (NotNull.isNotNull(element)) {
+                    Phone.add(element)
+                    types.add(getPhoneType("Mobile"))
+                }
             }
+            if (!isVail(Phone, types)) return@setOnClickListener
             ContactUtils.addContact(applicationContext, contactMName.etContactName.text.toString(), Phone, types)
-            MyToast.showToastCustomerStyleText(this, "新建成功")
+            MyToast.showToastCustomerStyleText(this, getString(R.string.NewSuccess))
             setResult(Activity.RESULT_OK)
             finish()
         }
+    }
+
+    private fun isVail(phone: ArrayList<String>, types: ArrayList<Int>): Boolean {
+        if (!NotNull.isNotNull(contactMName.etContactName.text.toString())) {
+            MyToast.showToastCustomerStyleText(this, getString(R.string.inputContactName))
+            return false
+        }
+        if (phone.isEmpty() || types.isEmpty()) {
+            MyToast.showToastCustomerStyleText(this, getString(R.string.inputContactPhone))
+            return false
+        }
+        return true
     }
 
 

@@ -28,11 +28,13 @@
                 android:paddingTop="@dimen/x5"
                 android:src="@mipmap/icon_phone" />
 
+            <include layout="@layout/multiply_phone_num_layout" />
+
+
             <com.goockr.smsantilost.graphics.CleanableEditText
                 android:id="@+id/tvLoginUser"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x5"
                 android:layout_weight="1"
                 android:background="@null"
                 android:drawableRight="@mipmap/login_delete"
@@ -115,7 +117,7 @@
         style="@style/loginConfir"
         android:text="@string/longin" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x18"
@@ -125,21 +127,22 @@
 
         <TextView
             android:id="@+id/tvRegister"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/registerUser"
+            android:background="@drawable/select_text_bg"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvCodeLogin"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="right"
             android:text="@string/codeLogin"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/select_text_bg"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

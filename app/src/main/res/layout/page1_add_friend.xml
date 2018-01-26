@@ -50,6 +50,6 @@
         android:id="@+id/inviteMyFamily"
         android:textColor="#fff"
         android:text="@string/inviteFriendsDownLoad"
-        android:background="@drawable/shape_blue"/>
+        android:background="@drawable/select_btn_blue_bg"/>
 
 </LinearLayout>

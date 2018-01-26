@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.goockr.smsantilost.graphics.LocationDeviceInfoView
+        android:id="@+id/locationDeviceInfoView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/x8"
+        android:layout_marginLeft="@dimen/x12"
+        android:layout_marginRight="@dimen/x12"
+        android:visibility="invisible" />
+
+    <com.goockr.smsantilost.graphics.ZoomControlsView
+        android:id="@+id/zoomControlsView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/locationDeviceInfoView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/x5"
+        android:layout_marginTop="@dimen/x12" />
+
+    <include android:id="@+id/CalendarView"
+        android:visibility="gone"
+        layout="@layout/calendar_layout" />
+</RelativeLayout>

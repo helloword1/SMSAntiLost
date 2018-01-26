@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:id="@+id/itemMultiplyPhone"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x24"
+        android:id="@+id/space"
+        android:background="@color/some_white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/x12"
+        android:layout_marginStart="@dimen/x12"
+        android:background="@drawable/select_ll_bg_bottom_line"
+        android:paddingBottom="@dimen/x12"
+        android:paddingTop="@dimen/x12">
+
+        <TextView
+            android:id="@+id/country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="中国"
+            android:textColor="@color/textColor"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/countryPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textStyle="bold"
+            android:text="+86"
+            android:textColor="@color/blue"
+            android:textSize="14sp" />
+    </RelativeLayout>
+</LinearLayout>

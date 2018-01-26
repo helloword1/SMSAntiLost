@@ -27,7 +27,7 @@
                 android:paddingBottom="@dimen/x5"
                 android:paddingTop="@dimen/x5"
                 android:src="@mipmap/icon_phone" />
-
+            <include layout="@layout/multiply_phone_num_layout" />
             <com.goockr.smsantilost.graphics.CleanableEditText
                 android:id="@+id/tvLoginUser"
                 android:layout_width="0dp"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/x3"
-                android:background="@drawable/login_code_bg"
+                android:background="@drawable/get_code_bg"
                 android:paddingBottom="@dimen/x5"
                 android:paddingLeft="@dimen/x12"
                 android:paddingRight="@dimen/x12"
@@ -120,7 +120,7 @@
         android:onClick="click"
         android:text="@string/longin" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x18"
@@ -130,21 +130,22 @@
 
         <TextView
             android:id="@+id/tvRegister"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/registerUser"
+            android:background="@drawable/select_text_bg"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvCodeLogin"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="right"
             android:text="@string/phoneLogin"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/select_text_bg"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

@@ -10,14 +10,17 @@ import android.widget.AdapterView
 import android.widget.LinearLayout
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
+import com.goockr.smsantilost.R.id.antilost_list_view
+import com.goockr.smsantilost.R.id.tvEmptyView
 import com.goockr.smsantilost.entries.AntilostBean
+import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.DateUtils
 import com.goockr.smsantilost.views.activities.antilost.KeyActivity
 import com.goockr.smsantilost.views.adapters.AntilostAdapter
 import cxx.utils.NotNull
+import kotlinx.android.synthetic.main.empty_view.*
 import kotlinx.android.synthetic.main.fragment_antilost.*
-
 
 /**
  * Created by ning.wen on 2016/11/1.
@@ -67,11 +70,11 @@ class AntiLostFragment : BaseFragment() {
                 val date = c.date
                 val deviceName = c.name
                 when (key) {
-                    getString(R.string.key) -> id = 0
-                    getString(R.string.wallet) -> id = 1
-                    getString(R.string.computor) -> id = 2
-                    getString(R.string.secondCard) -> id = 3
-                    getString(R.string.other) -> id = 4
+                    "钥匙" -> id = 0
+                    "钱包" -> id = 1
+                    "笔记本" -> id = 2
+                    "手机副卡" -> id = 3
+                    "其他" -> id = 4
                 }
                 if (TextUtils.equals(DateUtils.getDate(DateUtils.parsePatterns[2]), date)) {
                     now = getString(R.string.JustNow)
@@ -79,7 +82,15 @@ class AntiLostFragment : BaseFragment() {
                 } else {
                     now = date
                 }
-                val antilostBean = AntilostBean(id, key, now, isConnect, getString(R.string.hadConnect))
+                val dName = when (id) {
+                    0 -> getString(R.string.key)
+                    1 -> getString(R.string.wallet)
+                    2 -> getString(R.string.noteBook)
+                    3 -> getString(R.string.secondCard)
+                    4 -> getString(R.string.other)
+                    else -> ""
+                }
+                val antilostBean = AntilostBean(id, dName, now, isConnect, getString(R.string.hadConnect))
                 antilostBean.mac = mac
                 antilostBean.deviceName = deviceName
                 antilostBean.distance = distance
@@ -94,7 +105,9 @@ class AntiLostFragment : BaseFragment() {
                 }
                 lists?.add(antilostBean)
             }
-
+        tvEmptyView.setOnClickListener {
+            MyToast.showToastCustomerStyleText(activity, getString(R.string.deviceDeveloping))
+        }
     }
 
     /**
@@ -120,7 +133,6 @@ class AntiLostFragment : BaseFragment() {
     }
 
 
-
     fun setDevice(device: BluetoothDevice?) {
         this.device = device
         if (!lists!!.isEmpty()) {
@@ -137,7 +149,7 @@ class AntiLostFragment : BaseFragment() {
         for (c in 0 until lists!!.size) {
             lists!![c].isConnectState = false
         }
-        listsAdapter?.notifyDataSetChanged()
+            listsAdapter?.notifyDataSetChanged()
     }
 }
 

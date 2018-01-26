@@ -1,57 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/x12"
-    android:paddingBottom="@dimen/x12"
-    android:paddingTop="@dimen/x12"
-    android:background="@drawable/btn_corner_white"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/x5"
-        android:text="断开连接"
-        android:textColor="@color/textColor"
-        android:textSize="15sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/x5"
-        android:text="钥匙已断开连接"
-        android:textColor="@color/msmTextColorGray"
-        android:textSize="13sp" />
+    android:background="@android:color/transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/x12"
-        android:orientation="horizontal">
+        android:layout_marginLeft="@dimen/x28"
+        android:layout_marginRight="@dimen/x28"
+        android:layout_marginTop="@dimen/x58"
+        android:background="@drawable/btn_corner_white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/x12"
+        android:paddingTop="@dimen/x50">
 
-        <Button
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x12"
-            android:layout_marginRight="@dimen/x22"
-            android:layout_weight="1"
-            android:background="@drawable/blue_angle_bg"
-            android:text="@string/known"
-            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/x5"
+            android:id="@+id/connectTitle"
+            android:text="断开连接"
+            android:textColor="@color/textColor"
             android:textSize="15sp" />
 
-        <Button
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x22"
-            android:layout_marginRight="@dimen/x12"
-            android:layout_weight="1"
-            android:background="@drawable/blue_angle_bg"
-            android:text="@string/cutOffConnect"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/x5"
+            android:text="钥匙已断开连接"
+            android:id="@+id/connectContent"
+            android:textColor="@color/msmTextColorGray"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x12"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x18"
+                android:layout_marginRight="@dimen/x18"
+                android:layout_weight="1"
+                android:id="@+id/connectKnow"
+                android:background="@drawable/select_btn_blue_bg"
+                android:text="@string/known"
+                android:minHeight="@dimen/x38"
+                android:minWidth="0dp"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x18"
+                android:layout_marginRight="@dimen/x18"
+                android:layout_weight="1"
+                android:minHeight="@dimen/x38"
+                android:minWidth="0dp"
+                android:id="@+id/btnDisconnect"
+                android:background="@drawable/select_btn_blue_bg"
+                android:text="@string/cutOffConnect"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/icon_connection_success_1" />
+</RelativeLayout>

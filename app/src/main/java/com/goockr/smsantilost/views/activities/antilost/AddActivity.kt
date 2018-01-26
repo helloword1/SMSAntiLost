@@ -50,7 +50,7 @@ class AddActivity(override val contentView: Int = R.layout.activity_add) : BaseA
     }
 
     override fun onClick(v: View?) {
-        var intent = Intent()
+        val intent = Intent()
         when (v?.id) {
             R.id.ll_AddDevice -> {
                 intent.setClass(this,AddDeviceActivity::class.java)

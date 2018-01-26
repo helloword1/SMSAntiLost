@@ -37,7 +37,7 @@ open class MsmSwipeAdapter(protected var mContext: Context, private var fragment
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0 && isSearch) {
+        return if (position == 0) {
             SEARCH
         } else {
             super.getItemViewType(position)
@@ -52,14 +52,12 @@ open class MsmSwipeAdapter(protected var mContext: Context, private var fragment
         }
     }
 
-
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (position == 0 && isSearch) {
-            holder as SearchViewHolder
+        if (position == 0) {
+
         } else {
             holder as ViewHolder
-            val msmBean = mDatas!![position]
+            val msmBean = mDatas!![position-1]
             holder.tvTime.text = dealWithForSms(msmBean.smsTime)
             holder.tvTitle.text = msmBean.smsTitle
             if (msmBean.contentBeans.size>0){
@@ -83,7 +81,7 @@ open class MsmSwipeAdapter(protected var mContext: Context, private var fragment
 
     }
 
-    override fun getItemCount(): Int = if (mDatas != null) mDatas!!.size else 0
+    override fun getItemCount(): Int = if (mDatas != null) mDatas!!.size+1 else 0
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvTime: TextView = itemView.tvTime

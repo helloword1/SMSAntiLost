@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/backgroundGray"
+    android:orientation="vertical"
     tools:context="com.goockr.smsantilost.views.activities.antilost.TwoWayAntiActivity">
 
     <LinearLayout
         android:id="@+id/ll_OpenAnti"
-        android:layout_marginTop="@dimen/x10"
-        style="@style/setting_ll_style">
+        style="@style/setting_ll_style"
+        android:layout_marginTop="@dimen/x10">
 
         <TextView
             style="@style/index_out_text_style"
-            android:text="@string/Bi_directionalAntiLoss"/>
+            android:text="@string/Bi_directionalAntiLoss" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <com.suke.widget.SwitchButton
             android:id="@+id/btn_OpenAnti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:sb_checked_color="@color/colorPrimary"/>
+            app:sb_checked_color="@color/colorPrimary" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
-        android:text="@string/twoWayTurnOn"
-        android:padding="@dimen/x10"
         android:gravity="center_vertical"
-        android:textSize="12sp"/>
+        android:padding="@dimen/x10"
+        android:text="@string/twoWayTurnOn"
+        android:textSize="12sp" />
 
     <LinearLayout
         android:id="@+id/ll_PhoneSound1"
@@ -45,84 +44,83 @@
 
         <TextView
             style="@style/index_out_text_style"
-            android:text="@string/phoneRemindSound"/>
+            android:text="@string/phoneRemindSound" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/tv_PhoneSound1"
             style="@style/setting_text_small_style"
             android:layout_height="wrap_content"
-            android:text="@string/defaultSound"/>
+            android:text="@string/defaultSound" />
 
         <ImageView
             style="@style/setting_icon_sytle"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
     </LinearLayout>
 
-    <include
-        layout="@layout/line_gray_margin"/>
+    <include layout="@layout/line_gray_margin" />
 
     <LinearLayout
         android:id="@+id/ll_SoundTotal1"
         style="@style/setting_ll_style">
 
         <TextView
-            android:text="@string/RemindTime"
-            style="@style/index_out_text_style"/>
+            style="@style/index_out_text_style"
+            android:text="@string/RemindTime" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/tv_SoundTotal1"
             style="@style/setting_text_small_style"
             android:layout_width="wrap_content"
-            android:text="5s"/>
+            android:text="5s" />
 
         <ImageView
             style="@style/setting_icon_sytle"
-            android:src="@mipmap/icon_right"/>
+            android:src="@mipmap/icon_right" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
-        android:text="@string/soundAndVibration"
-        android:padding="@dimen/x10"
         android:gravity="center_vertical"
-        android:textSize="12sp"/>
+        android:padding="@dimen/x10"
+        android:text="@string/soundAndVibration"
+        android:textSize="12sp" />
 
     <LinearLayout
         android:id="@+id/ll_SoundAndVibration"
         style="@style/setting_ll_style">
-
-        <TextView
-            android:text="@string/small"
-            style="@style/index_out_text_style"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/volumeslider_lessvolume" />/>
 
         <SeekBar
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:maxHeight="@dimen/x2"
-            android:progressDrawable="@drawable/style_seekbar"/>
+            android:progressDrawable="@drawable/style_seekbar" />
 
-        <TextView
-            android:text="@string/big"
-            style="@style/index_out_text_style"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/volumeslider_morevolume" />
 
     </LinearLayout>
 
-    <include
-        layout="@layout/line_gray_margin"/>
+    <include layout="@layout/line_gray_margin" />
 
     <LinearLayout
         android:id="@+id/ll_Vibration"
@@ -130,18 +128,18 @@
 
         <TextView
             style="@style/index_out_text_style"
-            android:text="@string/vibration"/>
+            android:text="@string/vibration" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <com.suke.widget.SwitchButton
             android:id="@+id/btn_OpenVibration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:sb_checked_color="@color/colorPrimary"/>
+            app:sb_checked_color="@color/colorPrimary" />
 
     </LinearLayout>
 

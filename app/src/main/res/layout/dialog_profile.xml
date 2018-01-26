@@ -1,54 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     android:padding="@dimen/x10">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/shape_white_corners">
+        android:background="@drawable/shape_white_corners"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/x50"
-            android:text="@string/takePhotos"
             android:id="@+id/takePhoto"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
-            android:gravity="center"/>
-        <include layout="@layout/line_gray_margin" />
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/x50"
-            android:text="@string/pictures"
-            android:id="@+id/fromPic"
+            android:background="@drawable/select_ll_bg"
+            android:gravity="center"
+            android:text="@string/takePhotos"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
-            android:gravity="center"/>
+            android:textSize="16sp" />
+
+        <include layout="@layout/line_gray_margin" />
+
+        <TextView
+            android:id="@+id/fromPic"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x50"
+            android:background="@drawable/select_ll_bg"
+            android:gravity="center"
+            android:text="@string/pictures"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/x10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/shape_white_corners">
+        android:layout_marginTop="@dimen/x10"
+        android:background="@drawable/shape_white_corners"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/photoCancel"
             android:layout_width="match_parent"
             android:layout_height="@dimen/x50"
+            android:background="@drawable/select_ll_bg"
+            android:gravity="center"
             android:text="@string/cancel"
-            android:id="@+id/photoCancel"
-            android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
-            android:gravity="center"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 

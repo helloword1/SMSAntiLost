@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.goockr.smsantilost.R;
-import com.goockr.smsantilost.entries.AntiAddressBean;
+import com.goockr.smsantilost.entries.AntiDisturbBean;
 import com.goockr.smsantilost.utils.Constant;
 import com.goockr.smsantilost.views.activities.antilost.DeviceMapActivity;
 import com.goockr.smsantilost.views.activities.more.AddAntiAreaMapActivity;
@@ -28,15 +28,15 @@ public class AreaAdapter extends BaseAdapter {
     private final int END_TYPE = -1;
     private final int TYPE = 0;
     private Context mContext;
-    private List<AntiAddressBean> mLists;
+    private List<AntiDisturbBean.DataBean> mLists;
     private LayoutInflater mInflater;
     private OnSwipeDeleteListener listener;
 
-    public void setmLists(List<AntiAddressBean> mLists) {
+    public void setmLists(List<AntiDisturbBean.DataBean> mLists) {
         this.mLists = mLists;
     }
 
-    public AreaAdapter(Context context, List<AntiAddressBean> list) {
+    public AreaAdapter(Context context, List<AntiDisturbBean.DataBean> list) {
         mContext = context;
         mLists = list;
         mInflater = LayoutInflater.from(context);
@@ -57,7 +57,7 @@ public class AreaAdapter extends BaseAdapter {
     }
 
     @Override
-    public AntiAddressBean getItem(int position) {
+    public AntiDisturbBean.DataBean getItem(int position) {
         return mLists.get(position);
     }
 
@@ -68,11 +68,11 @@ public class AreaAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final AntiAddressBean addressBean = mLists.get(position);
+        final AntiDisturbBean.DataBean addressBean = mLists.get(position);
         int itemViewType = getItemViewType(position);
         if (itemViewType == END_TYPE) {
             convertView = mInflater.inflate(R.layout.item_area_add, parent, false);
-            ((TextView) convertView.findViewById(R.id.tv_area_name_add)).setText(addressBean.getName());
+            ((TextView) convertView.findViewById(R.id.tv_area_name_add)).setText(addressBean.getAntiname());
             convertView.findViewById(R.id.ll_content).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -96,19 +96,19 @@ public class AreaAdapter extends BaseAdapter {
                 holder = (AreaHolder) convertView.getTag();
             }
 
-            holder.areaName.setText(addressBean.getName());
-            holder.areaRemark.setText(addressBean.getRemark());
+            holder.areaName.setText(addressBean.getAntiname());
+            holder.areaRemark.setText(addressBean.getAddress());
             holder.content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putString(Constant.INSTANCE.getLONGITUDE(), addressBean.getLongitude());
                     bundle.putString(Constant.INSTANCE.getLATITUDE(), addressBean.getLatitude());
-                    bundle.putString(Constant.INSTANCE.getADDRESS(), addressBean.getRemark());
+                    bundle.putString(Constant.INSTANCE.getADDRESS(), addressBean.getAddress());
                     bundle.putInt(Constant.INSTANCE.getADDRESS_TYPE(), 5);
-                    bundle.putString(Constant.INSTANCE.getCURRENT_AREA_ID(), addressBean.getId().toString());
+                    bundle.putString(Constant.INSTANCE.getCURRENT_AREA_ID(), addressBean.getId());
                     bundle.putString(Constant.INSTANCE.getCURRENT_AREA_RADUIS(), addressBean.getRadius());
-                    bundle.putString(Constant.INSTANCE.getCURRENT_AREA_NAME(), addressBean.getName());
+                    bundle.putString(Constant.INSTANCE.getCURRENT_AREA_NAME(), addressBean.getAntiname());
                     ((AntiDisturbActivity) mContext).showActivity(DeviceMapActivity.class, bundle);
                 }
             });

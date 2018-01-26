@@ -21,7 +21,6 @@ import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.MAC
 import com.goockr.smsantilost.utils.DateUtils.stringToLong
 import com.goockr.smsantilost.utils.LocaleUtil.isAvilible
-import com.goockr.smsantilost.utils.LogUtils
 import com.goockr.smsantilost.utils.ToastUtils
 import com.goockr.smsantilost.views.activities.antilost.AddActivity
 import com.goockr.smsantilost.views.activities.more.MesActivity
@@ -54,6 +53,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
     private var list: List<DeviceBean>? = null
     private var mDataList = ArrayList<BluetoothDevice>()
     private var mDevice: BluetoothDevice? = null
+    private var mDeviceBean: DeviceBean? = null
     //蓝牙
     var mBluetoothAdapter: BluetoothAdapter? = null
     //    private var btReceiver: MyBtReceiver? = null
@@ -189,13 +189,14 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                     titleRight?.visibility = View.VISIBLE
                     switchContent(homeFragment!!)
                     titleRight?.setOnClickListener {
-                       showActivity(MesActivity::class.java)
+                        showActivity(MesActivity::class.java)
                     }
                 }
             }
         }
         startRecover()
     }
+
     override fun receive(intent: Intent) {
         val action = intent.action
         if (BluetoothDevice.ACTION_FOUND == action) {
@@ -214,6 +215,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                                     Thread(instance).start()
                                 }
                                 this.mDevice = device
+                                this.mDeviceBean = it
                             }
                         }
             }
@@ -231,20 +233,23 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
         super.handleMyMessage(msg)
         when (msg?.what) {
             Constant.MSG_CONNECT_SUCCEED -> {
-                LogUtils.d("", "" + msg.what)
-                //重连提醒
-                val value = preferences?.getStringValue(Constant.RECONNECT)
-                if (NotNull.isNotNull(value)) {
-                    if (value?.toBoolean()!!) {
-                        overAlert()
-                    }
-                }
-                instance?.write(Constant.MAC)
+                /* LogUtils.d("", "" + msg.what)
+                 //重连提醒
+                 val value = preferences?.getStringValue(Constant.RECONNECT)
+                 if (NotNull.isNotNull(value)) {
+                     if (value?.toBoolean()!!) {
+                         overAlert()
+                     }
+                 }else{
+                     overAlert()
+                 }
+                 instance?.write(Constant.MAC)*/
                 //添加连接按钮到列表
                 if (antiLostFragment == null) {
                     antiLostFragment = AntiLostFragment()
                 }
                 antiLostFragment?.setDevice(mDevice)
+//                showConnectDialog(true, mDeviceBean)
             }
             Constant.MSG_CLIENT_REV_NEW -> {
                 val obj = msg.obj.toString()
@@ -255,7 +260,8 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
                 //断开连接，刷新界面
                 antiLostFragment?.disConnect()
                 //越界提醒
-                overAlert()
+//                overAlert()
+//                showConnectDialog(false, mDeviceBean)
             }
         }
     }
@@ -313,7 +319,7 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             try {
                 unregisterReceiver(btReceiver)
                 mBluetoothAdapter?.cancelDiscovery()
-            }catch (e:Exception){
+            } catch (e: Exception) {
 
             }
         }
@@ -445,5 +451,12 @@ class HomeActivity(override val contentView: Int = R.layout.activity_home) : Bas
             }
 
         })
+    }
+
+    fun getCurrentDevice() : DeviceBean? {
+        if (NotNull.isNotNull(this.mDeviceBean)) {
+            return this.mDeviceBean!!
+        }
+        return null
     }
 }

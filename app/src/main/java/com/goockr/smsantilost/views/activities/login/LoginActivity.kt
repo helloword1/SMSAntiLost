@@ -1,9 +1,10 @@
 package com.goockr.smsantilost.views.activities.login
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.os.SystemClock
 import android.text.InputType
-import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
@@ -12,21 +13,24 @@ import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.LoginCodeBean
 import com.goockr.smsantilost.entries.NetApi.LOGIN_PWD
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.https.MyStringCallback
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.Constant.MOBIL_PHONE_NUM
+import com.goockr.smsantilost.utils.Constant.MULTiPLY_MOBIL_PHONE_NUM
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.HomeActivity
 import com.google.gson.Gson
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
-import cxx.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.multiply_phone_num_layout.*
 import okhttp3.Call
 import java.lang.Exception
 
 class LoginActivity(override val contentView: Int = R.layout.activity_login) : BaseActivity(), View.OnClickListener {
     var isShowPed = true
+    private var cIndex="86"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +45,7 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
         tvRegister.setOnClickListener(this)
         tvCodeLogin.setOnClickListener(this)
         btnConfir.setOnClickListener(this)
+        rlMulPhone.setOnClickListener(this)
         tvLoginPasswordDelete.setOnClickListener {
             if (isShowPed) {
                 isShowPed = false
@@ -52,38 +57,40 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
                 tvLoginPasswordDelete.setImageResource(R.mipmap.icon_invisible)
             }
         }
-        tvLoginUser.setText("13666666666")
-        tvLoginPassword.setText("123456")
+//        tvLoginUser.setText("13666666666")
+//        tvLoginPassword.setText("123456")
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tvRegister -> showActivity(RegisterActivity::class.java)
             R.id.tvCodeLogin -> showActivity(CodeLoginActivity::class.java)
+            R.id.rlMulPhone -> showActivityForResult(MultiplyMobilPhoneNumActivity::class.java, MULTiPLY_MOBIL_PHONE_NUM)
             R.id.btnConfir -> {
                 if (isVail()) {
                     showProgressDialog()
-                    if (TextUtils.equals(tvLoginUser.text.toString(), "13666666666") && TextUtils.equals(tvLoginPassword.text.toString(), "123456")) {
-                        kotlin.concurrent.thread {
-                            SystemClock.sleep(4000)
-                            runOnUiThread {
-                                dismissDialog()
-                                showActivity(HomeActivity::class.java)
-                                preferences?.putValue(Constant.HAD_LOGIN, "true")
-                                preferences?.putValue(Constant.LOGIN_PHONE, tvLoginUser.text.toString())
-                                finish()
-                            }
-                        }
-                       return
-                    }
+//                    if (TextUtils.equals(tvLoginUser.text.toString(), "13666666666") && TextUtils.equals(tvLoginPassword.text.toString(), "123456")) {
+//                        kotlin.concurrent.thread {
+//                            SystemClock.sleep(4000)
+//                            runOnUiThread {
+//                                dismissDialog()
+//                                showActivity(HomeActivity::class.java)
+//                                preferences?.putValue(Constant.HAD_LOGIN, "true")
+//                                preferences?.putValue(Constant.LOGIN_PHONE, tvLoginUser.text.toString())
+//                                finish()
+//                            }
+//                        }
+//                       return
+//                    }
 
                     OkHttpUtils
                             .post()
                             .url(Constant.BASE_URL + LOGIN_PWD)
                             .addParams("mobile", tvLoginUser.text.toString())
+                            .addParams("mobileIndex", cIndex)
                             .addParams("pwd", tvLoginPassword.text.toString())
                             .build()
-                            .execute(object : MyStringCallback() {
+                            .execute(object : MyStringCallback(this) {
                                 override fun onResponse(response: String?, id: Int) {
                                     val t = Gson().fromJson(response, LoginCodeBean::class.java)
                                     dismissDialog()
@@ -92,6 +99,8 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
                                         preferences?.putValue(Constant.TOKEN, t.token)
                                         preferences?.putValue(Constant.HAD_LOGIN, "true")
                                         preferences?.putValue(Constant.LOGIN_PHONE, tvLoginUser.text.toString())
+                                        preferences?.putValue(Constant.PHONE_TYPE, cIndex)
+                                        preferences?.putValue(Constant.USER_NAME, t.loginname)
                                         finish()
                                     }
                                     MyToast.showToastCustomerStyleText(this@LoginActivity, "${t.msg}")
@@ -110,17 +119,17 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
 
     private fun isVail(): Boolean {
         if (!NotNull.isNotNull(tvLoginUser.text.toString())) {
-            MyToast.showLikeAppDialogSingleIKnow(this, getString(R.string.EnterNumber))
+            MyToast.showToastCustomerStyleText(this, getString(R.string.EnterNumber))
             return false
         }
         if (!NotNull.isNotNull(tvLoginPassword.text.toString())) {
-            MyToast.showLikeAppDialogSingle(this, getString(R.string.enterPwd),getString(R.string.EnterNumber))
+            MyToast.showToastCustomerStyleText(this, getString(R.string.enterPwd)/*,getString(R.string.EnterNumber)*/)
             return false
         }
-        if (!StringUtils.isPhone(tvLoginUser.text.toString())) {
-            MyToast.showLikeAppDialogSingleIKnow(this, getString(R.string.InvalidMobileNumber))
+       /* if (!StringUtils.isPhone(tvLoginUser.text.toString())) {
+            MyToast.showToastCustomerStyleText(this, getString(R.string.InvalidMobileNumber))
             return false
-        }
+        }*/
         return true
     }
 
@@ -139,6 +148,15 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
             return true
         }
         return super.dispatchKeyEvent(event)
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == MULTiPLY_MOBIL_PHONE_NUM && resultCode == Activity.RESULT_OK) {
+            cIndex = data?.getStringExtra(MOBIL_PHONE_NUM)!!
+            tvMulPhone.text = "+$cIndex"
+        }
     }
 }
 

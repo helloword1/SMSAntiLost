@@ -63,15 +63,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/x12"
-        android:layout_marginBottom="@dimen/x12"
+
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingTop="@dimen/x12"
+            android:paddingBottom="@dimen/x12"
             android:id="@+id/locationRecord"
+            android:background="@drawable/select_ll_bg"
             android:gravity="center">
 
             <TextView
@@ -97,6 +99,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/select_ll_bg"
+            android:paddingTop="@dimen/x12"
+            android:paddingBottom="@dimen/x12"
             android:id="@+id/locationGuide"
             android:gravity="center">
 

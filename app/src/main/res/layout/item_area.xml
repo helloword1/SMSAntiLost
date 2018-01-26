@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:ios="false"
+    android:background="@drawable/select_ll_bg"
     app:swipeEnable="true"
     android:clickable="true">
 

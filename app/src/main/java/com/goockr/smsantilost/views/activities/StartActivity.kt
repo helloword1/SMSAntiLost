@@ -26,7 +26,6 @@ class StartActivity(override val contentView: Int = R.layout.activity_start) : B
         super.onCreate(savedInstanceState)
         if (!this.isTaskRoot) {
             //如果你就放在launcher Activity中话，这里可以直接return了
-
             val mainIntent = intent
 
             val action = mainIntent.action
@@ -42,24 +41,27 @@ class StartActivity(override val contentView: Int = R.layout.activity_start) : B
     public override fun initView() {
         ll!!.visibility = View.GONE
         status_bar!!.visibility = View.GONE
-        Thread(Runnable {
-            SystemClock.sleep(2500)
-            runOnUiThread { jumpNextPage() }
-        }).start()
+        jumpNextPage()
+
     }
 
 
     private fun jumpNextPage() {
-        var isLogin = preferences?.getStringValue(Constant.HAD_LOGIN)
+        val isLogin = preferences?.getStringValue(Constant.HAD_LOGIN)
         if (TextUtils.equals(isLogin, "true")) {
             showActivity(HomeActivity::class.java)
 //            showActivity(TestActivity::class.java)
             finish()
             return
         } else {
+            Thread(Runnable {
+                SystemClock.sleep(2000)
+                runOnUiThread {
+                    showActivity(LoginActivity::class.java)
+                    finish()
+                }
+            }).start()
 //            isPermissionVail()
-            showActivity(LoginActivity::class.java)
-            finish()
         }
     }
 

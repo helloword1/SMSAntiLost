@@ -20,10 +20,11 @@ object Constant {
 
     val REQUEST_ENABLE_VISIBILITY: Int = 22
 
-//    val BASE_URL = "http://192.168.1.56:8088/antilost/api/"
-    val BASE_URL = "http://120.24.5.252:8022/antilost/api/"
+    val BASE_URL = "http://192.168.1.55:8088/antilost/api/"
+//    val BASE_URL = "http://120.24.5.252:8022/antilost/api/"
     val TOKEN = "token"
     val LOGIN_PHONE = "login_phone"
+    val PHONE_TYPE = "phone_type"
     val LOGIN_MSM_CODE = "login_msm_code"
     val CONTACT_NAME = "contact_name"
     val CONTACT_PHONE = "contact_phone"
@@ -47,6 +48,8 @@ object Constant {
     val CURRENT_AREA_RADUIS = "current_area_raduis"
     val LATITUDE = "latitude"
     val LONGITUDE = "longitude"
+    val SHOW_CONTACTS_ENABLE = "show_contacts_enable"
+    val MY_LOCATION_ENABLE = "my_location_enable"
 
     //蓝牙操作:
     //获取主机蓝牙物理地址
@@ -87,9 +90,18 @@ object Constant {
     val SELECT_PHONE_SOUND = "select_phone_sound"
     val ABOUT_US_PHONE="020-88886666"
     val USER_NAME="user_name"
+    val SIM_CARD_NUM="simCardNum"
+    val IS_INSERT="is_insert"
+    val INSERT_STR="insert_str"
+    //多国电环
+    val MULTiPLY_MOBIL_PHONE_NUM=12
+    val MOBIL_PHONE_NUM="mobil_phone_num"
+    val ADDRESS_RANGE="address_range"
 
     //拍照
     var TAKE_PHOTO=1
     var IMAGE_CHIOCE=2
     val IMAGE_CROP=3
+
+
 }

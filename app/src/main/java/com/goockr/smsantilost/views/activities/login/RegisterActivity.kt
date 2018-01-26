@@ -1,5 +1,8 @@
 package com.goockr.smsantilost.views.activities.login
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -7,7 +10,7 @@ import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.entries.ValidateCodeBean
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.https.MyStringCallback
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.LOGIN_MSM_CODE
 import com.goockr.smsantilost.utils.CountDownButtonHelper
@@ -16,12 +19,13 @@ import com.google.gson.Gson
 import com.jude.swipbackhelper.SwipeBackHelper
 import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
-import cxx.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.multiply_phone_num_layout.*
 import okhttp3.Call
 import java.lang.Exception
 
 class RegisterActivity(override val contentView: Int = R.layout.activity_register) : BaseActivity(), View.OnClickListener {
+    private var cIndex="86"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //设置右滑不finsh界面
@@ -35,21 +39,23 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
         getCode.setOnClickListener(this)
         tvCodeLogin.setOnClickListener(this)
         btn_confir.setOnClickListener(this)
+        rlMulPhone.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
         //获取验证码
             R.id.getCode -> {
-
                 if (isValidPhone()) {
                     showProgressDialog()
+                    val s = "$cIndex${tvLoginUser.text}"
                     OkHttpUtils
                             .post()
                             .url(Constant.BASE_URL + NetApi.GET_CODE)
                             .addParams("mobile", tvLoginUser.text.toString())
+                            .addParams("national", cIndex)
                             .build()
-                            .execute(object : MyStringCallback() {
+                            .execute(object : MyStringCallback(this) {
                                 override fun onResponse(response: String?, id: Int) {
                                     val t = Gson().fromJson(response, ValidateCodeBean::class.java)
                                     dismissDialog()
@@ -71,11 +77,13 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
                 }
             }
             R.id.tvCodeLogin -> showActivity(LoginActivity::class.java)
+            R.id.rlMulPhone -> showActivityForResult(MultiplyMobilPhoneNumActivity::class.java, Constant.MULTiPLY_MOBIL_PHONE_NUM)
             R.id.btn_confir -> {
                 if (isValid()) {
                     val bundle = Bundle()
                     bundle.putString(Constant.LOGIN_PHONE, tvLoginUser.text.toString())
                     bundle.putString(Constant.LOGIN_MSM_CODE, tvLoginPassword.text.toString())
+                    bundle.putString(Constant.PHONE_TYPE,cIndex)
                     showActivity(RegisterNextActivity::class.java, bundle)
                 }
             }
@@ -101,15 +109,23 @@ class RegisterActivity(override val contentView: Int = R.layout.activity_registe
     private fun isValidPhone(): Boolean {
 
         if (!NotNull.isNotNull(tvLoginUser.text.toString())) {
-            MyToast.showLikeAppDialogSingleIKnow(this, getString(R.string.inputPhoneNumber))
+            MyToast.showToastCustomerStyleText(this, getString(R.string.inputPhoneNumber))
             return false
         }
-        var phone = StringUtils.isPhone(tvLoginUser.text.toString())
-        if (!phone) {
-            MyToast.showLikeAppDialogSingleIKnow(this,  getString(R.string.inputRightNumber))
-            return false
-        }
+//        val phone = StringUtils.isPhone(tvLoginUser.text.toString())
+//        if (!phone) {
+//            MyToast.showToastCustomerStyleText(this,  getString(R.string.inputRightNumber))
+//            return false
+//        }
 
         return true
+    }
+    @SuppressLint("SetTextI18n")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constant.MULTiPLY_MOBIL_PHONE_NUM && resultCode == Activity.RESULT_OK) {
+            cIndex = data?.getStringExtra(Constant.MOBIL_PHONE_NUM)!!
+            tvMulPhone.text = "+$cIndex"
+        }
     }
 }

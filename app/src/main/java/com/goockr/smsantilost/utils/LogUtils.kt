@@ -103,6 +103,10 @@ object LogUtils {
         }
     }
 
+    fun mi(msg: String) {
+        i("", msg)
+    }
+
     fun l(tag: String, content: String) {
         val p = 2000
         val length = content.length.toLong()

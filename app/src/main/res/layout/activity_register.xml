@@ -27,7 +27,7 @@
                 android:paddingBottom="@dimen/x5"
                 android:paddingTop="@dimen/x5"
                 android:src="@mipmap/icon_phone" />
-
+            <include layout="@layout/multiply_phone_num_layout" />
             <com.goockr.smsantilost.graphics.CleanableEditText
                 android:id="@+id/tvLoginUser"
                 android:layout_width="0dp"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/x3"
-                android:background="@drawable/login_code_bg"
+                android:background="@drawable/get_code_bg"
                 android:paddingBottom="@dimen/x5"
                 android:paddingLeft="@dimen/x12"
                 android:paddingRight="@dimen/x12"
@@ -134,6 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/phoneLogin"
+            android:background="@drawable/select_text_bg"
             android:onClick="click"
             android:textColor="@color/colorAccent"
             android:textSize="14sp" />

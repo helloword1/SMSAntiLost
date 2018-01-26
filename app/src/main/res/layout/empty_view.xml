@@ -32,6 +32,6 @@
         android:paddingRight="@dimen/x16"
         android:paddingTop="@dimen/x5"
         android:paddingBottom="@dimen/x5"
-        android:background="@drawable/blue_angle_bg"
+        android:background="@drawable/select_btn_blue_bg"
         android:layout_height="wrap_content" />
 </RelativeLayout>

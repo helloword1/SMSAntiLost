@@ -41,7 +41,7 @@ class ContactFragment : BaseFragment() {
     private var mDatas: MutableList<PhoneBean> = ArrayList()
     private var bDatas: MutableList<PhoneBean> = ArrayList()
     private var mDecoration: SuspensionDecoration? = null
-    private  val REQUEST_PERMISSION = 111
+    private val REQUEST_PERMISSION = 111
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return setContentView(R.layout.fragment_contact)
@@ -57,7 +57,7 @@ class ContactFragment : BaseFragment() {
         mManager = LinearLayoutManager(activity)
         rv.layoutManager = mManager
         mAdapter = CityAdapter(this, activity, mDatas as ArrayList<PhoneBean>)
-        rv.setEmptyView(layoutInflater.inflate(R.layout.empty_view, null))
+//        rv.setEmptyView(layoutInflater.inflate(R.layout.empty_view, null))
         rv.adapter = mAdapter
         mDecoration = SuspensionDecoration(activity, mDatas)
         rv.addItemDecoration(mDecoration)
@@ -89,13 +89,13 @@ class ContactFragment : BaseFragment() {
         val readContacts = activity.packageManager.checkPermission(
                 Manifest.permission.READ_CONTACTS, activity.packageName) == PackageManager.PERMISSION_GRANTED
         if (!readContacts) {
-            tvEmptyView.text=getString(R.string.noContacts)
+            tvEmptyView.text = getString(R.string.noContacts)
             btnOpenRight.visibility = View.VISIBLE
             btnOpenRight.setOnClickListener {
                 ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_PERMISSION)
             }
-        }else{
-            tvEmptyView.text=getString(R.string.noRight)
+        } else {
+            tvEmptyView.text = getString(R.string.noRight)
             btnOpenRight.visibility = View.GONE
         }
         //新建联系人
@@ -134,6 +134,7 @@ class ContactFragment : BaseFragment() {
                     grantResults)
         }
     }
+
     private fun formatPhoneState(tv: Editable?) {
         mDatas.clear()
         if (NotNull.isNotNull(tv) && !TextUtils.equals("", tv)) {
@@ -167,6 +168,11 @@ class ContactFragment : BaseFragment() {
             }
             bDatas.clear()
             bDatas.addAll(mDatas)
+            if (mDatas.isEmpty()) {
+                emptyView.visibility = View.VISIBLE
+            } else {
+                emptyView.visibility = View.GONE
+            }
             mAdapter?.notifyDataSetChanged()
             indexBar.setmPressedShowTextView(tvSideBarHint)//设置HintTextView
                     .setNeedRealIndex(true)//设置需要真实的索引

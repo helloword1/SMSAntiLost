@@ -35,7 +35,7 @@
     <include
         layout="@layout/line_gray_margin"/>
 
-    <EditText
+    <com.goockr.smsantilost.graphics.CleanableEditText
         android:id="@+id/et_InputSim"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
@@ -43,6 +43,10 @@
         android:paddingLeft="@dimen/x10"
         android:paddingRight="@dimen/x10"
         android:paddingTop="@dimen/x5"
+        android:maxLength="15"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        android:drawableRight="@mipmap/btn_del"
         android:paddingBottom="@dimen/x5"
         android:hint="@string/EnterThePhoneNumberDevice"
         android:textSize="13sp"/>

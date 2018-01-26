@@ -12,7 +12,7 @@ import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.entries.ValidateCodeBean
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.https.MyStringCallback
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.LOGIN_MSM_CODE
 import com.goockr.smsantilost.utils.Constant.LOGIN_PHONE
@@ -33,6 +33,7 @@ class SetPwdActivity(override val contentView: Int = R.layout.activity_set_pwd) 
 
     // 当前页数
     private var mCurrent = 1
+    private var phone = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +56,9 @@ class SetPwdActivity(override val contentView: Int = R.layout.activity_set_pwd) 
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
         title?.text = getString(R.string.changePwd)
         ll?.addView(titleLayout)
-        val phone = preferences?.getStringValue(LOGIN_PHONE)
+        phone = preferences?.getStringValue(LOGIN_PHONE).toString()
         if (NotNull.isNotNull(phone)){
-            val replace = phone?.replace(phone.substring(3, 9), "***")
+            val replace = phone.replace(phone.substring(3, 9), "***")
             tv_CodeTips.text = getString(R.string.SentAuth) + replace
         }
 
@@ -155,12 +156,17 @@ class SetPwdActivity(override val contentView: Int = R.layout.activity_set_pwd) 
             }
         })
         getPwdCode.setOnClickListener {
+            var type = preferences?.getStringValue(Constant.PHONE_TYPE)
+            if (!NotNull.isNotNull(type)){
+                type="86"
+            }
             OkHttpUtils
                     .post()
                     .url(Constant.BASE_URL + NetApi.GET_CODE)
-                    .addParams("mobile", tvLoginUser.text.toString())
+                    .addParams("mobile", phone)
+                    .addParams("national", type)
                     .build()
-                    .execute(object : MyStringCallback() {
+                    .execute(object : MyStringCallback(this) {
                         override fun onResponse(response: String?, id: Int) {
                             val t = Gson().fromJson(response, ValidateCodeBean::class.java)
                             dismissDialog()

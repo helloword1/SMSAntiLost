@@ -3,15 +3,14 @@ package com.goockr.smsantilost.views.fragments
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.os.SystemClock
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.AbsListView
 import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
@@ -19,6 +18,7 @@ import com.goockr.smsantilost.entries.ContentBeanDao
 import com.goockr.smsantilost.entries.DaoMaster
 import com.goockr.smsantilost.entries.MsmBean
 import com.goockr.smsantilost.entries.MsmBeanDao
+import com.goockr.smsantilost.graphics.HidingScrollListener
 import com.goockr.smsantilost.graphics.SwipeMenuLayout
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.MSM_MANAGER_RESULT_ID
@@ -27,11 +27,12 @@ import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.msm.MSMManagerActivity
 import com.goockr.smsantilost.views.activities.msm.NewMSMActivity
 import com.goockr.smsantilost.views.adapters.MsmSwipeAdapter
+import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.empty_view.view.*
 import kotlinx.android.synthetic.main.fragment_msm.*
 import kotlinx.android.synthetic.main.item_msm_swipe.view.*
+import kotlinx.android.synthetic.main.search_layout.*
 import java.util.*
-import kotlin.concurrent.thread
 
 
 /**
@@ -67,7 +68,23 @@ class MSMFragment : BaseFragment() {
         emptyView.tvEmptyView.text = getString(R.string.emptySms)
         recycleView.adapter = msmSwipeDelMenuAdapter
 
-        initRefresh()
+
+          recycleView.addOnScrollListener(object : HidingScrollListener() {
+              override fun onHide() {
+                  val dm = resources.displayMetrics
+                  val height = dm.heightPixels
+                  top.animate()
+                          .translationY(-height.toFloat())
+                          .setDuration(800)
+                          .setInterpolator(AccelerateInterpolator(2.toFloat()))
+                          .start()
+              }
+
+              override fun onShow() {
+                  top.animate().translationY(0.toFloat()).setInterpolator(DecelerateInterpolator(2.toFloat())).setDuration(200).start()
+              }
+
+          })
         notifyDatas()
         recycleView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
@@ -87,8 +104,10 @@ class MSMFragment : BaseFragment() {
             }
         })
         floatSend.setOnClickListener {
+
             val baseActivity = activity as BaseActivity
             baseActivity.showActivity(NewMSMActivity::class.java)
+//            baseActivity.showActivity(TestActivity::class.java)
         }
         floatSetting.setOnClickListener {
             val extras = Bundle()
@@ -101,9 +120,6 @@ class MSMFragment : BaseFragment() {
 
     private fun notifyDatas() {
         mDatas.clear()
-        if (isSearch) {
-            mDatas.add(MsmBean())
-        }
         val name = "antilost-db" // 数据库名称
         val helper = DaoMaster.DevOpenHelper(activity, name) // helper
         val db = helper.writableDb
@@ -128,7 +144,7 @@ class MSMFragment : BaseFragment() {
     private inner class MsmSwipeDelMenuAdapter(mContext: Context, mDatas: ArrayList<MsmBean>) : MsmSwipeAdapter(mContext, this, mDatas) {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             super.onBindViewHolder(holder, position)
-            if (position == 0 && isSearch) return
+            if (position == 0) return
             (holder.itemView as SwipeMenuLayout).isOpen {
                 if (it) {
                     floatSetting.visibility = View.GONE
@@ -168,35 +184,6 @@ class MSMFragment : BaseFragment() {
         }
     }
 
-    private fun initRefresh() {
-        //改变加载显示的颜色
-        refresh.setColorSchemeColors(Color.RED, Color.BLUE, Color.parseColor("#4285f4"))
-        //设置初始时的大小
-        refresh.setSize(SwipeRefreshLayout.MEASURED_STATE_TOO_SMALL)
-        //设置监听
-        refresh.setOnRefreshListener {
-            thread {
-                SystemClock.sleep(1000)
-                activity.runOnUiThread {
-                    refresh.isRefreshing = false
-                    val element = MsmBean()
-                    element.smsTitle = "10086"
-                    element.smsTime = "24:00"
-                    mDatas.add(0, element)
-                    msmSwipeDelMenuAdapter?.isSearch(true)
-                    msmSwipeDelMenuAdapter?.notifyDataSetChanged()
-                    isSearch = true
-                    refresh.isEnabled = false
-                }
-
-            }
-            //设置向下拉多少出现刷新
-            refresh.setDistanceToTriggerSync(100)
-            //设置刷新出现的位置
-            refresh.setProgressViewEndTarget(false, 200)
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constant.MSM_MANAGER_RESULT_ID && resultCode == Activity.RESULT_OK) {
@@ -219,7 +206,8 @@ class MSMFragment : BaseFragment() {
         if (isSearch) {
             mDatas.add(MsmBean())
         }
-        val goockrApplication = activity.application as GoockrApplication
+        if (!NotNull.isNotNull(activity)) return
+        val goockrApplication = activity.applicationContext as GoockrApplication
         val msmBeanDao = goockrApplication.mDaoSession?.msmBeanDao
         val list = msmBeanDao?.queryBuilder()?.build()?.list()
         if (list != null) {

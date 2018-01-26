@@ -40,5 +40,25 @@
     <integer-array name="google_colors">
         <item>@color/colorAccent</item>
     </integer-array>
-
+    <string-array name="multiply_mobil_phone_num">
+    <item>[\"China-中国-86\",\"Hongkong-香港-852\",\"Macao-澳门-853\",\"Taiwan-台湾-886\",
+        \"Japan-日本-81\",\"Malaysia-马来西亚-60\",\"Australia-澳大利亚-61\", \"United Kiongdom-英国-44\",
+        \"Singapore-新加坡-65\" , \"Germany-德国-49\"]
+    </item>
+        <item>[\"United States of America-美国-1\", \"Canada-加拿大-1\", \"Russia-俄罗斯-7\",\"Egypt-埃及-20\",
+        \"South Africa-南非-27\",\"Greece-希腊-30\",\"Netherlands-荷兰-31\",\"Belgium-比利时-32\",\"France-法国-33\",
+        \"Spain-西班牙-34\",\"Hungary-匈牙利-36\",\"Italy-意大利-39\",\"Romania-罗马尼亚-40\",\"Sweden-瑞典-46\",\"Austria-奥地利-43\",
+        \"Denmark-丹麦-45\",\"Sweden-瑞典-46\",\"Norway-挪威-47\",\"Poland-波兰-48\",\"Peru-秘鲁-51\",\"Mexico-墨西哥-52\",
+        \"Cuba-古巴-53\",\"Argentina-阿根廷-54\",\"Brazil-巴西-55\",\"Chile-智利-56\",\"Colombia-哥伦比亚-57\",\"Venezuela-委内瑞拉-58\",
+        \"Indonesia-印度尼西亚-62\",\"Philippines-菲律宾-63\",\"New Zealand-新西兰-64\",\"Thailand-泰国-66\",\"Kazakstan-哈萨克斯坦-7\",
+        \"Korea-韩国-82\",\"Vietnam-越南-84\",\"Turkey-土耳其-90\",\"India-印度-91\",\"Pakistan-巴基斯坦-92\",\"Afghanistan-阿富汗-93\",
+        \"SriLanka-斯里兰卡-94\",\"Burma-缅甸-95\",\"Morocco-摩洛哥-212\",\"Algeria-阿尔及利亚-213\",\"Libya-利比亚-218\",\"Mali-马里-223\",
+        \"Niger-尼日尔-227\",\"Central African Republic-中非共和国-236\",\"Sudan-苏丹-249\",\"Tanzania-坦桑尼亚-255\",\"Portugal-葡萄牙-351\",
+        \"Luxembourg-卢森堡-352\",\"Ireland-爱尔兰-353\",\"Iceland-冰岛-354\",\"Finland-芬兰-358\",\"Belarus-白俄罗斯-375\",\"Ukraine-乌克兰-380\",
+        \"Nicaragua-尼加拉瓜-505\",\"Panama-巴拿马-507\",\"Ecuador-厄瓜多尔-593\",\"Paraguay-巴拉圭-595\",\"Brunei-文莱-673\",\"Kampuchea (Cambodia )-柬埔寨-855\",
+        \"Laos-老挝-856\",\"Bangladesh-孟加拉国-880\",\"Maldives-马尔代夫-960\",\"Syria-叙利亚-963\",\"Iraq-伊拉克-964\",\"Kuwait-科威特-965\",
+        \"Saudi Arabia-沙特阿拉伯-966\",\"Israel-以色列-972\",\"Mongolia-蒙古-976\",\"Nepal-尼泊尔-977\",\"Bahamas-巴哈马-1242\",\"Barbados-巴巴多斯-1246\",
+        \"Grenada-格林纳达-1473\",\"Guam-关岛-1671\",\"Trinidad and Tobago-特立尼达和多巴哥-1809\"]
+    </item>
+    </string-array>
 </resources>
