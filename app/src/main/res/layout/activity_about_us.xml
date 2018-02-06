@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/x28"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/login_logo" />
 
     <TextView
         android:layout_width="wrap_content"

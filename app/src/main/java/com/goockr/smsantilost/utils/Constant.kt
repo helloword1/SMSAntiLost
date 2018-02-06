@@ -1,4 +1,5 @@
 package com.goockr.smsantilost.utils
+import com.goockr.smsantilost.BuildConfig
 
 /**
  * Created by LJN on 2017/11/10.
@@ -17,10 +18,9 @@ object Constant {
 
     val MSG_CONNECT_FAIL = 33
 
-
     val REQUEST_ENABLE_VISIBILITY: Int = 22
 
-    val BASE_URL = "http://192.168.1.55:8088/antilost/api/"
+    val BASE_URL = BuildConfig.BASE_URL
 //    val BASE_URL = "http://120.24.5.252:8022/antilost/api/"
     val TOKEN = "token"
     val LOGIN_PHONE = "login_phone"
@@ -103,5 +103,7 @@ object Constant {
     var IMAGE_CHIOCE=2
     val IMAGE_CROP=3
 
-
+    //定义接收广播的action字符串
+    val GEOFENCE_BROADCAST_ACTION = "com.location.apis.geofencedemo.broadcast"
+    val GEOFENCE_OUT_CODE="GEOFENCE_OUT_CODE"
 }

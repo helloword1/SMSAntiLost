@@ -36,7 +36,7 @@
             android:id="@+id/ivAddPhone"
             android:layout_width="@dimen/x24"
             android:layout_height="@dimen/x24"
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@mipmap/btn_add" />
 
         <TextView
             android:id="@+id/tvAddPhone"

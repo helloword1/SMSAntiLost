@@ -9,6 +9,7 @@ object NetApi {
     val LOGIN_PWD="appPwdLogin"
     val LOGIN_CODE="appVcodeLogin"
     val UP_LOADHEAD_IMG ="uploadHeadImg"
+    val USER_SETTING ="userSetting"
     val LOADHEAD_IMG ="getHeadImg"
     val FIND_POSITION_RECORD ="findPositionRecord"
 
@@ -20,4 +21,6 @@ object NetApi {
     val DELETE_PREVENT_DISTURB ="deletePreventDisturb"
     //绑定设备
     val BIND_DEV ="bindDev"
+    //获取用户绑定的设备列表（防丢列表）
+    val FIND_DEVS_LIST ="findDevsList"
 }

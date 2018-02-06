@@ -3,6 +3,7 @@ package com.goockr.smsantilost.views.activities.more
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
@@ -32,6 +33,7 @@ import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_user_setting.*
 import okhttp3.Call
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -101,18 +103,23 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
                 bottomDialog?.show()
             }
             R.id.ll_UserName -> {
+                //用户名称
                 showActivity(SetUserNameActivity::class.java)
             }
             R.id.ll_PhoneBind -> {
+                //绑定手机
                 showActivity(BindPhoneNumActivity::class.java)
             }
             R.id.ll_WeChatBind -> {
+                //绑定微信
                 MyToast.showToastCustomerStyleText(this, getString(R.string.deviceDeveloping))
             }
             R.id.ll_ChangePWD -> {
+                //设置密码
                 showActivity(SetPwdActivity::class.java)
             }
             R.id.tv_SignUp -> {
+                //退出登陆
                 myAlertDialog?.show()
             }
         }
@@ -223,7 +230,11 @@ class UserSettingActivity(override val contentView: Int = R.layout.activity_user
                             LogUtils.i("", "" + bitmap)
                             runOnUiThread {
                                 if (NotNull.isNotNull(bitmap)) {
-                                    userIcon.setImageBitmap(bitmap)
+                                    val bao = ByteArrayOutputStream()
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, bao)
+                                    val bytes=bao.toByteArray()
+                                    Glide.with(this@UserSettingActivity).load(bytes).transform(GlideCircleTransform(this@UserSettingActivity)).placeholder(R.mipmap.icon_head_portrait).into(userIcon)
+//                                    userIcon.setImageBitmap(bitmap)
                                     MyToast.showToastCustomerStyleText(this@UserSettingActivity, getString(R.string.uploadSucceed))
                                 }
                                 bottomDialog?.hide()

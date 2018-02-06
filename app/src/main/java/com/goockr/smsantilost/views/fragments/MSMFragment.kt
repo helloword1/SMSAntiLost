@@ -177,10 +177,14 @@ class MSMFragment : BaseFragment() {
     private fun setEmptyView() {
         if (isSearch && mDatas.size == 1) {
             emptyView.visibility = View.VISIBLE
+            searchLayout.visibility=View.GONE
         } else if (mDatas.isEmpty()) {
             emptyView.visibility = View.VISIBLE
+            searchLayout.visibility=View.GONE
+
         } else {
             emptyView.visibility = View.GONE
+            searchLayout.visibility=View.VISIBLE
         }
     }
 

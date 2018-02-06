@@ -312,4 +312,6 @@
     <string name="positionRecord">位置记录</string>
     <string name="locationSetting">定位设置</string>
     <string name="lsettingc"><![CDATA[是否打开系统设置->定位服务页进行设置]]></string>
+    <string name="noMes">暂无信息</string>
+    <string name="noFriend">暂无好友</string>
 </resources>

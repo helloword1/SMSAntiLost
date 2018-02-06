@@ -8,8 +8,8 @@ import com.goockr.smsantilost.entries.CreateUserBean
 import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.graphics.MyAlertDialog
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.HomeActivity
 import com.google.gson.Gson
@@ -80,7 +80,7 @@ class RegisterNextActivity(override val contentView: Int = R.layout.activity_reg
                                     })
 
                                 }
-                                MyToast.showToastCustomerStyleText(this@RegisterNextActivity, "${t.msg}")
+//                                MyToast.showToastCustomerStyleText(this@RegisterNextActivity, "${t.msg}")
                             }
 
                             override fun onError(call: Call?, e: Exception?, id: Int) {

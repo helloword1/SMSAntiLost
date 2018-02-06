@@ -1,5 +1,6 @@
 package com.goockr.smsantilost.views.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.SystemClock
 import android.text.TextUtils
@@ -39,11 +40,7 @@ class LocationFragment : BaseFragment() {
     private var currentZoom = 17
     private var goockrApplication: GoockrApplication? = null
     private var deviceBean: DeviceBean? = null
-    /**
-     * 声明AMapLocationClientOption对象
-     */
-    var mLocationOption: AMapLocationClientOption? = null
-
+    @SuppressLint("SimpleDateFormat")
     private fun parseData(amapLocation: AMapLocation?) {
         val locationType = amapLocation!!.locationType//
         val latitude = amapLocation.latitude//获取纬度
@@ -130,6 +127,7 @@ class LocationFragment : BaseFragment() {
     private fun init() {
         if (aMap == null) {
             aMap = map.map
+
         }
     }
 

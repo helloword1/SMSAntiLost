@@ -11,6 +11,7 @@ import android.media.MediaPlayer
 import android.os.*
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -93,8 +94,18 @@ abstract class BaseActivity : AppCompatActivity() {
                 }
             }
             Constant.MSG_CONNECT_DISCONNECT -> {
-                //提醒
-                overAlert()
+                //防打扰开关 默认关
+                val value = preferences?.getStringValue(Constant.ADDRESS_RANGE)
+                //是否在围栏外 默认在
+                val outCode = preferences?.getStringValue(Constant.GEOFENCE_OUT_CODE)
+                //
+                if (NotNull.isNotNull(value)&&TextUtils.equals(value,"true")||NotNull.isNotNull(outCode)&&TextUtils.equals(value,"false")){
+
+                }else{
+                    //提醒
+                    overAlert()
+                }
+
                 val homeActivity = goockrApplication?.getHomeActivity()
                 if (NotNull.isNotNull(homeActivity)) {
                     for (c in 0 until size!!) {
@@ -405,6 +416,8 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
     }
+    fun getGeoFenceReceiver(extras: Bundle) {
 
+    }
 
 }

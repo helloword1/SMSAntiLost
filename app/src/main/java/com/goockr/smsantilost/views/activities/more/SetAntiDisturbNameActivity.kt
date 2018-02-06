@@ -6,10 +6,10 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
+import com.amap.api.location.DPoint
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_ADDRESS
 import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_ID
@@ -18,6 +18,7 @@ import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_LONGITUDE
 import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_NAME
 import com.goockr.smsantilost.utils.Constant.CURRENT_AREA_RADUIS
 import com.goockr.smsantilost.utils.LogUtils
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.antilost.DeviceMapActivity
 import com.zhy.http.okhttp.OkHttpUtils
@@ -82,6 +83,15 @@ class SetAntiDisturbNameActivity(override val contentView: Int = R.layout.activi
                                     bundle.putString(Constant.CURRENT_AREA_ID, currentId)
                                     bundle.putString(Constant.CURRENT_AREA_RADUIS, currentRadius)
                                     bundle.putString(Constant.CURRENT_AREA_NAME, etDisturbName.text.toString())
+
+                                    //创建一个中心点坐标
+                                    val centerPoint = DPoint()
+                                    //设置中心点纬度
+                                    centerPoint.latitude = latitude.toDouble()
+                                    //设置中心点经度
+                                    centerPoint.longitude = longitude.toDouble()
+                                    goockrApplication?.mGeoFenceClient?.addGeoFence(centerPoint, currentRadius.toFloat(), searchAddress)
+
                                     showActivity(DeviceMapActivity::class.java, bundle)
                                     val activityLists = goockrApplication?.getActivityLists()
                                     activityLists!!

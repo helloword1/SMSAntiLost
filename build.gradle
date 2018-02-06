@@ -1,19 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.1.51'
-    ext.greendao_version = '3.2.2'
-    ext.anko_version = '0.10.1' // 添加anko_version
+    apply from:'goockr.gradle'
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.greenrobot:greendao-gradle-plugin:$greendao_version"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath projectGradle
+        classpath projectPlugin
+        classpath projectGreendaoPlugin
     }
 }
 
@@ -21,10 +17,17 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
+        maven { url projectMavenURL }
     }
 }
-
+ext {
+    anko_version = '0.10.1' // 添加anko_version
+    minSdkVersion = 19
+    targetSdkVersion = 26
+    versionCode = 1
+    versionName = "1.0"
+    compileSdkVersion=26
+}
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

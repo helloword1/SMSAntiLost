@@ -17,7 +17,6 @@ import android.widget.SeekBar
 import android.widget.Toast
 import com.amap.api.location.AMapLocation
 import com.amap.api.location.AMapLocationClient
-import com.amap.api.location.AMapLocationClientOption
 import com.amap.api.location.AMapLocationListener
 import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
@@ -36,12 +35,9 @@ import com.amap.api.services.help.InputtipsQuery
 import com.amap.api.services.help.Tip
 import com.amap.api.services.poisearch.PoiResult
 import com.amap.api.services.poisearch.PoiSearch
-import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
 import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.Constant
-import com.goockr.smsantilost.utils.LogUtils
-import com.goockr.smsantilost.utils.MyAMapLocationListener
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.jude.swipbackhelper.SwipeBackHelper
 import cxx.utils.NotNull
@@ -108,6 +104,11 @@ open class AddAntiAreaMapActivity(override val contentView: Int = R.layout.activ
                     inputTips.setInputtipsListener(inputtipsListener)
                     inputTips.requestInputtipsAsyn()
                 }
+//                if (!s.isEmpty()) {
+//                    etAddSearch.setCompoundDrawables(null, ContextCompat.getDrawable(this@AddAntiAreaMapActivity, R.mipmap.btn_del), null, null)
+//                } else {
+//                    etAddSearch.setCompoundDrawables(null, null, null, null)
+//                }
             }
 
             override fun afterTextChanged(s: Editable) {

@@ -466,5 +466,7 @@
     <string name="positionRecord">Position Record</string>
     <string name="locationSetting">Location Setting</string>
     <string name="lsettingc"><![CDATA[Whether to open the system settings - > page location service set]]></string>
+    <string name="noMes">No message</string>
+    <string name="noFriend">No Friends</string>
 </resources>
 

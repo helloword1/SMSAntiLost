@@ -152,34 +152,28 @@ class ContactFragment : BaseFragment() {
             mDatas.addAll(bDatas)
             mDecoration?.setIsChoice(0, mDatas.size)
         }
-        mAdapter?.notifyDataSetChanged()
+        notifyDatas()
     }
 
     private fun initDatas(data: List<ContactsBean>) {
         //延迟两秒 模拟加载数据中....
         activity.window.decorView.postDelayed({
             mDatas.clear()
+            bDatas.clear()
             for (i in data.indices) {
                 val cityBean = PhoneBean()
                 cityBean.setMPhone(data[i].name)//设置名称
                 cityBean.phone = (data[i].phone)//设置电话
                 cityBean.id = (data[i].id)//设置id
                 mDatas.add(cityBean)
+                bDatas.add(cityBean)
             }
-            bDatas.clear()
-            bDatas.addAll(mDatas)
             if (mDatas.isEmpty()) {
                 emptyView.visibility = View.VISIBLE
             } else {
                 emptyView.visibility = View.GONE
             }
-            mAdapter?.notifyDataSetChanged()
-            indexBar.setmPressedShowTextView(tvSideBarHint)//设置HintTextView
-                    .setNeedRealIndex(true)//设置需要真实的索引
-                    .setmLayoutManager(mManager)//设置RecyclerView的LayoutManager
-                    .setmSourceDatas(mDatas)//设置数据
-                    .invalidate()
-            mDecoration?.setmDatas(mDatas)
+            notifyDatas()
         }, 500)
     }
 
@@ -193,6 +187,19 @@ class ContactFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    /**
+     * 刷新并重新筛选
+     */
+    private fun notifyDatas() {
+        mAdapter?.notifyDataSetChanged()
+        indexBar.setmPressedShowTextView(tvSideBarHint)//设置HintTextView
+                .setNeedRealIndex(true)//设置需要真实的索引
+                .setmLayoutManager(mManager)//设置RecyclerView的LayoutManager
+                .setmSourceDatas(mDatas)//设置数据
+                .invalidate()
+        mDecoration?.setmDatas(mDatas)
     }
 }
 

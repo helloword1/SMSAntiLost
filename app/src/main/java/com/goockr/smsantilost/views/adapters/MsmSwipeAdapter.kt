@@ -46,7 +46,7 @@ open class MsmSwipeAdapter(protected var mContext: Context, private var fragment
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == SEARCH) {
-            SearchViewHolder(mInflater.inflate(R.layout.item_msm_search, parent, false))
+            SearchViewHolder(mInflater.inflate(R.layout.item_msm_search_withe_bg, parent, false))
         } else {
             ViewHolder(mInflater.inflate(R.layout.item_msm_swipe, parent, false))
         }

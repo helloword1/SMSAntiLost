@@ -13,10 +13,11 @@ import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.LoginCodeBean
 import com.goockr.smsantilost.entries.NetApi.LOGIN_PWD
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
+import com.goockr.smsantilost.utils.Constant.LOGIN_PHONE
 import com.goockr.smsantilost.utils.Constant.MOBIL_PHONE_NUM
 import com.goockr.smsantilost.utils.Constant.MULTiPLY_MOBIL_PHONE_NUM
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.HomeActivity
 import com.google.gson.Gson
@@ -56,6 +57,10 @@ class LoginActivity(override val contentView: Int = R.layout.activity_login) : B
                 tvLoginPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 tvLoginPasswordDelete.setImageResource(R.mipmap.icon_invisible)
             }
+        }
+        val phone = preferences?.getStringValue(LOGIN_PHONE)
+        if (NotNull.isNotNull(phone)){
+            tvLoginUser.setText(phone)
         }
 //        tvLoginUser.setText("13666666666")
 //        tvLoginPassword.setText("123456")

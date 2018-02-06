@@ -4,35 +4,69 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'org.greenrobot.greendao'
 android {
     signingConfigs {
-        debug {
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile file('C:/Users/LJN/.android/debug.keystore')
-            storePassword 'android'
+        if (propertyHaveSigningConfigs) {
+            release {
+                keyAlias projectkeyStoreAlias
+                keyPassword projectKeyStoreAliasPassword
+                storeFile file(projectKeyStorePath)
+                storePassword projectKeyStorePassword
+            }
+            debug.initWith(signingConfigs.release)
+
         }
     }
-    compileSdkVersion 26
+    compileSdkVersion antilostProjects.compileSdkVersion
     defaultConfig {
-        applicationId "com.goockr.smsantilost"
-        minSdkVersion 19
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        applicationId projectApplicationId
+        minSdkVersion antilostProjects.minSdkVersion
+        targetSdkVersion antilostProjects.targetSdkVersion
+        versionCode antilostProjects.versionCode
+        versionName antilostProjects.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     sourceSets {
-        main.java.srcDirs += 'build/generated/source/greendao' // 追加 greendao 代码 至 Java代码源
+        // 追加 greendao 代码 至 Java代码源
+        main.java.srcDirs += projectGreenDaoDir
     }
     buildTypes {
-        release {
+        debug {
+            buildConfigField('String', 'BASE_URL', antilostProjects.baseUrlDebug)
             minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (propertyHaveSigningConfigs)
+                signingConfig signingConfigs.debug
+        }
+        release {
+            buildConfigField('String', 'BASE_URL', antilostProjects.baseUrlRelease)
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (propertyHaveSigningConfigs)
+                signingConfig signingConfigs.release
         }
     }
-    //greendao配置
+
     greendao {
-        //版本号，升级时可配置
-        schemaVersion 1
+        schemaVersion antilostProjects.schemaVersion
+    }
+    lintOptions {
+        // 移除lint检查的error
+        checkReleaseBuilds false
+    }
+
+    android.applicationVariants.all{
+        it.outputs.all{ output->
+           def outputFile= output.outputFile
+            if(outputFile!=null&&outputFile.name.contains(".apk")){
+                def fileName="antilost_${it.name}${"_V"}${defaultConfig.versionName}.apk"
+                outputFileName = fileName
+            }
+        }
     }
 }
 
@@ -48,7 +82,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.8.0'
     //    compile project(path: ':library')
     compile 'com.yanzhenjie:recyclerview-swipe:1.1.2'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.10"
     compile 'com.jude:swipebackhelper:3.1.2'
     //网络框架
     compile 'com.zhy:okhttputils:2.6.2'
@@ -57,7 +91,6 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
     //地图
-    //    compile 'com.amap.api:map2d:5.2.0'
     compile 'com.amap.api:3dmap:5.4.0'
     compile 'com.amap.api:search:5.5.0'
     compile 'com.amap.api:location:3.6.1'
@@ -83,8 +116,8 @@ dependencies {
     //数据库
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'net.zetetic:android-database-sqlcipher:3.5.1@aar'
-//    compile "org.jetbrains.anko:anko:$anko_version" // 添加 anko 全部lib
 }
+
 repositories {
     mavenCentral()
 }

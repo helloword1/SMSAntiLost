@@ -1,0 +1,41 @@
+def projects = [:]
+projects.minSdkVersion = 19
+projects.targetSdkVersion = 26
+projects.versionCode = 1
+projects.versionName = "1.0"
+projects.compileSdkVersion = 26
+projects.schemaVersion = 1
+projects.baseUrlRelease='"http://120.24.5.252:8022/antilost/api/"'
+projects.baseUrlDebug='"http://192.168.1.55:8088/antilost/api/"'
+
+def localProperties = new Properties()
+def ips=project.rootProject.file('local.properties').newDataInputStream()
+localProperties.load(ips)
+Map rootProperties = project.getProperties()
+def keyStorePath = localProperties.getProperty('keystore_path', rootProperties.get('keystore_path', null))
+def keyStorePassword = localProperties.getProperty('keystore_password', rootProperties.get('keystore_password', null))
+def keyStoreAlias = localProperties.getProperty('keystore_alias', rootProperties.get('keystore_alias', null))
+def keyStoreAliasPassword = localProperties.getProperty('keystore_alias_password', rootProperties.get('keystore_alias_password', null))
+ips.close()
+
+def propertyProjectGradle = 'com.android.tools.build:gradle:3.0.1'
+def propertyProjectPlugin = 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.10'
+def propertyProjectGreenDaoPlugin = 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+def propertyProjectMavenURL = 'https://jitpack.io'
+def greenDaoDir = 'build/generated/source/greendao'
+def applicationId='com.goockr.smsantilost'
+ext {
+    propertyHaveSigningConfigs = (keyStorePath != null && keyStorePassword != null && keyStoreAlias != null && keyStoreAliasPassword != null)
+    projectKeyStorePath = keyStorePath
+    projectKeyStorePassword = keyStorePassword
+    projectkeyStoreAlias = keyStoreAlias
+    projectKeyStoreAliasPassword = keyStoreAliasPassword
+    projectGreenDaoDir = greenDaoDir
+    projectApplicationId=applicationId
+
+    antilostProjects = projects
+    projectGradle = propertyProjectGradle
+    projectPlugin = propertyProjectPlugin
+    projectGreendaoPlugin = propertyProjectGreenDaoPlugin
+    projectMavenURL = propertyProjectMavenURL
+}

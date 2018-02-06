@@ -1,8 +1,10 @@
 package com.goockr.smsantilost.views.activities.more
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.Editable
@@ -15,19 +17,24 @@ import com.goockr.smsantilost.R
 import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.entries.ValidateCodeBean
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.LOGIN_MSM_CODE
+import com.goockr.smsantilost.utils.Constant.MULTiPLY_MOBIL_PHONE_NUM
 import com.goockr.smsantilost.utils.CountDownButtonHelper
+import com.goockr.smsantilost.utils.LogUtils
 import com.goockr.smsantilost.utils.ToastUtils
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.views.activities.BaseActivity
+import com.goockr.smsantilost.views.activities.login.MultiplyMobilPhoneNumActivity
 import com.google.gson.Gson
 import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_bind_phone_num.*
+import kotlinx.android.synthetic.main.multiply_phone_num_layout.*
 import kotlinx.android.synthetic.main.page1_bind_phone_num.*
 import kotlinx.android.synthetic.main.page2_bind_phone_num.*
 import okhttp3.Call
+import org.json.JSONObject
 import java.lang.Exception
 
 class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bind_phone_num) : BaseActivity() {
@@ -35,6 +42,7 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
     // 当前页数
     private var mCurrent = 1
     private var dialog: Dialog? = null
+    private var cIndex = "86"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,23 +65,25 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
         titleOk?.text = getString(R.string.nextStep)
         titleOk?.visibility = View.VISIBLE
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
-        titleOk?.isClickable=false
+        titleOk?.isClickable = false
         title?.text = getString(R.string.changePhone)
         ll?.addView(titleLayout)
-
+        rlMulPhone.setOnClickListener {
+            showActivityForResult(MultiplyMobilPhoneNumActivity::class.java, MULTiPLY_MOBIL_PHONE_NUM)
+        }
         val phone = preferences?.getStringValue(Constant.LOGIN_PHONE)
         if (NotNull.isNotNull(phone)) {
             val replace = phone?.replace(phone.substring(3, 9), "***")
             tv_CodeTips.text = getString(R.string.SentAuth1) + replace
         }
-        et_VerificationCode1.addTextChangedListener(object :TextWatcher{
+        et_VerificationCode1.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (!p0?.isEmpty()!!){
-                    titleOk?.setTextColor(ContextCompat.getColor(this@BindPhoneNumActivity,R.color.blue))
-                    titleOk?.isClickable=true
-                }else{
-                    titleOk?.setTextColor(ContextCompat.getColor(this@BindPhoneNumActivity,R.color.appGray))
-                    titleOk?.isClickable=false
+                if (!p0?.isEmpty()!!) {
+                    titleOk?.setTextColor(ContextCompat.getColor(this@BindPhoneNumActivity, R.color.blue))
+                    titleOk?.isClickable = true
+                } else {
+                    titleOk?.setTextColor(ContextCompat.getColor(this@BindPhoneNumActivity, R.color.appGray))
+                    titleOk?.isClickable = false
                 }
             }
 
@@ -84,23 +94,23 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
             }
 
         })
-        et_VerificationCode2.addTextChangedListener(object :TextWatcher{
+        et_VerificationCode2.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (!p0?.isEmpty()!!){
-                    titleOk?.setTextColor(ContextCompat.getColor(this@BindPhoneNumActivity,R.color.blue))
-                    titleOk?.isClickable=true
-                }else{
-                    titleOk?.setTextColor(ContextCompat.getColor(this@BindPhoneNumActivity,R.color.appGray))
-                    titleOk?.isClickable=false
+                if (!p0?.isEmpty()!!) {
+                    titleOk?.setTextColor(ContextCompat.getColor(this@BindPhoneNumActivity, R.color.blue))
+                    titleOk?.isClickable = true
+                } else {
+                    titleOk?.setTextColor(ContextCompat.getColor(this@BindPhoneNumActivity, R.color.appGray))
+                    titleOk?.isClickable = false
                 }
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
         })
@@ -124,7 +134,8 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
                 if (TextUtils.isEmpty(et_VerificationCode2.text)) {
                     ToastUtils.showShort(this, R.string.inputCode)
                 } else {
-                    dialog?.show()
+                    savePhone(et_InputNewPhoneNum.text.toString(),et_VerificationCode2.text.toString())
+
                 }
             }
         }
@@ -171,10 +182,14 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
                     })
         }
         reSend2.setOnClickListener {
-            val phone = preferences?.getStringValue(Constant.LOGIN_PHONE)
+            val phone =et_InputNewPhoneNum.text.toString()
             var cIndex = preferences?.getStringValue(Constant.PHONE_TYPE)
-            if (!NotNull.isNotNull(cIndex)){
-                cIndex="86"
+            if (!NotNull.isNotNull(cIndex)) {
+                cIndex = "86"
+            }
+            if (!NotNull.isNotNull(phone)){
+                MyToast.showToastCustomerStyleText(this@BindPhoneNumActivity,getString(R.string.inputPhoneNumber))
+                return@setOnClickListener
             }
             OkHttpUtils
                     .post()
@@ -204,7 +219,35 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
 
 
     }
+    private fun savePhone(phone: String,vCode:String) {
+        showProgressDialog()
+        val token = preferences?.getStringValue(Constant.TOKEN)
+        val url = Constant.BASE_URL + NetApi.USER_SETTING
+        OkHttpUtils.post().url(url).addParams("mobile", phone).addParams("token", token).addParams("vcode", vCode).addParams("national", cIndex)
+                .build()
+                .execute(object : MyStringCallback(this) {
+                    override fun onResponse(response: String?, id: Int) {
+                        val jsonOb = JSONObject(response)
+                        val result = jsonOb.getString("result")
+                        val msg = jsonOb.getString("msg")
+                        if (TextUtils.equals(result, "0")) {
+                            preferences?.putValue(Constant.LOGIN_PHONE, phone)
+                            preferences?.putValue(Constant.LOGIN_MSM_CODE, "")
+                            MyToast.showToastCustomerStyleText(this@BindPhoneNumActivity, msg)
+                            finish()
+                        }
+                        LogUtils.mi(response!!)
+                        dismissDialog()
 
+                    }
+
+                    override fun onError(call: Call?, e: Exception?, id: Int) {
+                        LogUtils.mi(e.toString())
+                        dismissDialog()
+                    }
+
+                })
+    }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -231,7 +274,7 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
         title?.text = getString(R.string.inputNewPhone)
         titleOk?.text = getString(R.string.Done)
         titleOk?.setTextColor(resources.getColor(R.color.appGray))
-        titleOk?.isClickable=false
+        titleOk?.isClickable = false
         et_VerificationCode2.setText("")
         mCurrent = 2
         ll_page2.visibility = View.VISIBLE
@@ -249,6 +292,15 @@ class BindPhoneNumActivity(override val contentView: Int = R.layout.activity_bin
         val tvOk = customView.findViewById<View>(R.id.tv_Ok)
         tvOk.setOnClickListener {
             dialog?.hide()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constant.MULTiPLY_MOBIL_PHONE_NUM && resultCode == Activity.RESULT_OK) {
+            cIndex = data?.getStringExtra(Constant.MOBIL_PHONE_NUM)!!
+            tvMulPhone.text = "+$cIndex"
         }
     }
 }

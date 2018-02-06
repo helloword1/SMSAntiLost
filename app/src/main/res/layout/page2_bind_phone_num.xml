@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/x10"
@@ -14,9 +14,11 @@
             android:id="@+id/iv_PhoneIcon"
             style="@style/setting_icon_sytle"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/x12"
             android:src="@mipmap/icon_phone" />
+
+        <include layout="@layout/multiply_phone_num_layout" />
 
         <com.goockr.smsantilost.graphics.CleanableEditText
             android:id="@+id/et_InputNewPhoneNum"
@@ -32,7 +34,7 @@
             android:paddingRight="@dimen/x10"
             android:paddingTop="@dimen/x5"
             android:textSize="14sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,12 +74,12 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/reSend2"
             android:layout_width="0dp"
             android:layout_height="@dimen/x25"
             android:layout_marginLeft="@dimen/x5"
             android:layout_marginRight="@dimen/x10"
             android:layout_weight="1"
-            android:id="@+id/reSend2"
             android:background="@drawable/shape_blue"
             android:gravity="center"
             android:text="@string/getMsmCode"

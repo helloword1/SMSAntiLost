@@ -10,6 +10,7 @@ import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.antilost.AddFriendActivity
 import com.goockr.smsantilost.views.adapters.FriendsListAdapter
 import kotlinx.android.synthetic.main.activity_my_friends.*
+import kotlinx.android.synthetic.main.empty_view.view.*
 import java.util.*
 
 class MyFriendsActivity(override val contentView: Int = R.layout.activity_my_friends) : BaseActivity() {
@@ -61,7 +62,7 @@ class MyFriendsActivity(override val contentView: Int = R.layout.activity_my_fri
      */
     private fun initMData() {
         mDatas = ArrayList()
-        val bean1 = FriendsListBean(pic,"阿凡达","123")
+        /*val bean1 = FriendsListBean(pic,"阿凡达","123")
         val bean2 = FriendsListBean(pic,"布吉岛","123")
         val bean3 = FriendsListBean(pic,"次元","123")
         val bean4 = FriendsListBean(pic,"滴滴","123")
@@ -76,7 +77,13 @@ class MyFriendsActivity(override val contentView: Int = R.layout.activity_my_fri
         mDatas?.add(bean5)
         mDatas?.add(bean6)
         mDatas?.add(bean7)
-        mDatas?.add(bean8)
+        mDatas?.add(bean8)*/
+        if (mDatas!!.isEmpty()) {
+            emptyView.visibility = View.VISIBLE
+            emptyView.tvEmptyView.text = getString(R.string.noFriend)
+        } else {
+            emptyView.visibility = View.GONE
+        }
         val comparator = MyComparator()
         Collections.sort(mDatas, comparator)
     }

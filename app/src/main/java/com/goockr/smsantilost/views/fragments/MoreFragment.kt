@@ -113,11 +113,12 @@ class MoreFragment : BaseFragment(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 112) {
             val extra = data?.getStringExtra("imageUri")
+            if (!NotNull.isNotNull(extra)) return
             val imageUri = Uri.parse(extra)
             if (!TextUtils.equals(extra, "null")) {
+                imageUrl = extra!!
                 Glide.with(activity.applicationContext).load(imageUri).transform(GlideCircleTransform(activity)).placeholder(R.mipmap.icon_head_portrait).into(iv_ProfilePic1)
             }
-//            getIcon()
         }
     }
 
@@ -133,8 +134,12 @@ class MoreFragment : BaseFragment(), View.OnClickListener {
                 LogUtils.mi(response!!)
                 if (!NotNull.isNotNull(response)) return
                 val jsonObject = JSONObject(response)
+                val result = jsonObject.getString("result")
+                if (!TextUtils.equals(result,"0")){
+                    return
+                }
                 val imgUrl = jsonObject.getString("imgUrl")
-                if (NotNull.isNotNull(imgUrl)&&NotNull.isNotNull(activity)) {
+                if (NotNull.isNotNull(imgUrl) && NotNull.isNotNull(activity)) {
                     imageUrl = imgUrl
                     activity.runOnUiThread {
                         Glide.with(activity.applicationContext).load(imgUrl).transform(GlideCircleTransform(activity)).placeholder(R.mipmap.icon_head_portrait).into(iv_ProfilePic1)

@@ -8,19 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.LinearLayout
-import com.goockr.smsantilost.GoockrApplication
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.R.id.antilost_list_view
-import com.goockr.smsantilost.R.id.tvEmptyView
 import com.goockr.smsantilost.entries.AntilostBean
+import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.graphics.MyToast
 import com.goockr.smsantilost.utils.Constant
-import com.goockr.smsantilost.utils.DateUtils
+import com.goockr.smsantilost.utils.Constant.TOKEN
+import com.goockr.smsantilost.utils.LogUtils
+import com.goockr.smsantilost.utils.https.MyStringCallback
+import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.activities.antilost.KeyActivity
 import com.goockr.smsantilost.views.adapters.AntilostAdapter
-import cxx.utils.NotNull
+import com.zhy.http.okhttp.OkHttpUtils
 import kotlinx.android.synthetic.main.empty_view.*
 import kotlinx.android.synthetic.main.fragment_antilost.*
+import okhttp3.Call
+import org.json.JSONObject
+import java.lang.Exception
 
 /**
  * Created by ning.wen on 2016/11/1.
@@ -57,7 +61,37 @@ class AntiLostFragment : BaseFragment() {
      * 初始化listView数据
      */
     private fun initData() {
-        val goockrApplication = activity.application as GoockrApplication
+        val baseActivity = activity as BaseActivity
+        baseActivity.showProgressDialog()
+        OkHttpUtils
+                .post()
+                .url(Constant.BASE_URL + NetApi.FIND_DEVS_LIST)
+                .addParams("token", baseActivity.preferences?.getStringValue(TOKEN))
+                .build()
+                .execute(object : MyStringCallback(activity) {
+                    override fun onResponse(response: String?, id: Int) {
+                        LogUtils.mi(response!!)
+                        val jsonObject = JSONObject(response)
+                        val result = jsonObject.getString("result")
+                        if (TextUtils.equals(result,"0")){
+
+                        }
+
+                        baseActivity.dismissDialog()
+//                        val t = Gson().fromJson(response, LoginCodeBean::class.java)
+//                        baseActivity.dismissDialog()
+//                        if (t.result == 0) {
+//
+//                        }
+//                        MyToast.showToastCustomerStyleText(baseActivity, "${t.msg}")
+                    }
+
+                    override fun onError(call: Call?, e: Exception?, id: Int) {
+                        baseActivity.dismissDialog()
+                        MyToast.showToastCustomerStyleText(baseActivity, getString(R.string.networkError))
+                    }
+                })
+        /*val goockrApplication = activity.application as GoockrApplication
         val deviceBeanDao = goockrApplication.mDaoSession?.deviceBeanDao
         val list = deviceBeanDao?.queryBuilder()?.build()?.list()
         if (NotNull.isNotNull(list))
@@ -104,7 +138,7 @@ class AntiLostFragment : BaseFragment() {
                     antilostBean.isConnectState = true
                 }
                 lists?.add(antilostBean)
-            }
+            }*/
         tvEmptyView.setOnClickListener {
             MyToast.showToastCustomerStyleText(activity, getString(R.string.deviceDeveloping))
         }
@@ -149,7 +183,7 @@ class AntiLostFragment : BaseFragment() {
         for (c in 0 until lists!!.size) {
             lists!![c].isConnectState = false
         }
-            listsAdapter?.notifyDataSetChanged()
+        listsAdapter?.notifyDataSetChanged()
     }
 }
 

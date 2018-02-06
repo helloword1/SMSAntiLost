@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.goockr.smsantilost.graphics.CleanableEditText
+        android:id="@+id/smsSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/x5"
+        android:layout_marginLeft="@dimen/x24"
+        android:layout_marginRight="@dimen/x24"
+        android:layout_marginTop="@dimen/x7"
+        android:background="@drawable/msm_bg"
+        android:drawableLeft="@mipmap/icon_search"
+        android:drawablePadding="@dimen/x5"
+        android:drawableRight="@mipmap/login_delete"
+        android:hint="@string/search"
+        android:paddingBottom="@dimen/x3"
+        android:paddingLeft="@dimen/x5"
+        android:paddingRight="@dimen/x5"
+        android:paddingTop="@dimen/x3"
+        android:visibility="invisible"
+        android:textSize="14sp" />
+</LinearLayout>

@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.os.Message
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.view.animation.Animation
@@ -13,18 +14,24 @@ import android.view.animation.RotateAnimation
 import com.amap.api.location.AMapLocation
 import com.amap.api.location.AMapLocationClient
 import com.goockr.smsantilost.R
-import com.goockr.smsantilost.entries.DeviceBean
-import com.goockr.smsantilost.entries.DeviceBeanDao
+import com.goockr.smsantilost.entries.NetApi
 import com.goockr.smsantilost.graphics.MyToast
-import com.goockr.smsantilost.utils.*
+import com.goockr.smsantilost.utils.Constant
 import com.goockr.smsantilost.utils.Constant.MAC
+import com.goockr.smsantilost.utils.LogUtils
+import com.goockr.smsantilost.utils.MyAMapLocationListener
+import com.goockr.smsantilost.utils.ToastUtils
+import com.goockr.smsantilost.utils.https.MyStringCallback
 import com.goockr.smsantilost.views.activities.BaseActivity
 import com.goockr.smsantilost.views.adapters.DeviceAdapter
+import com.zhy.http.okhttp.OkHttpUtils
 import cxx.utils.NotNull
 import kotlinx.android.synthetic.main.activity_add_device.*
 import kotlinx.android.synthetic.main.page1_add_device.*
 import kotlinx.android.synthetic.main.page2_add_device.*
 import kotlinx.android.synthetic.main.page3_add_device.*
+import okhttp3.Call
+import org.json.JSONObject
 import java.lang.Exception
 import java.util.*
 
@@ -48,7 +55,7 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
     private var address = ""
     //蓝牙
     var mBluetoothAdapter: BluetoothAdapter? = null
-//    private var btReceiver: MyBtReceiver? = null
+    //    private var btReceiver: MyBtReceiver? = null
     // 动画
     var mRotationAnimation: RotateAnimation? = null
     private var adapter: DeviceAdapter? = null
@@ -223,10 +230,11 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
         super.onDestroy()
         mLocationClient?.stopLocation()
         mBluetoothAdapter?.cancelDiscovery()
-        if (btReceiver!=null){
+        if (btReceiver != null) {
             try {
                 unregisterReceiver(btReceiver)
-            }catch (e : Exception){}
+            } catch (e: Exception) {
+            }
         }
     }
 
@@ -287,27 +295,72 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
 
 
     private fun saveData(key: String) {
-        if (currentPotion != -1) {
+        addDevice(key)
+        /*if (currentPotion != -1) {
             val deviceBeanDao = goockrApplication?.mDaoSession?.deviceBeanDao
             val deviceBean = deviceBeanDao?.queryBuilder()?.where(DeviceBeanDao.Properties.
                     Mac.eq(mDataList[currentPotion].address))?.unique()
             if (!NotNull.isNotNull(deviceBean)) {
                 deviceBeanDao?.insert(DeviceBean(null, key, mDataList[currentPotion].name,
                         mDataList[currentPotion].name, mDataList[currentPotion].address
-                        , shortList[currentPotion].toString(), DateUtils.getDate(DateUtils.parsePatterns[2]),longitude.toDouble(),latitude.toDouble(),address))
-            }else{
-                deviceBean?.name=mDataList[currentPotion].name
-                deviceBean?.date=DateUtils.getDate(DateUtils.parsePatterns[2])
-                deviceBean?.distance=shortList[currentPotion].toString()
-                deviceBean?.deviceType=key
-                deviceBean?.latitude=latitude.toDouble()
-                deviceBean?.longitude=longitude.toDouble()
-                deviceBean?.address=address
+                        , shortList[currentPotion].toString(), DateUtils.getDate(DateUtils.parsePatterns[2]), longitude.toDouble(), latitude.toDouble(), address))
+            } else {
+                deviceBean?.name = mDataList[currentPotion].name
+                deviceBean?.date = DateUtils.getDate(DateUtils.parsePatterns[2])
+                deviceBean?.distance = shortList[currentPotion].toString()
+                deviceBean?.deviceType = key
+                deviceBean?.latitude = latitude.toDouble()
+                deviceBean?.longitude = longitude.toDouble()
+                deviceBean?.address = address
                 deviceBeanDao?.update(deviceBean)
-                MyToast.showToastCustomerStyleText(this,getString(R.string.deviceHasAdd))
-            }
-            goockrApplication?.exitToHome()
-        }
+                MyToast.showToastCustomerStyleText(this, getString(R.string.deviceHasAdd))
+            }*/
+        goockrApplication?.exitToHome()
+//        }
+    }
+
+    /**
+     * 添加设备
+     * key：绑定类型
+     */
+    private fun addDevice(key: String) {
+        showProgressDialog()
+        val address1 = mDataList[currentPotion].address
+        OkHttpUtils
+                .post()
+                .url(Constant.BASE_URL + NetApi.BIND_DEV)
+                .addParams("token", preferences?.getStringValue(Constant.TOKEN))
+                .addParams("devNum", "009514")
+                .addParams("devName", mDataList[currentPotion].name)
+                .addParams("bindType", key)
+//                .addParams("devType","")
+//                .addParams("longitude",longitude)
+//                .addParams("latitude",latitude)
+                .addParams("bluetoothMac", address1)
+                .build()
+                .execute(object : MyStringCallback(this) {
+                    override fun onResponse(response: String?, id: Int) {
+                        LogUtils.mi(response!!)
+                        val jsonObject = JSONObject(response)
+                        val result = jsonObject.getString("result")
+                        if (TextUtils.equals(result, "0")) {
+                            val msg = jsonObject.getString("msg")
+                            MyToast.showToastCustomerStyleText(this@AddDeviceActivity, msg)
+                        }
+                        dismissDialog()
+//                        val t = Gson().fromJson(response, LoginCodeBean::class.java)
+//                        if (t.result == 0) {
+//
+//                        }
+//                        MyToast.showToastCustomerStyleText(this@AddDeviceActivity, "${t.msg}")
+                    }
+
+                    override fun onError(call: Call?, e: Exception?, id: Int) {
+                        dismissDialog()
+                        MyToast.showToastCustomerStyleText(this@AddDeviceActivity, getString(R.string.networkError))
+                    }
+                })
+
     }
 
     override fun receive(intent: Intent) {
@@ -345,6 +398,7 @@ class AddDeviceActivity(override val contentView: Int = R.layout.activity_add_de
         mLocationClient?.stopLocation()
         iv_InSearch.stopAnimator()
     }
+
     override fun onPause() {
         super.onPause()
         iv_InSearch.stopAnimator()

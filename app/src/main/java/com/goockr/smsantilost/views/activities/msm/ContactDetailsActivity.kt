@@ -44,7 +44,7 @@ class ContactDetailsActivity(override val contentView: Int = R.layout.activity_c
         val id = extras.getString(CONTACT_ID)
         if (contactPhone.contains(",")) {
             val split = contactPhone.split(",")
-            lists += split
+            split.filterNotTo(lists) { it.isEmpty() }
         } else {
             lists.add(contactPhone)
         }
